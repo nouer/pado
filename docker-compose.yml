@@ -1,0 +1,47 @@
+services:
+  pado-app:
+    # テスト/E2E 用: ホストへポート公開しない（ポート競合を根絶する）
+    build: .
+    image: "${COMPOSE_PROJECT_NAME:-pado}_app_image"
+    networks:
+      pado_net:
+        ipv4_address: "${PADO_APP_IP:-172.32.0.10}"
+    volumes:
+      - ./local_app:/usr/share/nginx/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+  pado-app-public:
+    # ブラウザアクセス用: ホストへポート公開する（必要なら PADO_PORT で変更）
+    image: "${COMPOSE_PROJECT_NAME:-pado}_app_image"
+    build: .
+    ports:
+      - "${PADO_PORT:-8087}:80"
+    networks:
+      - pado_net
+    volumes:
+      - ./local_app:/usr/share/nginx/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+  pado-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - PADO_PORT=${PADO_PORT:-8087}
+      - E2E_APP_IP=${PADO_APP_IP:-172.32.0.10}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - pado_net
+    volumes:
+      - ./local_app:/app/local_app
+      - ./tools:/app/tools
+    depends_on:
+      - pado-app
+
+networks:
+  pado_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "${PADO_SUBNET:-172.32.0.0/24}"

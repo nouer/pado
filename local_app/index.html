@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pado - 帳票管理</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- スクロールトップ & アプリ情報 -->
+<!-- ============================================================ -->
+<button id="scroll-top-btn" class="scroll-top-btn" style="display:none" title="トップへ戻る">▲</button>
+<div id="app-info-display" class="app-info-display"></div>
+
+<!-- ============================================================ -->
+<!-- ヘッダー -->
+<!-- ============================================================ -->
+<header class="app-header">
+    <h1>Pado <span class="header-subtitle">帳票管理</span></h1>
+</header>
+
+<!-- 更新バナー -->
+<div id="update-banner" class="update-banner" style="display:none">
+    <span>新しいバージョンが利用可能です</span>
+    <button onclick="applyUpdate()">更新する</button>
+</div>
+
+<!-- ============================================================ -->
+<!-- メインタブ -->
+<!-- ============================================================ -->
+<nav class="tab-nav" id="main-tab-nav">
+    <button class="tab-btn active" data-tab="documents">帳票</button>
+    <button class="tab-btn" data-tab="partners">取引先</button>
+    <button class="tab-btn" data-tab="items">品目</button>
+    <button class="tab-btn" data-tab="settings">設定</button>
+</nav>
+
+<!-- ============================================================ -->
+<!-- 帳票タブ -->
+<!-- ============================================================ -->
+<div class="tab-content active" id="tab-documents">
+    <!-- 帳票サブタブ -->
+    <nav class="sub-tab-nav" id="doc-sub-tab-nav">
+        <button class="sub-tab-btn active" data-doc-type="estimate">見積書</button>
+        <button class="sub-tab-btn" data-doc-type="purchase_order">発注書</button>
+        <button class="sub-tab-btn" data-doc-type="invoice">請求書</button>
+        <button class="sub-tab-btn" data-doc-type="delivery_note">納品書</button>
+        <button class="sub-tab-btn" data-doc-type="sales_slip">売上伝票</button>
+        <button class="sub-tab-btn" data-doc-type="purchase_slip">仕入伝票</button>
+        <button class="sub-tab-btn" data-doc-type="receipt">領収書</button>
+    </nav>
+
+    <!-- 帳票ツールバー -->
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="doc-search" placeholder="帳票番号・取引先名で検索...">
+        </div>
+        <div class="filter-group">
+            <select id="doc-status-filter">
+                <option value="">すべてのステータス</option>
+                <option value="draft">下書き</option>
+                <option value="issued">発行済</option>
+                <option value="sent">送付済</option>
+                <option value="accepted">受領済</option>
+                <option value="void">無効</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" id="btn-new-doc">+ 新規作成</button>
+    </div>
+
+    <!-- 帳票一覧 -->
+    <div id="doc-list" class="doc-list"></div>
+    <div id="doc-empty" class="empty-state" style="display:none">
+        <p>帳票がありません</p>
+        <p class="empty-hint">「+ 新規作成」ボタンから帳票を作成しましょう</p>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 取引先タブ -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-partners">
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="partner-search" placeholder="取引先名・コードで検索...">
+        </div>
+        <div class="filter-group">
+            <select id="partner-type-filter">
+                <option value="">すべて</option>
+                <option value="customer">得意先</option>
+                <option value="supplier">仕入先</option>
+                <option value="both">得意先＆仕入先</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" id="btn-new-partner">+ 新規登録</button>
+    </div>
+
+    <div id="partner-list" class="partner-list"></div>
+    <div id="partner-empty" class="empty-state" style="display:none">
+        <p>取引先が登録されていません</p>
+        <p class="empty-hint">「+ 新規登録」ボタンから取引先を登録しましょう</p>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 品目タブ -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-items">
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="item-search" placeholder="品目名・コードで検索...">
+        </div>
+        <button class="btn btn-primary" id="btn-new-item">+ 新規登録</button>
+    </div>
+
+    <div id="item-list" class="item-list">
+        <table class="item-table" id="item-table">
+            <thead>
+                <tr>
+                    <th>コード</th>
+                    <th>品目名</th>
+                    <th>単価</th>
+                    <th>単位</th>
+                    <th>税区分</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="item-table-body"></tbody>
+        </table>
+    </div>
+    <div id="item-empty" class="empty-state" style="display:none">
+        <p>品目が登録されていません</p>
+        <p class="empty-hint">「+ 新規登録」ボタンから品目を登録しましょう</p>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 設定タブ -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-settings">
+    <div class="settings-container">
+        <!-- 自社情報 -->
+        <section class="settings-section">
+            <h2>自社情報</h2>
+            <div class="form-group">
+                <label for="setting-company-name">事業者名 <span class="required">*</span></label>
+                <input type="text" id="setting-company-name" placeholder="例: 山田商店">
+            </div>
+            <div class="form-group">
+                <label for="setting-invoice-reg-number">適格請求書発行事業者登録番号</label>
+                <input type="text" id="setting-invoice-reg-number" placeholder="例: T1234567890123" maxlength="14">
+                <span class="form-hint">T + 13桁の数字</span>
+            </div>
+            <div class="form-group">
+                <label for="setting-zip-code">郵便番号</label>
+                <input type="text" id="setting-zip-code" placeholder="例: 150-0002" maxlength="8">
+            </div>
+            <div class="form-group">
+                <label for="setting-address">住所</label>
+                <input type="text" id="setting-address" placeholder="例: 東京都渋谷区渋谷1-1-1">
+            </div>
+            <div class="form-group">
+                <label for="setting-phone">電話番号</label>
+                <input type="text" id="setting-phone" placeholder="例: 03-1234-5678">
+            </div>
+            <div class="form-group">
+                <label for="setting-fax">FAX番号</label>
+                <input type="text" id="setting-fax" placeholder="例: 03-1234-5679">
+            </div>
+            <div class="form-group">
+                <label for="setting-bank-info">振込先銀行情報</label>
+                <textarea id="setting-bank-info" rows="3" placeholder="例: ○○銀行 ○○支店&#10;普通 1234567&#10;口座名義 ヤマダショウテン"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="setting-seal-text">角印テキスト</label>
+                <input type="text" id="setting-seal-text" placeholder="例: 山田商店">
+                <span class="form-hint">印刷時に角印として表示されるテキスト</span>
+            </div>
+            <div class="form-group">
+                <label for="setting-fiscal-start">決算期開始月</label>
+                <select id="setting-fiscal-start">
+                    <option value="1">1月</option>
+                    <option value="2">2月</option>
+                    <option value="3">3月</option>
+                    <option value="4" selected>4月</option>
+                    <option value="5">5月</option>
+                    <option value="6">6月</option>
+                    <option value="7">7月</option>
+                    <option value="8">8月</option>
+                    <option value="9">9月</option>
+                    <option value="10">10月</option>
+                    <option value="11">11月</option>
+                    <option value="12">12月</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="btn-save-company">自社情報を保存</button>
+        </section>
+
+        <!-- 税設定 -->
+        <section class="settings-section">
+            <h2>税設定</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="setting-standard-rate">標準税率</label>
+                    <input type="number" id="setting-standard-rate" value="10" min="0" max="100" step="1"> %
+                </div>
+                <div class="form-group">
+                    <label for="setting-reduced-rate">軽減税率</label>
+                    <input type="number" id="setting-reduced-rate" value="8" min="0" max="100" step="1"> %
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="setting-rounding">端数処理</label>
+                <select id="setting-rounding">
+                    <option value="floor">切り捨て</option>
+                    <option value="round">四捨五入</option>
+                    <option value="ceil">切り上げ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="setting-calc-method">税計算方式</label>
+                <select id="setting-calc-method">
+                    <option value="per_line">明細行ごとに計算</option>
+                    <option value="per_total">合計に対して計算</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="btn-save-tax">税設定を保存</button>
+        </section>
+
+        <!-- 帳票番号設定 -->
+        <section class="settings-section">
+            <h2>帳票番号設定</h2>
+            <div id="number-format-settings"></div>
+            <button class="btn btn-primary" id="btn-save-number-format">番号設定を保存</button>
+        </section>
+
+        <!-- 表示設定 -->
+        <section class="settings-section">
+            <h2>表示設定</h2>
+            <div class="form-group">
+                <label for="setting-default-doc-type">デフォルト帳票タイプ</label>
+                <select id="setting-default-doc-type">
+                    <option value="estimate">見積書</option>
+                    <option value="purchase_order">発注書</option>
+                    <option value="invoice">請求書</option>
+                    <option value="delivery_note">納品書</option>
+                    <option value="sales_slip">売上伝票</option>
+                    <option value="purchase_slip">仕入伝票</option>
+                    <option value="receipt">領収書</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="setting-date-format">日付形式</label>
+                <select id="setting-date-format">
+                    <option value="japanese">和暦（令和X年M月D日）</option>
+                    <option value="western">西暦（YYYY/MM/DD）</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="setting-show-seal" checked> 角印を表示する
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="setting-show-bank" checked> 振込先を表示する（請求書）
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="setting-estimate-valid-days">見積有効日数（デフォルト）</label>
+                <input type="number" id="setting-estimate-valid-days" value="30" min="1" max="365">
+            </div>
+            <button class="btn btn-primary" id="btn-save-display">表示設定を保存</button>
+        </section>
+
+        <!-- データ管理 -->
+        <section class="settings-section">
+            <h2>データ管理</h2>
+            <div class="btn-group-vertical">
+                <button class="btn btn-secondary" id="btn-export">データをエクスポート</button>
+                <button class="btn btn-secondary" id="btn-import">データをインポート</button>
+                <input type="file" id="import-file" accept=".json" style="display:none">
+                <button class="btn btn-danger" id="btn-delete-all">全データを削除</button>
+            </div>
+        </section>
+
+        <!-- サンプルデータ -->
+        <section class="settings-section">
+            <h2>サンプルデータ</h2>
+            <p class="form-help">
+                動作確認やデモ用のサンプルデータ（取引先3件、品目6件、帳票3件）をインポートします。
+                既存データとマージされ、重複するIDは自動的にスキップされます。
+            </p>
+            <p id="sample-data-offline-note" style="display:none; color: var(--danger);">
+                この機能はオンライン環境でのみ利用できます。
+            </p>
+            <button class="btn btn-primary" id="import-sample-btn">サンプルインポート</button>
+            <div id="sample-data-message" style="margin-top: 0.5rem;"></div>
+        </section>
+
+        <!-- アプリ情報 -->
+        <section class="settings-section">
+            <h2>アプリ情報</h2>
+            <div id="app-info-section">
+                <p>バージョン: <span id="app-version">-</span></p>
+                <p>ビルド日時: <span id="app-build-time">-</span></p>
+            </div>
+            <button class="btn btn-secondary" id="btn-check-update">更新を確認</button>
+        </section>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 帳票エディタ オーバーレイ -->
+<!-- ============================================================ -->
+<div id="doc-editor-overlay" class="overlay" style="display:none">
+    <div class="overlay-content overlay-wide">
+        <div class="overlay-header">
+            <h2 id="doc-editor-title">帳票編集</h2>
+            <button class="btn-close" id="btn-close-doc-editor">&times;</button>
+        </div>
+        <div class="overlay-body">
+            <!-- カード1: 基本情報 -->
+            <div class="editor-card">
+                <h3>基本情報</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doc-number">帳票番号</label>
+                        <input type="text" id="doc-number" readonly class="readonly-field">
+                        <span class="form-hint">保存時に自動採番されます</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="doc-issue-date">発行日 <span class="required">*</span></label>
+                        <input type="date" id="doc-issue-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="doc-status">ステータス</label>
+                        <select id="doc-status">
+                            <option value="draft">下書き</option>
+                            <option value="issued">発行済</option>
+                            <option value="sent">送付済</option>
+                            <option value="accepted">受領済</option>
+                            <option value="void">無効</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="doc-partner">取引先 <span class="required">*</span></label>
+                    <div class="partner-selector">
+                        <select id="doc-partner">
+                            <option value="">取引先を選択...</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- 変換元リンク -->
+                <div id="doc-source-link" class="source-link" style="display:none"></div>
+            </div>
+
+            <!-- カード2: 種別固有フィールド -->
+            <div class="editor-card" id="doc-type-specific-fields">
+                <div id="field-valid-until" class="form-group" style="display:none">
+                    <label for="doc-valid-until">有効期限</label>
+                    <input type="date" id="doc-valid-until">
+                </div>
+                <div id="field-due-date" class="form-group" style="display:none">
+                    <label for="doc-due-date">支払期限 <span class="required">*</span></label>
+                    <input type="date" id="doc-due-date">
+                </div>
+                <div id="field-delivery-date" class="form-group" style="display:none">
+                    <label for="doc-delivery-date">納品日</label>
+                    <input type="date" id="doc-delivery-date">
+                </div>
+                <div id="field-receipt-of" class="form-group" style="display:none">
+                    <label for="doc-receipt-of">但し書き <span class="required">*</span></label>
+                    <input type="text" id="doc-receipt-of" placeholder="例: お食事代として">
+                </div>
+                <div id="field-payment-method" class="form-group" style="display:none">
+                    <label for="doc-payment-method">支払方法</label>
+                    <select id="doc-payment-method">
+                        <option value="">選択してください</option>
+                        <option value="bank_transfer">銀行振込</option>
+                        <option value="cash">現金</option>
+                        <option value="check">小切手</option>
+                        <option value="credit_card">クレジットカード</option>
+                        <option value="other">その他</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- カード3: 明細 -->
+            <div class="editor-card">
+                <h3>明細</h3>
+                <div class="line-items-container">
+                    <table class="line-items-table">
+                        <thead>
+                            <tr>
+                                <th class="col-no">No</th>
+                                <th class="col-item">品目</th>
+                                <th class="col-desc">摘要</th>
+                                <th class="col-qty">数量</th>
+                                <th class="col-unit">単位</th>
+                                <th class="col-price">単価</th>
+                                <th class="col-tax">税区分</th>
+                                <th class="col-amount">金額</th>
+                                <th class="col-action"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="line-items-body"></tbody>
+                    </table>
+                </div>
+                <button class="btn btn-secondary btn-sm" id="btn-add-line">+ 行を追加</button>
+            </div>
+
+            <!-- カード4: 金額サマリー -->
+            <div class="editor-card">
+                <h3>金額</h3>
+                <div class="tax-summary" id="tax-summary">
+                    <div class="summary-row">
+                        <span>小計（税抜）</span>
+                        <span id="summary-subtotal">¥0</span>
+                    </div>
+                    <div id="summary-tax-details"></div>
+                    <div class="summary-row">
+                        <span>消費税合計</span>
+                        <span id="summary-total-tax">¥0</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>合計（税込）</span>
+                        <span id="summary-total">¥0</span>
+                    </div>
+                    <div id="stamp-notice" class="stamp-notice" style="display:none"></div>
+                </div>
+            </div>
+
+            <!-- カード5: 備考・メモ -->
+            <div class="editor-card">
+                <h3>備考・メモ</h3>
+                <div class="form-group">
+                    <label for="doc-notes">備考（印刷対象）</label>
+                    <textarea id="doc-notes" rows="3" placeholder="印刷時に表示される備考欄"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="doc-internal-memo">社内メモ（印刷対象外）</label>
+                    <textarea id="doc-internal-memo" rows="2" placeholder="社内用メモ（印刷されません）"></textarea>
+                </div>
+            </div>
+
+            <!-- カード6: 発行者情報 -->
+            <div class="editor-card">
+                <h3>発行者情報</h3>
+                <div id="seller-info-preview" class="seller-info-preview">
+                    <p class="info-hint">設定タブの自社情報が表示されます</p>
+                </div>
+            </div>
+        </div>
+        <div class="overlay-footer">
+            <button class="btn btn-secondary" id="btn-cancel-doc">キャンセル</button>
+            <button class="btn btn-primary" id="btn-save-doc">保存</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 取引先フォーム オーバーレイ -->
+<!-- ============================================================ -->
+<div id="partner-form-overlay" class="overlay" style="display:none">
+    <div class="overlay-content overlay-wide">
+        <div class="overlay-header">
+            <h2 id="partner-form-title">取引先登録</h2>
+            <button class="btn-close" id="btn-close-partner-form">&times;</button>
+        </div>
+        <div class="overlay-body">
+            <input type="hidden" id="partner-edit-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="partner-code">取引先コード</label>
+                    <input type="text" id="partner-code" readonly class="readonly-field">
+                    <span class="form-hint">自動採番</span>
+                </div>
+                <div class="form-group">
+                    <label for="partner-type">区分 <span class="required">*</span></label>
+                    <select id="partner-type">
+                        <option value="customer">得意先</option>
+                        <option value="supplier">仕入先</option>
+                        <option value="both">得意先＆仕入先</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="partner-name">取引先名 <span class="required">*</span></label>
+                    <input type="text" id="partner-name" placeholder="例: 株式会社サンプル">
+                </div>
+                <div class="form-group">
+                    <label for="partner-name-kana">フリガナ</label>
+                    <input type="text" id="partner-name-kana" placeholder="例: カブシキガイシャサンプル">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="partner-honorific">敬称</label>
+                <select id="partner-honorific">
+                    <option value="御中">御中</option>
+                    <option value="様">様</option>
+                    <option value="殿">殿</option>
+                    <option value="">なし</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="partner-zip">郵便番号</label>
+                    <input type="text" id="partner-zip" placeholder="例: 150-0002" maxlength="8">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="partner-address1">住所1</label>
+                <input type="text" id="partner-address1" placeholder="例: 東京都渋谷区渋谷1-1-1">
+            </div>
+            <div class="form-group">
+                <label for="partner-address2">住所2</label>
+                <input type="text" id="partner-address2" placeholder="例: ○○ビル3F">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="partner-phone">電話番号</label>
+                    <input type="text" id="partner-phone" placeholder="例: 03-1234-5678">
+                </div>
+                <div class="form-group">
+                    <label for="partner-fax">FAX番号</label>
+                    <input type="text" id="partner-fax" placeholder="例: 03-1234-5679">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="partner-email">メールアドレス</label>
+                <input type="text" id="partner-email" placeholder="例: info@example.com">
+            </div>
+            <div class="form-group">
+                <label for="partner-contact">担当者名</label>
+                <input type="text" id="partner-contact" placeholder="例: 鈴木太郎">
+            </div>
+            <div class="form-group">
+                <label for="partner-reg-number">適格請求書発行事業者登録番号</label>
+                <input type="text" id="partner-reg-number" placeholder="例: T1234567890123" maxlength="14">
+            </div>
+            <div class="form-group">
+                <label for="partner-payment-terms">支払条件</label>
+                <input type="text" id="partner-payment-terms" placeholder="例: 月末締め翌月末払い">
+            </div>
+            <div class="form-group">
+                <label for="partner-notes">備考</label>
+                <textarea id="partner-notes" rows="2"></textarea>
+            </div>
+        </div>
+        <div class="overlay-footer">
+            <button class="btn btn-secondary" id="btn-cancel-partner">キャンセル</button>
+            <button class="btn btn-primary" id="btn-save-partner">保存</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 品目フォーム オーバーレイ -->
+<!-- ============================================================ -->
+<div id="item-form-overlay" class="overlay" style="display:none">
+    <div class="overlay-content">
+        <div class="overlay-header">
+            <h2 id="item-form-title">品目登録</h2>
+            <button class="btn-close" id="btn-close-item-form">&times;</button>
+        </div>
+        <div class="overlay-body">
+            <input type="hidden" id="item-edit-id">
+            <div class="form-group">
+                <label for="item-code">品目コード</label>
+                <input type="text" id="item-code" readonly class="readonly-field">
+                <span class="form-hint">自動採番</span>
+            </div>
+            <div class="form-group">
+                <label for="item-name">品目名 <span class="required">*</span></label>
+                <input type="text" id="item-name" placeholder="例: Webサイト制作">
+            </div>
+            <div class="form-group">
+                <label for="item-description">説明</label>
+                <input type="text" id="item-description" placeholder="例: レスポンシブ対応のWebサイト">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="item-unit-price">デフォルト単価</label>
+                    <input type="number" id="item-unit-price" min="0" step="1" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label for="item-unit">単位</label>
+                    <select id="item-unit">
+                        <option value="式">式</option>
+                        <option value="個">個</option>
+                        <option value="本">本</option>
+                        <option value="枚">枚</option>
+                        <option value="台">台</option>
+                        <option value="セット">セット</option>
+                        <option value="時間">時間</option>
+                        <option value="人月">人月</option>
+                        <option value="人日">人日</option>
+                        <option value="kg">kg</option>
+                        <option value="m">m</option>
+                        <option value="㎡">㎡</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="item-tax-rate">税区分</label>
+                <select id="item-tax-rate">
+                    <option value="standard">標準税率（10%）</option>
+                    <option value="reduced">軽減税率（8%）</option>
+                    <option value="exempt">非課税</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="item-sort-order">並び順</label>
+                <input type="number" id="item-sort-order" value="0" min="0">
+            </div>
+        </div>
+        <div class="overlay-footer">
+            <button class="btn btn-secondary" id="btn-cancel-item">キャンセル</button>
+            <button class="btn btn-primary" id="btn-save-item">保存</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 確認ダイアログ -->
+<!-- ============================================================ -->
+<div id="confirm-dialog" class="overlay" style="display:none">
+    <div class="overlay-content overlay-small">
+        <div class="overlay-header">
+            <h2 id="confirm-title">確認</h2>
+        </div>
+        <div class="overlay-body">
+            <p id="confirm-message"></p>
+        </div>
+        <div class="overlay-footer">
+            <button class="btn btn-secondary" id="btn-confirm-cancel">キャンセル</button>
+            <button class="btn btn-danger" id="btn-confirm-ok">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 印刷エリア -->
+<!-- ============================================================ -->
+<div id="print-area" class="print-area"></div>
+
+<!-- ============================================================ -->
+<!-- スクリプト読み込み -->
+<!-- ============================================================ -->
+<script src="version.js"></script>
+<script src="pado.calc.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "pado",
+  "version": "1.0.0",
+  "description": "Pado - 帳票管理アプリ (Paper Document Manager)",
+  "main": "local_app/script.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "collectCoverage": true,
+    "coverageReporters": ["text", "lcov"],
+    "coverageDirectory": "coverage",
+    "projects": [
+      {
+        "displayName": "unit",
+        "testEnvironment": "jsdom",
+        "testMatch": ["**/pado.calc.test.js"],
+        "testPathIgnorePatterns": ["local_app/e2e.test.js"]
+      },
+      {
+        "displayName": "e2e",
+        "testEnvironment": "node",
+        "testMatch": ["**/e2e.test.js"]
+      }
+    ]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "puppeteer": "^21.5.0"
+  }
+}
