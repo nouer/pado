@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-03-03T09:48:32.006Z",
+  "exportedAt": "2026-03-03T15:10:40.580Z",
   "version": "1.0.0",
   "partners": [
     {
@@ -19,8 +19,8 @@
       "invoiceRegNumber": "T1234567890123",
       "paymentTerms": "月末締め翌月末払い",
       "notes": "",
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "partner-002",
@@ -39,8 +39,8 @@
       "invoiceRegNumber": "T9876543210987",
       "paymentTerms": "月末締め翌月15日払い",
       "notes": "食品卸売業",
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "partner-003",
@@ -59,8 +59,108 @@
       "invoiceRegNumber": "",
       "paymentTerms": "",
       "notes": "デザイン・印刷物全般",
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "partner-004",
+      "partnerCode": "P0004",
+      "name": "有限会社田中建設",
+      "nameKana": "ユウゲンガイシャタナカケンセツ",
+      "partnerType": "customer",
+      "honorific": "御中",
+      "zipCode": "330-0063",
+      "address1": "埼玉県さいたま市浦和区高砂3-1-4",
+      "address2": "",
+      "phone": "048-222-3333",
+      "fax": "048-222-3334",
+      "email": "tanaka-k@example.com",
+      "contactPerson": "田中次郎",
+      "invoiceRegNumber": "T1122334455667",
+      "paymentTerms": "月末締め翌月末払い",
+      "notes": "建設業・リフォーム",
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "partner-005",
+      "partnerCode": "P0005",
+      "name": "株式会社高橋食品",
+      "nameKana": "カブシキガイシャタカハシショクヒン",
+      "partnerType": "supplier",
+      "honorific": "御中",
+      "zipCode": "812-0011",
+      "address1": "福岡県福岡市博多区博多駅前2-5-10",
+      "address2": "博多フードビル3F",
+      "phone": "092-444-5555",
+      "fax": "092-444-5556",
+      "email": "takahashi-food@example.com",
+      "contactPerson": "高橋美咲",
+      "invoiceRegNumber": "T2233445566778",
+      "paymentTerms": "月末締め翌月末払い",
+      "notes": "食品卸・軽減税率対象品多数",
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "partner-006",
+      "partnerCode": "P0006",
+      "name": "合同会社中村テクノロジー",
+      "nameKana": "ゴウドウガイシャナカムラテクノロジー",
+      "partnerType": "customer",
+      "honorific": "御中",
+      "zipCode": "220-0012",
+      "address1": "神奈川県横浜市西区みなとみらい2-3-1",
+      "address2": "ITタワー12F",
+      "phone": "045-666-7777",
+      "fax": "",
+      "email": "info@nakamura-tech.example.com",
+      "contactPerson": "中村健太",
+      "invoiceRegNumber": "T3344556677889",
+      "paymentTerms": "月末締め翌月末払い",
+      "notes": "システム開発・IT企業",
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "partner-007",
+      "partnerCode": "P0007",
+      "name": "株式会社渡辺物流",
+      "nameKana": "カブシキガイシャワタナベブツリュウ",
+      "partnerType": "both",
+      "honorific": "御中",
+      "zipCode": "455-0032",
+      "address1": "愛知県名古屋市港区入船1-7-2",
+      "address2": "",
+      "phone": "052-888-9999",
+      "fax": "052-888-9990",
+      "email": "watanabe-logistics@example.com",
+      "contactPerson": "渡辺大輔",
+      "invoiceRegNumber": "T4455667788990",
+      "paymentTerms": "月末締め翌月15日払い",
+      "notes": "物流・配送業",
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "partner-008",
+      "partnerCode": "P0008",
+      "name": "小林工房",
+      "nameKana": "コバヤシコウボウ",
+      "partnerType": "customer",
+      "honorific": "様",
+      "zipCode": "600-8216",
+      "address1": "京都府京都市下京区東塩小路町680",
+      "address2": "",
+      "phone": "075-333-4444",
+      "fax": "",
+      "email": "kobayashi-craft@example.com",
+      "contactPerson": "小林由美",
+      "invoiceRegNumber": "",
+      "paymentTerms": "",
+      "notes": "個人事業主・手工芸品",
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     }
   ],
   "items": [
@@ -73,8 +173,8 @@
       "unit": "式",
       "taxRateType": "standard",
       "sortOrder": 1,
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "item-002",
@@ -85,8 +185,8 @@
       "unit": "式",
       "taxRateType": "standard",
       "sortOrder": 2,
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "item-003",
@@ -97,8 +197,8 @@
       "unit": "時間",
       "taxRateType": "standard",
       "sortOrder": 3,
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "item-004",
@@ -109,8 +209,8 @@
       "unit": "式",
       "taxRateType": "standard",
       "sortOrder": 4,
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "item-005",
@@ -121,8 +221,8 @@
       "unit": "個",
       "taxRateType": "reduced",
       "sortOrder": 5,
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "item-006",
@@ -133,8 +233,116 @@
       "unit": "本",
       "taxRateType": "reduced",
       "sortOrder": 6,
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-007",
+      "itemCode": "I0007",
+      "name": "印刷物制作",
+      "description": "チラシ・パンフレット等の印刷",
+      "defaultUnitPrice": 50000,
+      "unit": "部",
+      "taxRateType": "standard",
+      "sortOrder": 7,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-008",
+      "itemCode": "I0008",
+      "name": "名刺デザイン",
+      "description": "名刺デザイン・印刷（100枚/箱）",
+      "defaultUnitPrice": 5000,
+      "unit": "箱",
+      "taxRateType": "standard",
+      "sortOrder": 8,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-009",
+      "itemCode": "I0009",
+      "name": "建設工事",
+      "description": "建築・リフォーム工事一式",
+      "defaultUnitPrice": 1500000,
+      "unit": "式",
+      "taxRateType": "standard",
+      "sortOrder": 9,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-010",
+      "itemCode": "I0010",
+      "name": "電気工事",
+      "description": "電気配線・照明設置工事",
+      "defaultUnitPrice": 300000,
+      "unit": "式",
+      "taxRateType": "standard",
+      "sortOrder": 10,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-011",
+      "itemCode": "I0011",
+      "name": "配送料",
+      "description": "国内配送サービス",
+      "defaultUnitPrice": 3000,
+      "unit": "件",
+      "taxRateType": "standard",
+      "sortOrder": 11,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-012",
+      "itemCode": "I0012",
+      "name": "梱包資材",
+      "description": "段ボール・緩衝材一式",
+      "defaultUnitPrice": 500,
+      "unit": "個",
+      "taxRateType": "standard",
+      "sortOrder": 12,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-013",
+      "itemCode": "I0013",
+      "name": "菓子折り",
+      "description": "手土産用菓子詰め合わせ（軽減税率対象）",
+      "defaultUnitPrice": 3240,
+      "unit": "箱",
+      "taxRateType": "reduced",
+      "sortOrder": 13,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-014",
+      "itemCode": "I0014",
+      "name": "ミネラルウォーター",
+      "description": "500mlペットボトル（軽減税率対象）",
+      "defaultUnitPrice": 100,
+      "unit": "本",
+      "taxRateType": "reduced",
+      "sortOrder": 14,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "item-015",
+      "itemCode": "I0015",
+      "name": "研修講師料",
+      "description": "社内研修・セミナー講師派遣",
+      "defaultUnitPrice": 80000,
+      "unit": "日",
+      "taxRateType": "standard",
+      "sortOrder": 15,
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     }
   ],
   "documents": [
@@ -217,8 +425,8 @@
       "childDocIds": [
         "doc-002"
       ],
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "doc-002",
@@ -300,9 +508,11 @@
         "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
         "sealText": "サンプル"
       },
-      "childDocIds": [],
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "childDocIds": [
+        "doc-003"
+      ],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     },
     {
       "id": "doc-003",
@@ -349,8 +559,1349 @@
         "sealText": "サンプル"
       },
       "childDocIds": [],
-      "createdAt": "2026-03-03T09:48:32.006Z",
-      "updatedAt": "2026-03-03T09:48:32.006Z"
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-004",
+      "docType": "estimate",
+      "docNumber": "QT-2026-0001",
+      "status": "issued",
+      "issueDate": "2026-01-10",
+      "validUntil": "2026-02-09",
+      "partnerId": "partner-004",
+      "partnerSnapshot": {
+        "name": "有限会社田中建設",
+        "honorific": "御中",
+        "zipCode": "330-0063",
+        "address1": "埼玉県さいたま市浦和区高砂3-1-4",
+        "address2": "",
+        "contactPerson": "田中次郎",
+        "invoiceRegNumber": "T1122334455667"
+      },
+      "lineItems": [
+        {
+          "name": "建設工事",
+          "description": "事務所リフォーム工事一式",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 1500000,
+          "taxRateType": "standard",
+          "amount": 1500000,
+          "id": "li-007",
+          "sortOrder": 1
+        },
+        {
+          "name": "電気工事",
+          "description": "電気配線・照明設置",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 300000,
+          "taxRateType": "standard",
+          "amount": 300000,
+          "id": "li-008",
+          "sortOrder": 2
+        },
+        {
+          "name": "コンサルティング",
+          "description": "事前調査・現場確認",
+          "quantity": 3,
+          "unit": "時間",
+          "unitPrice": 15000,
+          "taxRateType": "standard",
+          "amount": 45000,
+          "id": "li-009",
+          "sortOrder": 3
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 1845000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 1845000,
+            "taxAmount": 184500
+          }
+        ],
+        "totalTax": 184500,
+        "total": 2029500
+      },
+      "notes": "工期: 約1ヶ月\n現場: さいたま市浦和区",
+      "internalMemo": "田中社長から直接依頼",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [
+        "doc-005",
+        "doc-006"
+      ],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-005",
+      "docType": "invoice",
+      "docNumber": "INV-2026-0001",
+      "status": "sent",
+      "issueDate": "2026-02-15",
+      "dueDate": "2026-03-31",
+      "partnerId": "partner-004",
+      "partnerSnapshot": {
+        "name": "有限会社田中建設",
+        "honorific": "御中",
+        "zipCode": "330-0063",
+        "address1": "埼玉県さいたま市浦和区高砂3-1-4",
+        "address2": "",
+        "contactPerson": "田中次郎",
+        "invoiceRegNumber": "T1122334455667"
+      },
+      "lineItems": [
+        {
+          "name": "建設工事",
+          "description": "事務所リフォーム工事一式",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 1500000,
+          "taxRateType": "standard",
+          "amount": 1500000,
+          "id": "li-010",
+          "sortOrder": 1
+        },
+        {
+          "name": "電気工事",
+          "description": "電気配線・照明設置",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 300000,
+          "taxRateType": "standard",
+          "amount": 300000,
+          "id": "li-011",
+          "sortOrder": 2
+        },
+        {
+          "name": "コンサルティング",
+          "description": "事前調査・現場確認",
+          "quantity": 3,
+          "unit": "時間",
+          "unitPrice": 15000,
+          "taxRateType": "standard",
+          "amount": 45000,
+          "id": "li-012",
+          "sortOrder": 3
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 1845000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 1845000,
+            "taxAmount": 184500
+          }
+        ],
+        "totalTax": 184500,
+        "total": 2029500
+      },
+      "sourceDocId": "doc-004",
+      "sourceDocType": "estimate",
+      "sourceDocNumber": "QT-2026-0001",
+      "paymentMethod": "bank_transfer",
+      "notes": "お振込手数料はご負担ください",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [
+        "doc-007"
+      ],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-006",
+      "docType": "delivery_note",
+      "docNumber": "DN-2026-0001",
+      "status": "issued",
+      "issueDate": "2026-02-20",
+      "deliveryDate": "2026-02-20",
+      "partnerId": "partner-004",
+      "partnerSnapshot": {
+        "name": "有限会社田中建設",
+        "honorific": "御中",
+        "zipCode": "330-0063",
+        "address1": "埼玉県さいたま市浦和区高砂3-1-4",
+        "address2": "",
+        "contactPerson": "田中次郎",
+        "invoiceRegNumber": "T1122334455667"
+      },
+      "lineItems": [
+        {
+          "name": "建設工事",
+          "description": "事務所リフォーム工事一式",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 1500000,
+          "taxRateType": "standard",
+          "amount": 1500000,
+          "id": "li-013",
+          "sortOrder": 1
+        },
+        {
+          "name": "電気工事",
+          "description": "電気配線・照明設置",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 300000,
+          "taxRateType": "standard",
+          "amount": 300000,
+          "id": "li-014",
+          "sortOrder": 2
+        },
+        {
+          "name": "コンサルティング",
+          "description": "事前調査・現場確認",
+          "quantity": 3,
+          "unit": "時間",
+          "unitPrice": 15000,
+          "taxRateType": "standard",
+          "amount": 45000,
+          "id": "li-015",
+          "sortOrder": 3
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 1845000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 1845000,
+            "taxAmount": 184500
+          }
+        ],
+        "totalTax": 184500,
+        "total": 2029500
+      },
+      "sourceDocId": "doc-004",
+      "sourceDocType": "estimate",
+      "sourceDocNumber": "QT-2026-0001",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-007",
+      "docType": "sales_slip",
+      "docNumber": "SS-2026-0001",
+      "status": "issued",
+      "issueDate": "2026-02-28",
+      "partnerId": "partner-004",
+      "partnerSnapshot": {
+        "name": "有限会社田中建設",
+        "honorific": "御中",
+        "zipCode": "330-0063",
+        "address1": "埼玉県さいたま市浦和区高砂3-1-4",
+        "address2": "",
+        "contactPerson": "田中次郎",
+        "invoiceRegNumber": "T1122334455667"
+      },
+      "lineItems": [
+        {
+          "name": "建設工事",
+          "description": "事務所リフォーム工事一式",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 1500000,
+          "taxRateType": "standard",
+          "amount": 1500000,
+          "id": "li-016",
+          "sortOrder": 1
+        },
+        {
+          "name": "電気工事",
+          "description": "電気配線・照明設置",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 300000,
+          "taxRateType": "standard",
+          "amount": 300000,
+          "id": "li-017",
+          "sortOrder": 2
+        },
+        {
+          "name": "コンサルティング",
+          "description": "事前調査・現場確認",
+          "quantity": 3,
+          "unit": "時間",
+          "unitPrice": 15000,
+          "taxRateType": "standard",
+          "amount": 45000,
+          "id": "li-018",
+          "sortOrder": 3
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 1845000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 1845000,
+            "taxAmount": 184500
+          }
+        ],
+        "totalTax": 184500,
+        "total": 2029500
+      },
+      "sourceDocId": "doc-005",
+      "sourceDocType": "invoice",
+      "sourceDocNumber": "INV-2026-0001",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-008",
+      "docType": "purchase_order",
+      "docNumber": "PO-2026-0001",
+      "status": "issued",
+      "issueDate": "2026-01-20",
+      "partnerId": "partner-005",
+      "partnerSnapshot": {
+        "name": "株式会社高橋食品",
+        "honorific": "御中",
+        "zipCode": "812-0011",
+        "address1": "福岡県福岡市博多区博多駅前2-5-10",
+        "address2": "博多フードビル3F",
+        "contactPerson": "高橋美咲",
+        "invoiceRegNumber": "T2233445566778"
+      },
+      "lineItems": [
+        {
+          "name": "弁当（会議用）",
+          "description": "会議用弁当",
+          "quantity": 20,
+          "unit": "個",
+          "unitPrice": 1080,
+          "taxRateType": "reduced",
+          "amount": 21600,
+          "id": "li-019",
+          "sortOrder": 1
+        },
+        {
+          "name": "お茶（ペットボトル）",
+          "description": "500mlペットボトル",
+          "quantity": 24,
+          "unit": "本",
+          "unitPrice": 150,
+          "taxRateType": "reduced",
+          "amount": 3600,
+          "id": "li-020",
+          "sortOrder": 2
+        },
+        {
+          "name": "菓子折り",
+          "description": "手土産用菓子詰め合わせ",
+          "quantity": 5,
+          "unit": "箱",
+          "unitPrice": 3240,
+          "taxRateType": "reduced",
+          "amount": 16200,
+          "id": "li-021",
+          "sortOrder": 3
+        },
+        {
+          "name": "梱包資材",
+          "description": "段ボール・緩衝材",
+          "quantity": 10,
+          "unit": "個",
+          "unitPrice": 500,
+          "taxRateType": "standard",
+          "amount": 5000,
+          "id": "li-022",
+          "sortOrder": 4
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 46400,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 5000,
+            "taxAmount": 500
+          },
+          {
+            "rateType": "reduced",
+            "rate": 0.08,
+            "taxableAmount": 41400,
+            "taxAmount": 3312
+          }
+        ],
+        "totalTax": 3812,
+        "total": 50212
+      },
+      "notes": "納品先: 東京都千代田区千代田1-1\n希望納品日: 2026年1月25日",
+      "internalMemo": "社内イベント用",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [
+        "doc-009",
+        "doc-010"
+      ],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-009",
+      "docType": "purchase_slip",
+      "docNumber": "PS-2026-0001",
+      "status": "issued",
+      "issueDate": "2026-01-25",
+      "partnerId": "partner-005",
+      "partnerSnapshot": {
+        "name": "株式会社高橋食品",
+        "honorific": "御中",
+        "zipCode": "812-0011",
+        "address1": "福岡県福岡市博多区博多駅前2-5-10",
+        "address2": "博多フードビル3F",
+        "contactPerson": "高橋美咲",
+        "invoiceRegNumber": "T2233445566778"
+      },
+      "lineItems": [
+        {
+          "name": "弁当（会議用）",
+          "description": "会議用弁当",
+          "quantity": 20,
+          "unit": "個",
+          "unitPrice": 1080,
+          "taxRateType": "reduced",
+          "amount": 21600,
+          "id": "li-023",
+          "sortOrder": 1
+        },
+        {
+          "name": "お茶（ペットボトル）",
+          "description": "500mlペットボトル",
+          "quantity": 24,
+          "unit": "本",
+          "unitPrice": 150,
+          "taxRateType": "reduced",
+          "amount": 3600,
+          "id": "li-024",
+          "sortOrder": 2
+        },
+        {
+          "name": "菓子折り",
+          "description": "手土産用菓子詰め合わせ",
+          "quantity": 5,
+          "unit": "箱",
+          "unitPrice": 3240,
+          "taxRateType": "reduced",
+          "amount": 16200,
+          "id": "li-025",
+          "sortOrder": 3
+        },
+        {
+          "name": "梱包資材",
+          "description": "段ボール・緩衝材",
+          "quantity": 10,
+          "unit": "個",
+          "unitPrice": 500,
+          "taxRateType": "standard",
+          "amount": 5000,
+          "id": "li-026",
+          "sortOrder": 4
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 46400,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 5000,
+            "taxAmount": 500
+          },
+          {
+            "rateType": "reduced",
+            "rate": 0.08,
+            "taxableAmount": 41400,
+            "taxAmount": 3312
+          }
+        ],
+        "totalTax": 3812,
+        "total": 50212
+      },
+      "sourceDocId": "doc-008",
+      "sourceDocType": "purchase_order",
+      "sourceDocNumber": "PO-2026-0001",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-010",
+      "docType": "delivery_note",
+      "docNumber": "DN-2026-0002",
+      "status": "issued",
+      "issueDate": "2026-01-25",
+      "deliveryDate": "2026-01-25",
+      "partnerId": "partner-005",
+      "partnerSnapshot": {
+        "name": "株式会社高橋食品",
+        "honorific": "御中",
+        "zipCode": "812-0011",
+        "address1": "福岡県福岡市博多区博多駅前2-5-10",
+        "address2": "博多フードビル3F",
+        "contactPerson": "高橋美咲",
+        "invoiceRegNumber": "T2233445566778"
+      },
+      "lineItems": [
+        {
+          "name": "弁当（会議用）",
+          "description": "会議用弁当",
+          "quantity": 20,
+          "unit": "個",
+          "unitPrice": 1080,
+          "taxRateType": "reduced",
+          "amount": 21600,
+          "id": "li-027",
+          "sortOrder": 1
+        },
+        {
+          "name": "お茶（ペットボトル）",
+          "description": "500mlペットボトル",
+          "quantity": 24,
+          "unit": "本",
+          "unitPrice": 150,
+          "taxRateType": "reduced",
+          "amount": 3600,
+          "id": "li-028",
+          "sortOrder": 2
+        },
+        {
+          "name": "菓子折り",
+          "description": "手土産用菓子詰め合わせ",
+          "quantity": 5,
+          "unit": "箱",
+          "unitPrice": 3240,
+          "taxRateType": "reduced",
+          "amount": 16200,
+          "id": "li-029",
+          "sortOrder": 3
+        },
+        {
+          "name": "梱包資材",
+          "description": "段ボール・緩衝材",
+          "quantity": 10,
+          "unit": "個",
+          "unitPrice": 500,
+          "taxRateType": "standard",
+          "amount": 5000,
+          "id": "li-030",
+          "sortOrder": 4
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 46400,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 5000,
+            "taxAmount": 500
+          },
+          {
+            "rateType": "reduced",
+            "rate": 0.08,
+            "taxableAmount": 41400,
+            "taxAmount": 3312
+          }
+        ],
+        "totalTax": 3812,
+        "total": 50212
+      },
+      "sourceDocId": "doc-008",
+      "sourceDocType": "purchase_order",
+      "sourceDocNumber": "PO-2026-0001",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-011",
+      "docType": "estimate",
+      "docNumber": "QT-2026-0002",
+      "status": "issued",
+      "issueDate": "2026-02-01",
+      "validUntil": "2026-03-03",
+      "partnerId": "partner-006",
+      "partnerSnapshot": {
+        "name": "合同会社中村テクノロジー",
+        "honorific": "御中",
+        "zipCode": "220-0012",
+        "address1": "神奈川県横浜市西区みなとみらい2-3-1",
+        "address2": "ITタワー12F",
+        "contactPerson": "中村健太",
+        "invoiceRegNumber": "T3344556677889"
+      },
+      "lineItems": [
+        {
+          "name": "Webサイト制作",
+          "description": "社内ポータルサイト構築",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 300000,
+          "taxRateType": "standard",
+          "amount": 300000,
+          "id": "li-031",
+          "sortOrder": 1
+        },
+        {
+          "name": "サーバー保守",
+          "description": "クラウドサーバー保守（6ヶ月分）",
+          "quantity": 6,
+          "unit": "式",
+          "unitPrice": 30000,
+          "taxRateType": "standard",
+          "amount": 180000,
+          "id": "li-032",
+          "sortOrder": 2
+        },
+        {
+          "name": "コンサルティング",
+          "description": "システム設計・要件定義",
+          "quantity": 10,
+          "unit": "時間",
+          "unitPrice": 15000,
+          "taxRateType": "standard",
+          "amount": 150000,
+          "id": "li-033",
+          "sortOrder": 3
+        },
+        {
+          "name": "研修講師料",
+          "description": "社員向けIT研修",
+          "quantity": 2,
+          "unit": "日",
+          "unitPrice": 80000,
+          "taxRateType": "standard",
+          "amount": 160000,
+          "id": "li-034",
+          "sortOrder": 4
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 790000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 790000,
+            "taxAmount": 79000
+          }
+        ],
+        "totalTax": 79000,
+        "total": 869000
+      },
+      "notes": "納期: ご発注後3ヶ月\nお支払い: 月末締め翌月末払い",
+      "internalMemo": "Webサイトから問い合わせ",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-012",
+      "docType": "purchase_order",
+      "docNumber": "PO-2026-0002",
+      "status": "issued",
+      "issueDate": "2026-02-05",
+      "partnerId": "partner-002",
+      "partnerSnapshot": {
+        "name": "鈴木商事株式会社",
+        "honorific": "御中",
+        "zipCode": "530-0001",
+        "address1": "大阪府大阪市北区梅田2-3-4",
+        "address2": "",
+        "contactPerson": "鈴木花子",
+        "invoiceRegNumber": "T9876543210987"
+      },
+      "lineItems": [
+        {
+          "id": "li-035",
+          "sortOrder": 1,
+          "name": "サーバー保守",
+          "description": "クラウドサーバー保守（外注・6ヶ月分）",
+          "quantity": 6,
+          "unit": "式",
+          "unitPrice": 30000,
+          "taxRateType": "standard",
+          "amount": 180000
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 180000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 180000,
+            "taxAmount": 18000
+          }
+        ],
+        "totalTax": 18000,
+        "total": 198000
+      },
+      "notes": "中村テクノロジー案件の外注分",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-013",
+      "docType": "invoice",
+      "docNumber": "INV-2026-0002",
+      "status": "sent",
+      "issueDate": "2026-03-01",
+      "dueDate": "2026-03-31",
+      "partnerId": "partner-006",
+      "partnerSnapshot": {
+        "name": "合同会社中村テクノロジー",
+        "honorific": "御中",
+        "zipCode": "220-0012",
+        "address1": "神奈川県横浜市西区みなとみらい2-3-1",
+        "address2": "ITタワー12F",
+        "contactPerson": "中村健太",
+        "invoiceRegNumber": "T3344556677889"
+      },
+      "lineItems": [
+        {
+          "name": "Webサイト制作",
+          "description": "社内ポータルサイト構築",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 300000,
+          "taxRateType": "standard",
+          "amount": 300000,
+          "id": "li-036",
+          "sortOrder": 1
+        },
+        {
+          "name": "サーバー保守",
+          "description": "クラウドサーバー保守（6ヶ月分）",
+          "quantity": 6,
+          "unit": "式",
+          "unitPrice": 30000,
+          "taxRateType": "standard",
+          "amount": 180000,
+          "id": "li-037",
+          "sortOrder": 2
+        },
+        {
+          "name": "コンサルティング",
+          "description": "システム設計・要件定義",
+          "quantity": 10,
+          "unit": "時間",
+          "unitPrice": 15000,
+          "taxRateType": "standard",
+          "amount": 150000,
+          "id": "li-038",
+          "sortOrder": 3
+        },
+        {
+          "name": "研修講師料",
+          "description": "社員向けIT研修",
+          "quantity": 2,
+          "unit": "日",
+          "unitPrice": 80000,
+          "taxRateType": "standard",
+          "amount": 160000,
+          "id": "li-039",
+          "sortOrder": 4
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 790000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 790000,
+            "taxAmount": 79000
+          }
+        ],
+        "totalTax": 79000,
+        "total": 869000
+      },
+      "paymentMethod": "bank_transfer",
+      "notes": "お振込手数料はご負担ください",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-014",
+      "docType": "receipt",
+      "docNumber": "RC-2026-0001",
+      "status": "issued",
+      "issueDate": "2026-03-15",
+      "partnerId": "partner-006",
+      "partnerSnapshot": {
+        "name": "合同会社中村テクノロジー",
+        "honorific": "様",
+        "zipCode": "220-0012",
+        "address1": "神奈川県横浜市西区みなとみらい2-3-1",
+        "address2": "",
+        "contactPerson": "",
+        "invoiceRegNumber": ""
+      },
+      "lineItems": [],
+      "taxSummary": {
+        "subtotal": 790000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 790000,
+            "taxAmount": 79000
+          }
+        ],
+        "totalTax": 79000,
+        "total": 869000
+      },
+      "receiptOf": "IT開発・コンサルティング一式",
+      "revenueStampRequired": true,
+      "revenueStampAmount": 200,
+      "paymentMethod": "bank_transfer",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-015",
+      "docType": "delivery_note",
+      "docNumber": "DN-2026-0003",
+      "status": "issued",
+      "issueDate": "2026-02-10",
+      "deliveryDate": "2026-02-10",
+      "partnerId": "partner-007",
+      "partnerSnapshot": {
+        "name": "株式会社渡辺物流",
+        "honorific": "御中",
+        "zipCode": "455-0032",
+        "address1": "愛知県名古屋市港区入船1-7-2",
+        "address2": "",
+        "contactPerson": "渡辺大輔",
+        "invoiceRegNumber": "T4455667788990"
+      },
+      "lineItems": [
+        {
+          "name": "配送料",
+          "description": "国内配送サービス",
+          "quantity": 15,
+          "unit": "件",
+          "unitPrice": 3000,
+          "taxRateType": "standard",
+          "amount": 45000,
+          "id": "li-040",
+          "sortOrder": 1
+        },
+        {
+          "name": "梱包資材",
+          "description": "段ボール・緩衝材一式",
+          "quantity": 30,
+          "unit": "個",
+          "unitPrice": 500,
+          "taxRateType": "standard",
+          "amount": 15000,
+          "id": "li-041",
+          "sortOrder": 2
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 60000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 60000,
+            "taxAmount": 6000
+          }
+        ],
+        "totalTax": 6000,
+        "total": 66000
+      },
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [
+        "doc-016",
+        "doc-017"
+      ],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-016",
+      "docType": "sales_slip",
+      "docNumber": "SS-2026-0002",
+      "status": "issued",
+      "issueDate": "2026-02-10",
+      "partnerId": "partner-007",
+      "partnerSnapshot": {
+        "name": "株式会社渡辺物流",
+        "honorific": "御中",
+        "zipCode": "455-0032",
+        "address1": "愛知県名古屋市港区入船1-7-2",
+        "address2": "",
+        "contactPerson": "渡辺大輔",
+        "invoiceRegNumber": "T4455667788990"
+      },
+      "lineItems": [
+        {
+          "name": "配送料",
+          "description": "国内配送サービス",
+          "quantity": 15,
+          "unit": "件",
+          "unitPrice": 3000,
+          "taxRateType": "standard",
+          "amount": 45000,
+          "id": "li-042",
+          "sortOrder": 1
+        },
+        {
+          "name": "梱包資材",
+          "description": "段ボール・緩衝材一式",
+          "quantity": 30,
+          "unit": "個",
+          "unitPrice": 500,
+          "taxRateType": "standard",
+          "amount": 15000,
+          "id": "li-043",
+          "sortOrder": 2
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 60000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 60000,
+            "taxAmount": 6000
+          }
+        ],
+        "totalTax": 6000,
+        "total": 66000
+      },
+      "sourceDocId": "doc-015",
+      "sourceDocType": "delivery_note",
+      "sourceDocNumber": "DN-2026-0003",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-017",
+      "docType": "invoice",
+      "docNumber": "INV-2026-0003",
+      "status": "draft",
+      "issueDate": "2026-03-01",
+      "dueDate": "2026-03-31",
+      "partnerId": "partner-007",
+      "partnerSnapshot": {
+        "name": "株式会社渡辺物流",
+        "honorific": "御中",
+        "zipCode": "455-0032",
+        "address1": "愛知県名古屋市港区入船1-7-2",
+        "address2": "",
+        "contactPerson": "渡辺大輔",
+        "invoiceRegNumber": "T4455667788990"
+      },
+      "lineItems": [
+        {
+          "name": "配送料",
+          "description": "国内配送サービス",
+          "quantity": 15,
+          "unit": "件",
+          "unitPrice": 3000,
+          "taxRateType": "standard",
+          "amount": 45000,
+          "id": "li-044",
+          "sortOrder": 1
+        },
+        {
+          "name": "梱包資材",
+          "description": "段ボール・緩衝材一式",
+          "quantity": 30,
+          "unit": "個",
+          "unitPrice": 500,
+          "taxRateType": "standard",
+          "amount": 15000,
+          "id": "li-045",
+          "sortOrder": 2
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 60000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 60000,
+            "taxAmount": 6000
+          }
+        ],
+        "totalTax": 6000,
+        "total": 66000
+      },
+      "sourceDocId": "doc-015",
+      "sourceDocType": "delivery_note",
+      "sourceDocNumber": "DN-2026-0003",
+      "paymentMethod": "bank_transfer",
+      "notes": "お振込手数料はご負担ください",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-018",
+      "docType": "purchase_slip",
+      "docNumber": "PS-2026-0002",
+      "status": "issued",
+      "issueDate": "2026-02-15",
+      "partnerId": "partner-003",
+      "partnerSnapshot": {
+        "name": "佐藤デザイン事務所",
+        "honorific": "御中",
+        "zipCode": "460-0003",
+        "address1": "愛知県名古屋市中区栄3-4-5",
+        "address2": "クリエイティブセンター201",
+        "contactPerson": "佐藤一郎",
+        "invoiceRegNumber": ""
+      },
+      "lineItems": [
+        {
+          "id": "li-046",
+          "sortOrder": 1,
+          "name": "印刷物制作",
+          "description": "会社案内パンフレット",
+          "quantity": 3,
+          "unit": "部",
+          "unitPrice": 50000,
+          "taxRateType": "standard",
+          "amount": 150000
+        },
+        {
+          "id": "li-047",
+          "sortOrder": 2,
+          "name": "名刺デザイン",
+          "description": "社員用名刺",
+          "quantity": 2,
+          "unit": "箱",
+          "unitPrice": 5000,
+          "taxRateType": "standard",
+          "amount": 10000
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 160000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 160000,
+            "taxAmount": 16000
+          }
+        ],
+        "totalTax": 16000,
+        "total": 176000
+      },
+      "notes": "",
+      "internalMemo": "佐藤デザイン事務所へ発注分",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-019",
+      "docType": "estimate",
+      "docNumber": "QT-2026-0003",
+      "status": "draft",
+      "issueDate": "2026-02-20",
+      "validUntil": "2026-03-22",
+      "partnerId": "partner-008",
+      "partnerSnapshot": {
+        "name": "小林工房",
+        "honorific": "様",
+        "zipCode": "600-8216",
+        "address1": "京都府京都市下京区東塩小路町680",
+        "address2": "",
+        "contactPerson": "小林由美",
+        "invoiceRegNumber": ""
+      },
+      "lineItems": [
+        {
+          "id": "li-048",
+          "sortOrder": 1,
+          "name": "名刺デザイン",
+          "description": "オリジナル名刺デザイン",
+          "quantity": 5,
+          "unit": "箱",
+          "unitPrice": 5000,
+          "taxRateType": "standard",
+          "amount": 25000
+        },
+        {
+          "id": "li-049",
+          "sortOrder": 2,
+          "name": "印刷物制作",
+          "description": "ショップカード印刷",
+          "quantity": 1,
+          "unit": "部",
+          "unitPrice": 50000,
+          "taxRateType": "standard",
+          "amount": 50000
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 75000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 75000,
+            "taxAmount": 7500
+          }
+        ],
+        "totalTax": 7500,
+        "total": 82500
+      },
+      "notes": "納期: ご発注後2週間",
+      "internalMemo": "小林様からの紹介",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-020",
+      "docType": "purchase_order",
+      "docNumber": "PO-2026-0003",
+      "status": "draft",
+      "issueDate": "2026-03-01",
+      "partnerId": "partner-007",
+      "partnerSnapshot": {
+        "name": "株式会社渡辺物流",
+        "honorific": "御中",
+        "zipCode": "455-0032",
+        "address1": "愛知県名古屋市港区入船1-7-2",
+        "address2": "",
+        "contactPerson": "渡辺大輔",
+        "invoiceRegNumber": "T4455667788990"
+      },
+      "lineItems": [
+        {
+          "id": "li-050",
+          "sortOrder": 1,
+          "name": "配送料",
+          "description": "国内配送サービス",
+          "quantity": 10,
+          "unit": "件",
+          "unitPrice": 3000,
+          "taxRateType": "standard",
+          "amount": 30000
+        },
+        {
+          "id": "li-051",
+          "sortOrder": 2,
+          "name": "梱包資材",
+          "description": "段ボール・緩衝材",
+          "quantity": 20,
+          "unit": "個",
+          "unitPrice": 500,
+          "taxRateType": "standard",
+          "amount": 10000
+        }
+      ],
+      "taxSummary": {
+        "subtotal": 40000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 40000,
+            "taxAmount": 4000
+          }
+        ],
+        "totalTax": 4000,
+        "total": 44000
+      },
+      "notes": "配送先: 京都府京都市下京区",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     }
   ],
   "settings": {

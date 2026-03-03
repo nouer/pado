@@ -4,7 +4,7 @@
   "description": "Pado - 帳票管理アプリ (Paper Document Manager)",
   "main": "local_app/script.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage --forceExit"
   },
   "jest": {
     "testEnvironment": "jsdom",

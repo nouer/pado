@@ -27,16 +27,16 @@ docker compose run --rm pado-test
 
 | テストID | テスト名 | 入力 | 期待結果 |
 |---------|---------|------|---------|
-| UT-TAX-001 | 10%・切り捨て | `amount=999, taxRateType='rate10', rounding='floor'` | `99` |
-| UT-TAX-002 | 10%・四捨五入 | `amount=999, taxRateType='rate10', rounding='round'` | `100` |
-| UT-TAX-003 | 10%・切り上げ | `amount=999, taxRateType='rate10', rounding='ceil'` | `100` |
-| UT-TAX-004 | 8%・切り捨て | `amount=999, taxRateType='rate8', rounding='floor'` | `79` |
-| UT-TAX-005 | 8%・四捨五入 | `amount=999, taxRateType='rate8', rounding='round'` | `80` |
-| UT-TAX-006 | 8%・切り上げ | `amount=999, taxRateType='rate8', rounding='ceil'` | `80` |
+| UT-TAX-001 | 10%・切り捨て | `amount=999, taxRateType='standard', rounding='floor'` | `99` |
+| UT-TAX-002 | 10%・四捨五入 | `amount=999, taxRateType='standard', rounding='round'` | `100` |
+| UT-TAX-003 | 10%・切り上げ | `amount=999, taxRateType='standard', rounding='ceil'` | `100` |
+| UT-TAX-004 | 8%・切り捨て | `amount=999, taxRateType='reduced', rounding='floor'` | `79` |
+| UT-TAX-005 | 8%・四捨五入 | `amount=999, taxRateType='reduced', rounding='round'` | `80` |
+| UT-TAX-006 | 8%・切り上げ | `amount=999, taxRateType='reduced', rounding='ceil'` | `80` |
 | UT-TAX-007 | 対象外 | `amount=10000, taxRateType='exempt', rounding='floor'` | `0` |
-| UT-TAX-008 | 金額0 | `amount=0, taxRateType='rate10', rounding='floor'` | `0` |
-| UT-TAX-009 | 端数なし(10%) | `amount=1000, taxRateType='rate10', rounding='floor'` | `100` |
-| UT-TAX-010 | 端数なし(8%) | `amount=1000, taxRateType='rate8', rounding='floor'` | `80` |
+| UT-TAX-008 | 金額0 | `amount=0, taxRateType='standard', rounding='floor'` | `0` |
+| UT-TAX-009 | 端数なし(10%) | `amount=1000, taxRateType='standard', rounding='floor'` | `100` |
+| UT-TAX-010 | 端数なし(8%) | `amount=1000, taxRateType='reduced', rounding='floor'` | `80` |
 
 ### 2.2 帳票合計計算 (`calcDocumentTotals`)
 
@@ -44,19 +44,19 @@ docker compose run --rm pado-test
 
 | テストID | テスト名 | 入力 | 期待結果 |
 |---------|---------|------|---------|
-| UT-TOTAL-001 | 10%のみ単一行 | `[{qty:1, price:10000, tax:'rate10'}], per_line, floor` | `subtotal:10000, tax10Amount:1000, total:11000` |
-| UT-TOTAL-002 | 8%のみ単一行 | `[{qty:1, price:10000, tax:'rate8'}], per_line, floor` | `subtotal:10000, tax8Amount:800, total:10800` |
-| UT-TOTAL-003 | 混合税率 | `[{qty:1, price:300000, tax:'rate10'}, {qty:10, price:150, tax:'rate8'}], per_line, floor` | `subtotal:301500, tax10Amount:30000, tax8Amount:120, total:331620` |
-| UT-TOTAL-004 | 対象外含む | `[{qty:1, price:5000, tax:'rate10'}, {qty:1, price:3000, tax:'exempt'}], per_line, floor` | `subtotal:8000, tax10Amount:500, taxExemptAmount:3000, total:8500` |
-| UT-TOTAL-005 | 端数あり(行ごと) | `[{qty:1, price:999, tax:'rate10'}, {qty:1, price:999, tax:'rate10'}, {qty:1, price:999, tax:'rate10'}], per_line, floor` | `subtotal:2997, tax10Amount:297, total:3294` |
+| UT-TOTAL-001 | 10%のみ単一行 | `[{qty:1, price:10000, tax:'standard'}], per_line, floor` | `subtotal:10000, tax10Amount:1000, total:11000` |
+| UT-TOTAL-002 | 8%のみ単一行 | `[{qty:1, price:10000, tax:'reduced'}], per_line, floor` | `subtotal:10000, tax8Amount:800, total:10800` |
+| UT-TOTAL-003 | 混合税率 | `[{qty:1, price:300000, tax:'standard'}, {qty:10, price:150, tax:'reduced'}], per_line, floor` | `subtotal:301500, tax10Amount:30000, tax8Amount:120, total:331620` |
+| UT-TOTAL-004 | 対象外含む | `[{qty:1, price:5000, tax:'standard'}, {qty:1, price:3000, tax:'exempt'}], per_line, floor` | `subtotal:8000, tax10Amount:500, taxExemptAmount:3000, total:8500` |
+| UT-TOTAL-005 | 端数あり(行ごと) | `[{qty:1, price:999, tax:'standard'}, {qty:1, price:999, tax:'standard'}, {qty:1, price:999, tax:'standard'}], per_line, floor` | `subtotal:2997, tax10Amount:297, total:3294` |
 | UT-TOTAL-006 | 空の明細行 | `[], per_line, floor` | `subtotal:0, tax10Amount:0, tax8Amount:0, total:0` |
 
 #### 合計に対して計算
 
 | テストID | テスト名 | 入力 | 期待結果 |
 |---------|---------|------|---------|
-| UT-TOTAL-007 | 端数あり(合計) | `[{qty:1, price:999, tax:'rate10'} x3], per_total, floor` | `subtotal:2997, tax10Amount:299, total:3296` |
-| UT-TOTAL-008 | 混合(合計) | `[{qty:1, price:300000, tax:'rate10'}, {qty:10, price:150, tax:'rate8'}], per_total, floor` | `subtotal:301500, tax10Amount:30000, tax8Amount:120, total:331620` |
+| UT-TOTAL-007 | 端数あり(合計) | `[{qty:1, price:999, tax:'standard'} x3], per_total, floor` | `subtotal:2997, tax10Amount:299, total:3296` |
+| UT-TOTAL-008 | 混合(合計) | `[{qty:1, price:300000, tax:'standard'}, {qty:10, price:150, tax:'reduced'}], per_total, floor` | `subtotal:301500, tax10Amount:30000, tax8Amount:120, total:331620` |
 
 ### 2.3 帳票番号生成 (`generateDocNumber`)
 
@@ -64,12 +64,12 @@ docker compose run --rm pado-test
 |---------|---------|------|---------|
 | UT-DN-001 | 請求書初回 | `docType='invoice', currentNumber=0` | `'INV-{year}-0001'` |
 | UT-DN-002 | 請求書2件目 | `docType='invoice', currentNumber=1` | `'INV-{year}-0002'` |
-| UT-DN-003 | 見積書初回 | `docType='estimate', currentNumber=0` | `'EST-{year}-0001'` |
+| UT-DN-003 | 見積書初回 | `docType='estimate', currentNumber=0` | `'QT-{year}-0001'` |
 | UT-DN-004 | 発注書 | `docType='purchase_order', currentNumber=0` | `'PO-{year}-0001'` |
 | UT-DN-005 | 納品書 | `docType='delivery_note', currentNumber=0` | `'DN-{year}-0001'` |
 | UT-DN-006 | 売上伝票 | `docType='sales_slip', currentNumber=0` | `'SS-{year}-0001'` |
 | UT-DN-007 | 仕入伝票 | `docType='purchase_slip', currentNumber=0` | `'PS-{year}-0001'` |
-| UT-DN-008 | 領収書 | `docType='receipt', currentNumber=0` | `'RCP-{year}-0001'` |
+| UT-DN-008 | 領収書 | `docType='receipt', currentNumber=0` | `'RC-{year}-0001'` |
 | UT-DN-009 | 連番100 | `docType='invoice', currentNumber=99` | `'INV-{year}-0100'` |
 | UT-DN-010 | 上限超過 | `docType='invoice', currentNumber=9999` | `throw '帳票番号が上限に達しました'` |
 
@@ -135,11 +135,11 @@ docker compose run --rm pado-test
 
 | テストID | テスト名 | 入力 | 期待結果 |
 |---------|---------|------|---------|
-| UT-VI-001 | 正常な入力 | `{name: 'テスト品目', taxRateType: 'rate10'}` | `valid: true` |
-| UT-VI-002 | 品目名が空 | `{name: '', taxRateType: 'rate10'}` | `valid: false` |
+| UT-VI-001 | 正常な入力 | `{name: 'テスト品目', taxRateType: 'standard'}` | `valid: true` |
+| UT-VI-002 | 品目名が空 | `{name: '', taxRateType: 'standard'}` | `valid: false` |
 | UT-VI-003 | 税区分が不正 | `{name: 'テスト', taxRateType: 'invalid'}` | `valid: false` |
-| UT-VI-004 | デフォルト単価が負 | `{name: 'テスト', taxRateType: 'rate10', defaultPrice: -1}` | `valid: false` |
-| UT-VI-005 | デフォルト単価が小数 | `{name: 'テスト', taxRateType: 'rate10', defaultPrice: 100.5}` | `valid: false` |
+| UT-VI-004 | デフォルト単価が負 | `{name: 'テスト', taxRateType: 'standard', defaultPrice: -1}` | `valid: false` |
+| UT-VI-005 | デフォルト単価が小数 | `{name: 'テスト', taxRateType: 'standard', defaultPrice: 100.5}` | `valid: false` |
 
 ### 2.9 帳票バリデーション (`validateDocument`)
 
@@ -156,7 +156,7 @@ docker compose run --rm pado-test
 
 | テストID | テスト名 | 入力 | 期待結果 |
 |---------|---------|------|---------|
-| UT-VL-001 | 正常な入力 | `{itemName: 'テスト', quantity: 1, unitPrice: 1000, taxRateType: 'rate10'}` | `valid: true` |
+| UT-VL-001 | 正常な入力 | `{itemName: 'テスト', quantity: 1, unitPrice: 1000, taxRateType: 'standard'}` | `valid: true` |
 | UT-VL-002 | 品目名が空 | `{itemName: '', ...}` | `valid: false` |
 | UT-VL-003 | 数量が0以下 | `{quantity: 0, ...}` | `valid: false` |
 | UT-VL-004 | 数量が小数第3位 | `{quantity: 1.001, ...}` | `valid: false` |
@@ -173,8 +173,8 @@ docker compose run --rm pado-test
 | UT-JE-003 | 平成最終日 | `'2019-04-30'` | `'平成31年4月30日'` |
 | UT-JE-004 | 平成元年 | `'1989-01-08'` | `'平成元年1月8日'` |
 | UT-JE-005 | 昭和最終日 | `'1989-01-07'` | `'昭和64年1月7日'` |
-| UT-JE-006 | 不正な入力 | `'invalid'` | `'---'` |
-| UT-JE-007 | 空文字 | `''` | `'---'` |
+| UT-JE-006 | 不正な入力 | `'invalid'` | `'invalid'`（入力文字列をそのまま返す） |
+| UT-JE-007 | 空文字 | `''` | `''`（空文字を返す） |
 
 ### 2.12 インボイス登録番号バリデーション (`validateInvoiceNumber`)
 
@@ -205,10 +205,10 @@ docker compose run --rm pado-test
 | テストID | テスト名 | 入力(docType) | 期待結果 |
 |---------|---------|--------------|---------|
 | UT-CV-001 | 見積書の変換先 | `'estimate'` | `['invoice', 'purchase_order', 'delivery_note']` |
-| UT-CV-002 | 発注書の変換先 | `'purchase_order'` | `['purchase_slip']` |
-| UT-CV-003 | 請求書の変換先 | `'invoice'` | `['receipt']` |
-| UT-CV-004 | 納品書の変換先 | `'delivery_note'` | `['sales_slip']` |
-| UT-CV-005 | 売上伝票の変換先 | `'sales_slip'` | `['invoice']` |
+| UT-CV-002 | 発注書の変換先 | `'purchase_order'` | `['purchase_slip', 'delivery_note']` |
+| UT-CV-003 | 請求書の変換先 | `'invoice'` | `['receipt', 'sales_slip']` |
+| UT-CV-004 | 納品書の変換先 | `'delivery_note'` | `['invoice', 'sales_slip']` |
+| UT-CV-005 | 売上伝票の変換先 | `'sales_slip'` | `['invoice', 'receipt']` |
 | UT-CV-006 | 仕入伝票の変換先 | `'purchase_slip'` | `[]` |
 | UT-CV-007 | 領収書の変換先 | `'receipt'` | `[]` |
 
@@ -222,16 +222,16 @@ docker compose run --rm pado-test
 | UT-ESC-004 | "エスケープ | `'"test"'` | `'&quot;test&quot;'` |
 | UT-ESC-005 | null入力 | `null` | `''` |
 | UT-ESC-006 | undefined入力 | `undefined` | `''` |
-| UT-ESC-007 | 数値入力 | `123` | `''` |
+| UT-ESC-007 | 数値入力 | `123` | `'123'`（String変換後エスケープ） |
 
-### 2.16 金額フォーマット (`formatCurrency`)
+### 2.16 金額フォーマット (`formatYen` / `formatCurrency`)
 
-| テストID | テスト名 | 入力 | 期待結果 |
-|---------|---------|------|---------|
-| UT-FC-001 | 通常金額 | `1234567` | `'¥1,234,567'` |
-| UT-FC-002 | 0円 | `0` | `'¥0'` |
-| UT-FC-003 | 3桁以下 | `999` | `'¥999'` |
-| UT-FC-004 | 大きな金額 | `100000000` | `'¥100,000,000'` |
+| テストID | テスト名 | 関数 | 入力 | 期待結果 |
+|---------|---------|------|------|---------|
+| UT-FC-001 | 通常金額(¥付き) | `formatYen` | `1234567` | `'¥1,234,567'` |
+| UT-FC-002 | 0円(¥付き) | `formatYen` | `0` | `'¥0'` |
+| UT-FC-003 | 3桁以下(¥付き) | `formatYen` | `999` | `'¥999'` |
+| UT-FC-004 | 大きな金額(¥付き) | `formatYen` | `100000000` | `'¥100,000,000'` |
 
 ### 2.17 日付ユーティリティ
 
@@ -295,7 +295,7 @@ docker compose run --rm pado-test
 | E2E-DOC-008 | 帳票編集 | 帳票カードクリック→内容変更→保存 | 変更が反映される |
 | E2E-DOC-009 | 帳票削除 | 帳票編集→削除→確認 | 一覧から削除される |
 | E2E-DOC-010 | 見積書作成 | 見積書サブタブ→新規作成→保存 | 有効期限がデフォルト（+30日）で設定される |
-| E2E-DOC-011 | 領収書作成 | 領収書サブタブ→新規作成→保存 | 但し書きがデフォルト（お品代として）で設定される |
+| E2E-DOC-011 | 領収書作成 | 領収書サブタブ→新規作成 | 但し書きフィールドが表示され、プレースホルダーが表示される |
 
 ### 3.5 帳票変換
 

@@ -166,6 +166,9 @@ function generatePartnerCode(existingCodes) {
             if (n > max) max = n;
         }
     });
+    if (max >= 9999) {
+        throw new Error('取引先コードが上限に達しました');
+    }
     return 'P' + String(max + 1).padStart(4, '0');
 }
 
@@ -183,6 +186,9 @@ function generateItemCode(existingCodes) {
             if (n > max) max = n;
         }
     });
+    if (max >= 9999) {
+        throw new Error('品目コードが上限に達しました');
+    }
     return 'I' + String(max + 1).padStart(4, '0');
 }
 
@@ -236,6 +242,27 @@ function getRevenueStampAmount(taxExclusiveAmount) {
 // ============================================================
 
 /**
+ * 品目入力を検証する
+ * @param {Object} item
+ * @returns {Object} {valid: boolean, errors: string[]}
+ */
+function validateItem(item) {
+    const errors = [];
+    if (!item.name || !item.name.trim()) {
+        errors.push('品目名は必須です');
+    }
+    const validRates = ['standard', 'reduced', 'exempt'];
+    if (!item.taxRateType || !validRates.includes(item.taxRateType)) {
+        errors.push('税区分が不正です');
+    }
+    if (item.defaultPrice != null) {
+        if (item.defaultPrice < 0) errors.push('デフォルト単価は0以上にしてください');
+        if (!Number.isInteger(item.defaultPrice)) errors.push('デフォルト単価は整数にしてください');
+    }
+    return { valid: errors.length === 0, errors };
+}
+
+/**
  * 取引先入力を検証する
  * @param {Object} partner
  * @returns {Object} {valid: boolean, errors: string[]}
@@ -245,8 +272,17 @@ function validatePartner(partner) {
     if (!partner.name || !partner.name.trim()) {
         errors.push('取引先名は必須です');
     }
+    if (partner.name && partner.name.length > 100) {
+        errors.push('取引先名は100文字以内にしてください');
+    }
     if (!partner.partnerType || !['customer', 'supplier', 'both'].includes(partner.partnerType)) {
         errors.push('取引先区分（得意先/仕入先/両方）を選択してください');
+    }
+    if (partner.nameKana && !/^[ぁ-んー\s]+$/.test(partner.nameKana)) {
+        errors.push('ふりがなはひらがなで入力してください');
+    }
+    if (partner.phone && !/^[\d-]{7,15}$/.test(partner.phone)) {
+        errors.push('電話番号の形式が正しくありません');
     }
     if (partner.invoiceRegNumber && !validateInvoiceRegNumber(partner.invoiceRegNumber).valid) {
         errors.push('適格請求書発行事業者登録番号の形式が正しくありません（T+13桁の数字）');
@@ -291,6 +327,15 @@ function validateDocument(doc) {
     if (!doc.issueDate) {
         errors.push('発行日は必須です');
     }
+    if (doc.status) {
+        const validStatuses = ['draft', 'issued', 'sent', 'paid', 'cancelled'];
+        if (!validStatuses.includes(doc.status)) {
+            errors.push('ステータスが不正です');
+        }
+    }
+    if (doc.memo && doc.memo.length > 2000) {
+        errors.push('備考は2000文字以内にしてください');
+    }
     if (!doc.partnerId && !doc.partnerSnapshot) {
         errors.push('取引先を選択してください');
     }
@@ -300,6 +345,7 @@ function validateDocument(doc) {
         }
     }
     if (doc.lineItems) {
+        const validTaxRateTypes = ['standard', 'reduced', 'exempt'];
         doc.lineItems.forEach((line, i) => {
             if (!line.name || !line.name.trim()) {
                 errors.push(`明細${i + 1}行目: 品目名は必須です`);
@@ -307,8 +353,18 @@ function validateDocument(doc) {
             if (line.quantity == null || line.quantity <= 0) {
                 errors.push(`明細${i + 1}行目: 数量は0より大きい値を入力してください`);
             }
+            if (line.quantity != null) {
+                const qtyStr = String(line.quantity);
+                const dotIndex = qtyStr.indexOf('.');
+                if (dotIndex !== -1 && qtyStr.length - dotIndex - 1 > 2) {
+                    errors.push(`明細${i + 1}行目: 数量の小数点以下は2桁までです`);
+                }
+            }
             if (line.unitPrice == null || line.unitPrice < 0) {
                 errors.push(`明細${i + 1}行目: 単価は0以上の値を入力してください`);
+            }
+            if (line.taxRateType && !validTaxRateTypes.includes(line.taxRateType)) {
+                errors.push(`明細${i + 1}行目: 税区分が不正です`);
             }
         });
     }
@@ -337,6 +393,11 @@ function validateImportData(data) {
 
     if (!data || typeof data !== 'object') {
         errors.push('データ形式が不正です');
+        return { valid: false, errors, counts };
+    }
+
+    if (data.appName && data.appName !== 'pado') {
+        errors.push('pado形式ではありません');
         return { valid: false, errors, counts };
     }
 
@@ -426,6 +487,43 @@ function formatCurrency(amount) {
  */
 function formatYen(amount) {
     return '¥' + formatCurrency(amount);
+}
+
+/**
+ * 日付を YYYY/MM/DD 形式にフォーマットする
+ * @param {string} dateStr - 'YYYY-MM-DD'
+ * @returns {string} 'YYYY/MM/DD' or '---'
+ */
+function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '---';
+    return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
+}
+
+/**
+ * 月末日を返す
+ * @param {string} dateStr - 'YYYY-MM-DD'
+ * @returns {string} 'YYYY-MM-DD' or '---'
+ */
+function endOfMonth(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '---';
+    const y = d.getFullYear(), m = d.getMonth();
+    const last = new Date(y, m + 1, 0);
+    return `${last.getFullYear()}-${String(last.getMonth() + 1).padStart(2, '0')}-${String(last.getDate()).padStart(2, '0')}`;
+}
+
+/**
+ * 日付に日数を加算する
+ * @param {string} dateStr - 'YYYY-MM-DD'
+ * @param {number} days - 加算日数
+ * @returns {string} 'YYYY-MM-DD' or '---'
+ */
+function addDays(dateStr, days) {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '---';
+    d.setDate(d.getDate() + days);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 /**
@@ -552,12 +650,16 @@ if (typeof module !== 'undefined' && module.exports) {
         REVENUE_STAMP_TABLE,
         isRevenueStampRequired,
         getRevenueStampAmount,
+        validateItem,
         validatePartner,
         validateInvoiceRegNumber,
         validateDocument,
         validateImportData,
         ERA_TABLE,
         formatDateJapanese,
+        formatDate,
+        endOfMonth,
+        addDays,
         formatCurrency,
         formatYen,
         escapeHtml,
