@@ -70,6 +70,9 @@ docker compose run --rm --entrypoint /bin/bash \
     pado-test \
     -c "chmod +x scripts/generate_version.sh && ./scripts/generate_version.sh"
 
+echo "Building docs..."
+./scripts/build-docs.sh
+
 echo "Building app container..."
 docker compose build pado-app
 

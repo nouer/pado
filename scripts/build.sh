@@ -34,6 +34,7 @@ fi
 # デフォルトは 8087。必要なら PADO_PORT を指定する。
 PADO_PORT="${PADO_PORT:-8087}"
 ./scripts/generate_version.sh
+./scripts/build-docs.sh
 echo "Building and starting containers..."
 docker compose up -d --build pado-app pado-app-public
 echo "Done! App is running at http://localhost:${PADO_PORT}"

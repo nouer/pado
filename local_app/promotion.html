@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>帳票作成、まだExcelで消耗してますか？ — Pado</title>
+<meta name="description" content="月額0円・登録不要・3分で開始。 ブラウザだけで完結する、個人事業主のための帳票管理。">
+<meta property="og:title" content="帳票作成、まだExcelで消耗してますか？ — Pado">
+<meta property="og:description" content="月額0円・登録不要・3分で開始。 ブラウザだけで完結する、個人事業主のための帳票管理。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pado 帳票管理">
+<link rel="icon" href="/icons/favicon-32.png" type="image/png">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Serif CJK JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a1a1a;
+    background-color: #f8f8f8;
+}
+
+.container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 32px 64px;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+nav.back-link {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+nav.back-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav.back-link a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid #333;
+}
+
+h2 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+    padding-bottom: 0.2em;
+    border-bottom: 1px solid #ccc;
+}
+
+h3 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 1.5em;
+    margin-bottom: 0.4em;
+}
+
+h4 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.3em;
+}
+
+p {
+    margin: 0.6em 0;
+    text-align: justify;
+}
+
+ul, ol {
+    margin: 0.6em 0;
+    padding-left: 2em;
+}
+
+li {
+    margin: 0.3em 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 15px;
+}
+
+th, td {
+    border: 1px solid #999;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2em 0;
+}
+
+code {
+    font-family: 'UDEV Gothic NF', 'Cica', monospace;
+    font-size: 14px;
+    background-color: #f5f5f5;
+    padding: 0.15em 0.3em;
+    border-radius: 3px;
+}
+
+pre {
+    background-color: #f5f5f5;
+    padding: 1em;
+    overflow-x: auto;
+    font-size: 14px;
+    line-height: 1.4;
+    border-radius: 4px;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+blockquote {
+    border-left: 3px solid #ccc;
+    margin: 0.8em 0;
+    padding: 0.2em 0 0.2em 1em;
+    color: #555;
+}
+
+strong {
+    font-weight: bold;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0.5em auto;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+sub {
+    font-size: 12px;
+    color: #888;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 16px 16px 48px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 19px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 6px 8px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<nav class="back-link"><a href="/">← Pado アプリに戻る</a></nav>
+<h1>帳票作成、まだExcelで消耗してますか？</h1>
+<p><strong>月額0円・登録不要・3分で開始。</strong> ブラウザだけで完結する、個人事業主のための帳票管理。</p>
+<img src="/docs-images/01_doc_list.png" width="720" alt="Pado 帳票一覧画面">
+<hr />
+<h2>こんなお悩み、ありませんか？</h2>
+<blockquote>
+<p>「Excelで見積書を作ったけど、請求書にコピーするたびにズレる...」</p>
+</blockquote>
+<blockquote>
+<p>「インボイス制度に対応しなきゃいけないけど、何をどう書けばいいの？」</p>
+</blockquote>
+<blockquote>
+<p>「月額数千円のクラウドサービス、うちの規模には正直もったいない...」</p>
+</blockquote>
+<p>個人事業主・小規模事業者にとって、帳票管理は<strong>本業ではない</strong>はず。
+でも、避けて通れない。</p>
+<p>Excelのテンプレートを使い回す日々。消費税の計算ミスに気づいてヒヤッとする瞬間。
+「もっと手軽に、でもちゃんとした帳票を作れるツールがあれば——」</p>
+<p><strong>pado は、そんなあなたのために作りました。</strong></p>
+<hr />
+<h2>pado とは</h2>
+<p>ブラウザを開くだけで使える、<strong>完全無料</strong>の帳票管理アプリケーションです。</p>
+<table>
+<tr>
+<td align="center" width="33%">
+<h3>💰 ずっと無料</h3>
+月額0円。隠れた課金もありません。<br>小さな事業の利益を圧迫しません。
+</td>
+<td align="center" width="33%">
+<h3>✨ かんたん操作</h3>
+アカウント登録不要。<br>ブラウザを開いて3分で最初の帳票が完成。
+</td>
+<td align="center" width="33%">
+<h3>🔒 安心・安全</h3>
+データはお使いの端末内に保存。<br>サーバーへの送信は一切ありません。
+</td>
+</tr>
+</table>
+<hr />
+<h2>主な機能</h2>
+<h3>7種の帳票をワンストップ管理</h3>
+<p>見積書・発注書・請求書・納品書・売上伝票・仕入伝票・領収書——
+事業に必要な帳票を、<strong>ひとつの画面で一括管理</strong>できます。</p>
+<p>見積書から請求書への変換もワンクリック。転記ミスはもう起きません。</p>
+<img src="/docs-images/01_doc_list.png" width="720" alt="帳票一覧 — 7種類の帳票をタブで切り替え">
+<hr />
+<h3>直感的な帳票エディタ</h3>
+<p>品目マスタと連携して、品名・単価・税区分を<strong>ワンクリックで自動入力</strong>。
+小計・消費税・合計金額はリアルタイムで自動計算されます。</p>
+<p>手入力による計算ミスから解放されましょう。</p>
+<img src="/docs-images/02_doc_editor.png" width="720" alt="帳票編集画面 — 品目選択と自動計算">
+<hr />
+<h3>インボイス制度対応の印刷・PDF出力</h3>
+<p>適格請求書（インボイス）に必要な項目——登録番号、税率ごとの消費税額、税率区分——を
+自動でレイアウト。制度対応の不安を解消します。</p>
+<img src="/docs-images/03_print_invoice.png" width="520" alt="請求書印刷プレビュー — インボイス制度対応">
+<hr />
+<h3>領収書もプロ品質</h3>
+<p>収入印紙の要否を金額から自動判定。コンパクトなレイアウトで、
+A4用紙に2面印刷も可能です。</p>
+<img src="/docs-images/04_print_receipt.png" width="520" alt="領収書印刷プレビュー — 印紙税自動計算">
+<hr />
+<h3>取引先・品目マスタで入力を効率化</h3>
+<p>よく取引する相手先や品目をマスタに登録しておけば、
+帳票作成時に<strong>選ぶだけで入力完了</strong>。毎回の手入力が不要になります。</p>
+<p>
+<img src="/docs-images/05_partners.png" width="350" alt="取引先一覧 — ふりがな検索対応">
+<img src="/docs-images/07_items.png" width="350" alt="品目一覧 — 単価・税区分を一元管理">
+</p>
+<hr />
+<h3>スマホでもサクサク操作</h3>
+<p>外出先でもスマートフォンから帳票の確認・編集が可能。
+PCと同じ機能を、レスポンシブデザインで快適に使えます。</p>
+<img src="/docs-images/12_mobile_doc_list.png" width="250" alt="モバイル帳票一覧 — スマホ対応">
+<hr />
+<h2>選ばれる理由</h2>
+<table>
+<thead>
+<tr>
+<th>比較項目</th>
+<th>Excel</th>
+<th>有料クラウドサービス</th>
+<th>pado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>料金</strong></td>
+<td>Office購入費</td>
+<td>月額1,000〜3,000円</td>
+<td><strong>無料</strong></td>
+</tr>
+<tr>
+<td><strong>導入の手軽さ</strong></td>
+<td>テンプレ探しから</td>
+<td>アカウント登録が必要</td>
+<td><strong>ブラウザで即開始</strong></td>
+</tr>
+<tr>
+<td><strong>インボイス対応</strong></td>
+<td>手動で対応</td>
+<td>○</td>
+<td><strong>○（自動レイアウト）</strong></td>
+</tr>
+<tr>
+<td><strong>帳票間の変換</strong></td>
+<td>コピペで対応</td>
+<td>○</td>
+<td><strong>○（ワンクリック）</strong></td>
+</tr>
+<tr>
+<td><strong>計算ミスの防止</strong></td>
+<td>数式を壊すリスク</td>
+<td>○</td>
+<td><strong>○（自動計算）</strong></td>
+</tr>
+<tr>
+<td><strong>データの安全性</strong></td>
+<td>ファイル管理が必要</td>
+<td>サーバーに依存</td>
+<td><strong>端末内で完結</strong></td>
+</tr>
+<tr>
+<td><strong>オフライン利用</strong></td>
+<td>○</td>
+<td>×</td>
+<td><strong>○</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>こんな方におすすめ</h2>
+<p><strong>フリーランスデザイナー・エンジニア</strong>
+クライアントごとに見積書→納品書→請求書を効率よく作成。帳票番号の自動採番で管理もラクラク。</p>
+<p><strong>建設業・工事業の一人親方</strong>
+現場の合間にスマホで帳票を確認。品目マスタに工事項目を登録しておけば、見積書作成が驚くほどスピーディに。</p>
+<p><strong>飲食卸売・小売業</strong>
+取引先ごとの納品書・請求書を一括管理。仕入伝票と売上伝票で日々の取引を正確に記録。</p>
+<p><strong>美容業・サロン経営</strong>
+施術メニューを品目マスタに登録すれば、領収書の発行がスムーズに。印紙税の要否も自動判定。</p>
+<p><strong>ITコンサルタント・士業</strong>
+データがサーバーに送信されないから、クライアント情報を扱う業種でも安心して利用可能。</p>
+<hr />
+<h2>セキュリティとプライバシー</h2>
+<table>
+<tr>
+<td width="60%">
+<p>pado はあなたのデータを<strong>一切外部に送信しません</strong>。</p>
+<ul>
+<li>すべてのデータは、お使いのブラウザ内（IndexedDB）に保存されます</li>
+<li>サーバーとの通信は、アプリ本体の読み込み時のみ</li>
+<li>インターネット接続がなくても動作します（PWA対応）</li>
+<li>JSON形式でのエクスポートに対応。バックアップや端末移行も安心です</li>
+</ul>
+<p>「クラウドに顧客情報を預けるのは不安...」という方にこそ、おすすめです。</p>
+</td>
+<td width="40%">
+<img src="/docs-images/11_settings_data.png" width="300" alt="データ管理画面 — エクスポート・インポート">
+</td>
+</tr>
+</table>
+<hr />
+<h2>はじめかた — たった3ステップ</h2>
+<h3>Step 1: アクセスする</h3>
+<p>ブラウザで pado を開くだけ。インストールもアカウント登録も不要です。</p>
+<h3>Step 2: サンプルデータで体験する</h3>
+<p>初回アクセス時にサンプルデータが自動で読み込まれます。
+まずは触って、使い心地を確かめてください。</p>
+<h3>Step 3: 自社情報を入力して運用開始</h3>
+<p>設定画面で会社名・住所・振込先を入力すれば、すぐに実務で使えます。</p>
+<img src="/docs-images/08_settings_company.png" width="520" alt="自社情報設定画面">
+<hr />
+<h2>よくある質問</h2>
+<p><strong>Q. 本当に無料ですか？</strong>
+はい、完全無料です。広告表示もありません。オープンソース（MIT License）で公開されています。</p>
+<p><strong>Q. データはどこに保存されますか？</strong>
+お使いのブラウザ内（IndexedDB）に保存されます。外部サーバーへの送信は一切行いません。</p>
+<p><strong>Q. 対応している帳票の種類は？</strong>
+見積書・発注書・請求書・納品書・売上伝票・仕入伝票・領収書の7種類です。</p>
+<p><strong>Q. オフラインで使えますか？</strong>
+はい。PWA（Progressive Web App）対応のため、一度アクセスすればオフラインでも利用できます。ホーム画面に追加すれば、アプリのように起動できます。</p>
+<p><strong>Q. データのバックアップはできますか？</strong>
+はい。JSON形式でエクスポート・インポートが可能です。端末の買い替え時にも、ファイル一つでデータを移行できます。</p>
+<p><strong>Q. スマートフォンでも使えますか？</strong>
+はい。PC・タブレット・スマートフォンに対応したレスポンシブデザインです。</p>
+<p><strong>Q. インボイス制度に対応していますか？</strong>
+はい。適格請求書発行事業者の登録番号、税率ごとの消費税額表示に対応しています。</p>
+<hr />
+<h2>今すぐ、無料で始めましょう</h2>
+<p>帳票作成に費やしていた時間を、<strong>本業に集中する時間</strong>に変えませんか？</p>
+<p>アカウント登録不要。ブラウザを開くだけで、すぐに使い始められます。</p>
+<p><a href="/"><strong>→ pado を試してみる</strong></a></p>
+<hr />
+<p><sub>pado はオープンソースソフトウェアです（MIT License）。</sub></p>
+
+</div>
+</body>
+</html>
