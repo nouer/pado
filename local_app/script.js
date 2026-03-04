@@ -363,7 +363,7 @@ function initSettingsEvents() {
         if (regNum) {
             const v = validateInvoiceRegNumber(regNum);
             if (!v.valid) {
-                alert(v.errors.join('\n'));
+                showToast(v.errors.join('\n'), 'error');
                 return;
             }
         }
@@ -378,7 +378,7 @@ function initSettingsEvents() {
             sealText: document.getElementById('setting-seal-text').value.trim(),
             fiscalStartMonth: parseInt(document.getElementById('setting-fiscal-start').value)
         });
-        alert('自社情報を保存しました');
+        showToast('自社情報を保存しました', 'success');
     });
 
     // 税設定保存
@@ -389,7 +389,7 @@ function initSettingsEvents() {
             roundingMethod: document.getElementById('setting-rounding').value,
             calcMethod: document.getElementById('setting-calc-method').value
         });
-        alert('税設定を保存しました');
+        showToast('税設定を保存しました', 'success');
     });
 
     // 帳票番号設定保存
@@ -405,7 +405,7 @@ function initSettingsEvents() {
             };
         });
         await saveSetting('number_format', nf);
-        alert('帳票番号設定を保存しました');
+        showToast('帳票番号設定を保存しました', 'success');
     });
 
     // 表示設定保存
@@ -422,7 +422,7 @@ function initSettingsEvents() {
             hiddenDocTypes: hiddenDocTypes
         });
         applyDocTabVisibility(hiddenDocTypes);
-        alert('表示設定を保存しました');
+        showToast('表示設定を保存しました', 'success');
     });
 
     // データ管理
@@ -560,7 +560,7 @@ async function savePartner() {
     // バリデーション
     const v = validatePartner(data);
     if (!v.valid) {
-        alert(v.errors.join('\n'));
+        showToast(v.errors.join('\n'), 'error');
         return;
     }
 
@@ -595,7 +595,7 @@ async function deletePartner(id, name) {
     // 使用中チェック
     const docs = await getByIndex('documents', 'partnerId', id);
     if (docs.length > 0) {
-        alert(`この取引先は${docs.length}件の帳票で使用されているため削除できません。`);
+        showToast(`この取引先は${docs.length}件の帳票で使用されているため削除できません。`, 'error');
         return;
     }
     showConfirm(`取引先「${name}」を削除しますか？`, async () => {
@@ -698,7 +698,7 @@ async function saveItem() {
     const editId = document.getElementById('item-edit-id').value;
     const name = document.getElementById('item-name').value.trim();
     if (!name) {
-        alert('品目名は必須です');
+        showToast('品目名は必須です', 'error');
         return;
     }
 
@@ -1194,7 +1194,7 @@ async function saveDocument() {
     // バリデーション
     const v = validateDocument(doc);
     if (!v.valid) {
-        alert(v.errors.join('\n'));
+        showToast(v.errors.join('\n'), 'error');
         return;
     }
 
@@ -1709,11 +1709,21 @@ function applyDocTabVisibility(hiddenDocTypes) {
 // ============================================================
 // データ管理（エクスポート/インポート/削除）
 // ============================================================
-function showMessage(elementId, text, type) {
-    const el = document.getElementById(elementId);
-    el.textContent = text;
-    el.className = `message show ${type}`;
-    setTimeout(() => { el.classList.remove('show'); }, 3000);
+let _toastTimer = null;
+function showToast(text, type) {
+    const el = document.getElementById('toast');
+    document.getElementById('toast-text').textContent = text;
+    el.className = `toast ${type}`;
+    el.style.display = 'block';
+    clearTimeout(_toastTimer);
+    if (type !== 'error') {
+        _toastTimer = setTimeout(() => { el.style.display = 'none'; }, 3000);
+    }
+}
+function initToast() {
+    document.getElementById('toast-close').addEventListener('click', () => {
+        document.getElementById('toast').style.display = 'none';
+    });
 }
 
 async function exportData() {
@@ -1755,9 +1765,9 @@ async function exportData() {
         const pc = data.partners.length;
         const ic = data.items.length;
         const dc = data.documents.length;
-        showMessage('data-message', `${pc}件の取引先、${ic}件の品目、${dc}件の帳票をエクスポートしました`, 'success');
+        showToast(`${pc}件の取引先、${ic}件の品目、${dc}件の帳票をエクスポートしました`, 'success');
     } catch (err) {
-        showMessage('data-message', 'エクスポート中にエラーが発生しました: ' + err.message, 'error');
+        showToast('エクスポート中にエラーが発生しました: ' + err.message, 'error');
     }
 }
 
@@ -1770,14 +1780,14 @@ async function importData(event) {
     try {
         data = JSON.parse(text);
     } catch {
-        showMessage('data-message', 'JSONファイルの形式が不正です', 'error');
+        showToast('JSONファイルの形式が不正です', 'error');
         event.target.value = '';
         return;
     }
 
     const v = validateImportData(data);
     if (!v.valid) {
-        showMessage('data-message', 'インポートエラー: ' + v.errors.join(', '), 'error');
+        showToast('インポートエラー: ' + v.errors.join(', '), 'error');
         event.target.value = '';
         return;
     }
@@ -1811,12 +1821,12 @@ async function importData(event) {
                     await saveSetting(key, value);
                 }
             }
-            showMessage('data-message', 'インポートが完了しました', 'success');
+            showToast('インポートが完了しました', 'success');
             loadDocList();
             loadPartnerList();
             loadItemList();
         } catch (err) {
-            showMessage('data-message', 'インポート中にエラーが発生しました: ' + err.message, 'error');
+            showToast('インポート中にエラーが発生しました: ' + err.message, 'error');
         }
     });
 
@@ -1911,7 +1921,7 @@ async function deleteAllData() {
         await clearStore('documents');
         await clearStore('doc_sequences');
         await clearStore('app_settings');
-        showMessage('data-message', 'すべてのデータを削除しました', 'success');
+        showToast('すべてのデータを削除しました', 'success');
         loadDocList();
         loadPartnerList();
         loadItemList();
@@ -2086,10 +2096,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         db = await openDB();
     } catch (err) {
-        alert('データベースの初期化に失敗しました: ' + err.message);
+        showToast('データベースの初期化に失敗しました: ' + err.message, 'error');
         return;
     }
 
+    initToast();
     initTabs();
     initSettingsEvents();
     initPartnerEvents();

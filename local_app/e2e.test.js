@@ -204,7 +204,6 @@ describe('E2E Test: Pado App', () => {
         await page.evaluate(() => document.getElementById('setting-invoice-reg-number').value = '');
         await page.type('#setting-invoice-reg-number', 'T1234567890123');
 
-        page._dialogQueue.push(async dialog => await dialog.accept());
         await page.click('#btn-save-company');
         await new Promise(r => setTimeout(r, 500));
 
@@ -635,7 +634,6 @@ describe('E2E Test: Pado App', () => {
 
         await page.select('#setting-rounding', 'round');
 
-        page._dialogQueue.push(async dialog => await dialog.accept());
         await page.click('#btn-save-tax');
         await new Promise(r => setTimeout(r, 500));
 
@@ -685,7 +683,6 @@ describe('E2E Test: Pado App', () => {
         await page.click('[data-tab="settings"]');
         await page.waitForSelector('#setting-rounding', { timeout: 5000 });
         await page.select('#setting-rounding', 'floor');
-        page._dialogQueue.push(async dialog => await dialog.accept());
         await page.click('#btn-save-tax');
         await new Promise(r => setTimeout(r, 500));
     });
@@ -874,14 +871,12 @@ describe('E2E Test: Pado App', () => {
         // 名前空のまま保存
         await page.evaluate(() => document.getElementById('partner-name').value = '');
 
-        let alertMsg = '';
-        page._dialogQueue.push(async dialog => {
-            alertMsg = dialog.message();
-            await dialog.accept();
-        });
         await page.click('#btn-save-partner');
         await new Promise(r => setTimeout(r, 500));
-        expect(alertMsg).toBeTruthy();
+
+        // トーストでエラーが表示される
+        const toastText = await page.$eval('#toast-text', el => el.textContent);
+        expect(toastText).toBeTruthy();
 
         // キャンセルして戻る
         await page.click('#btn-cancel-partner');
@@ -1583,9 +1578,9 @@ describe('E2E Test: Pado App', () => {
         await fileInput.uploadFile(invalidFilePath);
         await new Promise(r => setTimeout(r, 1000));
 
-        // showMessageでエラーが表示される
-        const msgText = await page.$eval('#data-message', el => el.textContent);
-        expect(msgText).toContain('不正');
+        // トーストでエラーが表示される
+        const toastText = await page.$eval('#toast-text', el => el.textContent);
+        expect(toastText).toContain('不正');
 
         // クリーンアップ
         fs.unlinkSync(invalidFilePath);
@@ -1639,7 +1634,6 @@ describe('E2E Test: Pado App', () => {
         await page.waitForSelector('#setting-company-name', { timeout: 5000 });
         await page.evaluate(() => document.getElementById('setting-company-name').value = '');
         await page.type('#setting-company-name', 'テスト商店');
-        page._dialogQueue.push(async dialog => await dialog.accept());
         await page.click('#btn-save-company');
         await new Promise(r => setTimeout(r, 500));
 

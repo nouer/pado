@@ -13,6 +13,12 @@
 </head>
 <body>
 
+<!-- トースト通知 -->
+<div id="toast" class="toast" style="display:none">
+    <span id="toast-text"></span>
+    <button id="toast-close" class="toast-close">&times;</button>
+</div>
+
 <!-- ============================================================ -->
 <!-- スクロールトップ & アプリ情報 -->
 <!-- ============================================================ -->
@@ -303,7 +309,6 @@
                     <input type="file" id="import-file" accept=".json" style="display:none">
                 </label>
             </div>
-            <div id="data-message" class="message"></div>
             <hr>
             <button class="btn btn-danger btn-sm" id="btn-delete-all">全データ削除</button>
         </section>
