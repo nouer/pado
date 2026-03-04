@@ -1007,6 +1007,13 @@ body {
     .overlay-wide {
         max-width: 100%;
     }
+    #item-list {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .item-table {
+        min-width: 540px;
+    }
 }
 
 /* モバイル */
@@ -1030,6 +1037,21 @@ body {
     }
     .overlay { padding: 8px; }
     .overlay-content { margin-top: 8px; }
+    .doc-card-actions {
+        flex-wrap: wrap;
+    }
+    .doc-card-actions .btn-danger {
+        margin-left: 0;
+    }
+    .sub-tab-nav {
+        -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+        mask-image: linear-gradient(to right, #000 85%, transparent);
+        padding-right: 8px;
+    }
+    .line-items-container {
+        -webkit-mask-image: linear-gradient(to right, #000 90%, transparent);
+        mask-image: linear-gradient(to right, #000 90%, transparent);
+    }
 }
 
 /* ============================================================

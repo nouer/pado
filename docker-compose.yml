@@ -36,6 +36,7 @@ services:
     volumes:
       - ./local_app:/app/local_app
       - ./tools:/app/tools
+      - ./docs:/app/docs
     depends_on:
       - pado-app
 
