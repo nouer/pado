@@ -138,19 +138,23 @@ docker compose run --rm pado-test
 | UT-VI-001 | 正常な入力 | `{name: 'テスト品目', taxRateType: 'standard'}` | `valid: true` |
 | UT-VI-002 | 品目名が空 | `{name: '', taxRateType: 'standard'}` | `valid: false` |
 | UT-VI-003 | 税区分が不正 | `{name: 'テスト', taxRateType: 'invalid'}` | `valid: false` |
-| UT-VI-004 | デフォルト単価が負 | `{name: 'テスト', taxRateType: 'standard', defaultPrice: -1}` | `valid: false` |
-| UT-VI-005 | デフォルト単価が小数 | `{name: 'テスト', taxRateType: 'standard', defaultPrice: 100.5}` | `valid: false` |
+| UT-VI-004 | デフォルト単価が負 | `{name: 'テスト', taxRateType: 'standard', defaultUnitPrice: -1}` | `valid: false` |
+| UT-VI-005 | デフォルト単価が小数 | `{name: 'テスト', taxRateType: 'standard', defaultUnitPrice: 100.5}` | `valid: false` |
 
 ### 2.9 帳票バリデーション (`validateDocument`)
 
 | テストID | テスト名 | 入力 | 期待結果 |
 |---------|---------|------|---------|
 | UT-VD-001 | 正常な入力 | `{partnerId: 'uuid', issueDate: '2026-03-01', status: 'draft', lines: [{...}]}` | `valid: true` |
-| UT-VD-002 | 取引先未選択 | `{partnerId: null, ...}` | `valid: false, errors に '取引先を選択してください'` |
-| UT-VD-003 | 発行日未入力 | `{issueDate: '', ...}` | `valid: false` |
+| UT-VD-002 | 取引先未選択でも保存可能 | `{partnerId: null, ...}` | `valid: true` |
+| UT-VD-003 | 発行日未入力でも保存可能 | `{issueDate: '', ...}` | `valid: true` |
 | UT-VD-004 | 明細行が空 | `{lines: [], ...}` | `valid: false, errors に '明細行を1行以上入力してください'` |
 | UT-VD-005 | ステータスが不正 | `{status: 'invalid', ...}` | `valid: false` |
 | UT-VD-006 | 備考が2000文字超 | `{memo: 'あ'.repeat(2001), ...}` | `valid: false` |
+| UT-VD-007 | 領収書は明細なしでも保存可能 | `{docType: 'receipt', lines: [], ...}` | `valid: true` |
+| UT-VD-008 | 見積有効期限なしでも保存可能 | `{docType: 'estimate', validUntil: '', ...}` | `valid: true` |
+| UT-VD-009 | 請求書支払期限なしでも保存可能 | `{docType: 'invoice', paymentDue: '', ...}` | `valid: true` |
+| UT-VD-010 | 領収書但し書きなしでも保存可能 | `{docType: 'receipt', receiptNote: '', ...}` | `valid: true` |
 
 ### 2.10 明細行バリデーション (`validateDocumentLine`)
 
@@ -158,7 +162,8 @@ docker compose run --rm pado-test
 |---------|---------|------|---------|
 | UT-VL-001 | 正常な入力 | `{itemName: 'テスト', quantity: 1, unitPrice: 1000, taxRateType: 'standard'}` | `valid: true` |
 | UT-VL-002 | 品目名が空 | `{itemName: '', ...}` | `valid: false` |
-| UT-VL-003 | 数量が0以下 | `{quantity: 0, ...}` | `valid: false` |
+| UT-VL-003 | 数量が負 | `{quantity: -1, ...}` | `valid: false` |
+| UT-VL-003b | 数量が0でも保存可能 | `{quantity: 0, ...}` | `valid: true` |
 | UT-VL-004 | 数量が小数第3位 | `{quantity: 1.001, ...}` | `valid: false` |
 | UT-VL-005 | 数量が小数第2位 | `{quantity: 1.01, ...}` | `valid: true` |
 | UT-VL-006 | 単価が負 | `{unitPrice: -1, ...}` | `valid: false` |

@@ -25,6 +25,16 @@ docker compose run --rm pado-test
 - 外部ライブラリ追加禁止（vanilla JSのみ）
 - HTML特殊文字は必ず `escapeHtml()` でエスケープ
 
+## ドキュメント更新ルール
+
+- バリデーションルール、フィールドの必須/任意、UI挙動を変更した場合は、必ず `docs/` 配下の該当ドキュメントも同時に更新する
+- 対象ドキュメントと更新基準:
+  - `docs/requirements_definition.md` — フィールドの追加/削除/必須変更、機能要件の変更
+  - `docs/detailed_design.md` — バリデーションルール変更、UI要素の追加/変更、画面構成の変更
+  - `docs/test_specification.md` — テストケースの追加/変更/削除
+  - `docs/algorithm_logic.md` — 計算ロジック、アルゴリズムの変更
+- コミット前にドキュメントの更新漏れがないか確認する
+
 # Commit Message Guidelines
 - コミットメッセージは常に日本語で記述してください。
 - 変更内容を具体的かつ詳細に記述してください。
