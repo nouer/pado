@@ -8,7 +8,7 @@
 // ============================================================
 function generateId() {
     if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-        return generateId();
+        return crypto.randomUUID();
     }
     return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
 }
@@ -1135,6 +1135,7 @@ function renderTaxSummary(summary, docType) {
 // 帳票保存
 // ============================================================
 async function saveDocument() {
+  try {
     const docType = editingDocId ? (await getFromStore('documents', editingDocId)).docType : currentDocType;
     const lineItems = getLineItemsFromEditor();
     const taxSettings = await loadTaxSettings();
@@ -1251,6 +1252,11 @@ async function saveDocument() {
 
     document.getElementById('doc-editor-overlay').style.display = 'none';
     loadDocList();
+    showToast('保存しました', 'success');
+  } catch (e) {
+    console.error('saveDocument error:', e);
+    showToast('保存中にエラーが発生しました', 'error');
+  }
 }
 
 async function editDocument(id) {

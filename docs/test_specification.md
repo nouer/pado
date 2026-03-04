@@ -161,7 +161,7 @@ docker compose run --rm pado-test
 | テストID | テスト名 | 入力 | 期待結果 |
 |---------|---------|------|---------|
 | UT-VL-001 | 正常な入力 | `{itemName: 'テスト', quantity: 1, unitPrice: 1000, taxRateType: 'standard'}` | `valid: true` |
-| UT-VL-002 | 品目名が空 | `{itemName: '', ...}` | `valid: false` |
+| UT-VL-002 | 品目名が空でも全帳票で有効 | `{itemName: '', ...}` | `valid: true` |
 | UT-VL-003 | 数量が負 | `{quantity: -1, ...}` | `valid: false` |
 | UT-VL-003b | 数量が0でも保存可能 | `{quantity: 0, ...}` | `valid: true` |
 | UT-VL-004 | 数量が小数第3位 | `{quantity: 1.001, ...}` | `valid: false` |

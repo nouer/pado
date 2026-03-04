@@ -634,9 +634,9 @@ describe('明細行バリデーション (UT-VL)', () => {
         expect(validateDocument(doc).valid).toBe(true);
     });
 
-    test('UT-VL-002: 品目名が空', () => {
-        const doc = { ...baseDoc, lineItems: [{ name: '', quantity: 1, unitPrice: 1000 }] };
-        expect(validateDocument(doc).valid).toBe(false);
+    test('UT-VL-002: 品目名が空でも全帳票で有効', () => {
+        const doc = { ...baseDoc, lineItems: [{ name: '', quantity: 1, unitPrice: 1000, taxRateType: 'standard' }] };
+        expect(validateDocument(doc).valid).toBe(true);
     });
 
     test('UT-VL-003: 数量が負', () => {

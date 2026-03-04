@@ -341,9 +341,7 @@ function validateDocument(doc) {
     if (doc.lineItems) {
         const validTaxRateTypes = ['standard', 'reduced', 'exempt'];
         doc.lineItems.forEach((line, i) => {
-            if (!line.name || !line.name.trim()) {
-                errors.push(`明細${i + 1}行目: 品目名は必須です`);
-            }
+
             if (line.quantity == null || line.quantity < 0) {
                 errors.push(`明細${i + 1}行目: 数量は0以上の値を入力してください`);
             }
