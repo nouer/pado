@@ -330,6 +330,7 @@ body {
 }
 .toast.success { background: var(--success-light); color: var(--success); border: 1px solid #86efac; }
 .toast.error { background: var(--danger-light); color: var(--danger); border: 1px solid #fca5a5; }
+.toast.info { background: #eff6ff; color: #1e40af; border: 1px solid #93c5fd; }
 .toast-close {
     position: absolute;
     top: 50%;

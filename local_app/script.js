@@ -1723,7 +1723,7 @@ function showToast(text, type) {
     el.className = `toast ${type}`;
     el.style.display = 'block';
     clearTimeout(_toastTimer);
-    if (type !== 'error') {
+    if (type !== 'error' && type !== 'info') {
         _toastTimer = setTimeout(() => { el.style.display = 'none'; }, 3000);
     }
 }
@@ -1852,6 +1852,35 @@ function updateSampleImportAvailability() {
         btn.disabled = true;
         note.style.display = 'block';
     }
+}
+
+async function autoLoadSampleData() {
+    const response = await fetch('/sample_data.json');
+    if (!response.ok) return;
+    const data = await response.json();
+    const v = validateImportData(data);
+    if (!v.valid) return;
+
+    for (const p of (data.partners || [])) {
+        const existing = await getFromStore('partners', p.id);
+        if (!existing) await updateInStore('partners', p);
+    }
+    for (const item of (data.items || [])) {
+        const existing = await getFromStore('items', item.id);
+        if (!existing) await updateInStore('items', item);
+    }
+    for (const doc of (data.documents || [])) {
+        const existing = await getFromStore('documents', doc.id);
+        if (!existing) await updateInStore('documents', doc);
+    }
+    for (const [key, value] of Object.entries(data.settings || {})) {
+        const existing = await getSetting(key);
+        if (existing === null) await saveSetting(key, value);
+    }
+
+    loadDocList();
+    loadPartnerList();
+    loadItemList();
 }
 
 async function importSampleData() {
@@ -2124,4 +2153,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentDocType = ds.defaultDocType || 'estimate';
     switchDocSubTab(currentDocType);
     loadDocList();
+
+    // 初回判定: documentsストアとpartnersストアが空ならサンプルデータを自動ロード
+    const docs = await getAllFromStore('documents');
+    const partners = await getAllFromStore('partners');
+    if (docs.length === 0 && partners.length === 0) {
+        await autoLoadSampleData();
+        showToast('サンプルデータを読み込みました。ご自身のデータで始める場合は、設定タブの「全データ削除」からリセットできます。', 'info');
+    }
 });
