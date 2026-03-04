@@ -567,12 +567,12 @@ describe('帳票バリデーション (UT-VD)', () => {
         expect(validateDocument(baseDoc).valid).toBe(true);
     });
 
-    test('UT-VD-002: 取引先未選択', () => {
-        expect(validateDocument({ ...baseDoc, partnerId: '', partnerSnapshot: null }).valid).toBe(false);
+    test('UT-VD-002: 取引先未選択でも保存可能', () => {
+        expect(validateDocument({ ...baseDoc, partnerId: '', partnerSnapshot: null }).valid).toBe(true);
     });
 
-    test('UT-VD-003: 発行日未入力', () => {
-        expect(validateDocument({ ...baseDoc, issueDate: '' }).valid).toBe(false);
+    test('UT-VD-003: 発行日未入力でも保存可能', () => {
+        expect(validateDocument({ ...baseDoc, issueDate: '' }).valid).toBe(true);
     });
 
     test('UT-VD-004: 明細行が空', () => {
@@ -602,18 +602,18 @@ describe('帳票バリデーション (UT-VD)', () => {
         expect(validateDocument(receiptDoc).valid).toBe(true);
     });
 
-    test('見積書の有効期限なし', () => {
-        expect(validateDocument({ ...baseDoc, validUntil: '' }).valid).toBe(false);
+    test('見積書の有効期限なしでも保存可能', () => {
+        expect(validateDocument({ ...baseDoc, validUntil: '' }).valid).toBe(true);
     });
 
-    test('請求書の支払期限なし', () => {
+    test('請求書の支払期限なしでも保存可能', () => {
         const invoiceDoc = { ...baseDoc, docType: 'invoice', dueDate: '' };
-        expect(validateDocument(invoiceDoc).valid).toBe(false);
+        expect(validateDocument(invoiceDoc).valid).toBe(true);
     });
 
-    test('領収書の但し書きなし', () => {
+    test('領収書の但し書きなしでも保存可能', () => {
         const receiptDoc = { ...baseDoc, docType: 'receipt', receiptOf: '' };
-        expect(validateDocument(receiptDoc).valid).toBe(false);
+        expect(validateDocument(receiptDoc).valid).toBe(true);
     });
 });
 

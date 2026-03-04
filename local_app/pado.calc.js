@@ -324,9 +324,6 @@ function validateDocument(doc) {
     if (!doc.docType || !validTypes.includes(doc.docType)) {
         errors.push('帳票種別が不正です');
     }
-    if (!doc.issueDate) {
-        errors.push('発行日は必須です');
-    }
     if (doc.status) {
         const validStatuses = ['draft', 'issued', 'sent', 'paid', 'cancelled'];
         if (!validStatuses.includes(doc.status)) {
@@ -335,9 +332,6 @@ function validateDocument(doc) {
     }
     if (doc.memo && doc.memo.length > 2000) {
         errors.push('備考は2000文字以内にしてください');
-    }
-    if (!doc.partnerId && !doc.partnerSnapshot) {
-        errors.push('取引先を選択してください');
     }
     if (!doc.lineItems || doc.lineItems.length === 0) {
         if (doc.docType !== 'receipt') {
@@ -368,17 +362,6 @@ function validateDocument(doc) {
             }
         });
     }
-    // 種別固有チェック
-    if (doc.docType === 'estimate' && !doc.validUntil) {
-        errors.push('見積有効期限を入力してください');
-    }
-    if (doc.docType === 'invoice' && !doc.dueDate) {
-        errors.push('支払期限を入力してください');
-    }
-    if (doc.docType === 'receipt' && !doc.receiptOf) {
-        errors.push('但し書きを入力してください');
-    }
-
     return { valid: errors.length === 0, errors };
 }
 

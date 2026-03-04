@@ -999,6 +999,7 @@ function addLineItem(data) {
         </td>
         <td class="col-unit">
             <select class="line-unit">
+                <option value="">-</option>
                 ${UNIT_OPTIONS.map(u => `<option value="${u}" ${data && data.unit === u ? 'selected' : ''}>${u}</option>`).join('')}
             </select>
         </td>
@@ -1429,7 +1430,7 @@ function generateA4PrintHtml(doc, displaySettings) {
         <div class="print-title">${escapeHtml(typeName)}</div>
         <div class="print-header-row">
             <div class="print-addressee">
-                <div class="print-addressee-name">${escapeHtml(partner.name || '')} ${escapeHtml(partner.honorific || '')}</div>
+                <div class="print-addressee-name">${partner.name ? escapeHtml(partner.name) + ' ' + escapeHtml(partner.honorific || '') : '&nbsp;'}</div>
                 ${partner.zipCode ? '<div>〒' + escapeHtml(partner.zipCode) + '</div>' : ''}
                 ${partner.address1 ? '<div>' + escapeHtml(partner.address1) + '</div>' : ''}
                 ${partner.address2 ? '<div>' + escapeHtml(partner.address2) + '</div>' : ''}
@@ -1511,10 +1512,10 @@ function generateReceiptPrintHtml(doc, displaySettings) {
             <div>No. ${escapeHtml(doc.docNumber || '')}</div>
             <div>発行日: ${escapeHtml(dateStr)}</div>
         </div>
-        <div class="print-receipt-addressee">${escapeHtml(partner.name || '')} ${escapeHtml(partner.honorific || '様')}</div>
+        <div class="print-receipt-addressee">${partner.name ? escapeHtml(partner.name) + ' ' + escapeHtml(partner.honorific || '様') : '&nbsp;'}</div>
         <div class="print-receipt-amount">${formatYen(summary.total)}-</div>
         <div class="print-receipt-tax-detail">${taxDetailHtml}</div>
-        <div class="print-receipt-but">但し ${escapeHtml(doc.receiptOf || '')}として</div>
+        ${doc.receiptOf ? `<div class="print-receipt-but">但し ${escapeHtml(doc.receiptOf)}として</div>` : ''}
         <div class="print-receipt-statement">上記正に領収いたしました</div>
         ${stampHtml}
         <div class="print-receipt-seller">
