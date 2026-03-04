@@ -995,7 +995,7 @@ function addLineItem(data) {
             <input type="text" class="line-desc" value="${escapeHtml((data && data.description) || '')}">
         </td>
         <td class="col-qty">
-            <input type="number" class="line-qty" value="${(data && data.quantity) || 1}" min="0" step="0.01">
+            <input type="number" class="line-qty" value="${(data && data.quantity) || 1}" min="0" step="1">
         </td>
         <td class="col-unit">
             <select class="line-unit">

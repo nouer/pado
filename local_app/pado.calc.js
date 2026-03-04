@@ -255,9 +255,9 @@ function validateItem(item) {
     if (!item.taxRateType || !validRates.includes(item.taxRateType)) {
         errors.push('税区分が不正です');
     }
-    if (item.defaultPrice != null) {
-        if (item.defaultPrice < 0) errors.push('デフォルト単価は0以上にしてください');
-        if (!Number.isInteger(item.defaultPrice)) errors.push('デフォルト単価は整数にしてください');
+    if (item.defaultUnitPrice != null) {
+        if (item.defaultUnitPrice < 0) errors.push('デフォルト単価は0以上にしてください');
+        if (!Number.isInteger(item.defaultUnitPrice)) errors.push('デフォルト単価は整数にしてください');
     }
     return { valid: errors.length === 0, errors };
 }
@@ -344,8 +344,8 @@ function validateDocument(doc) {
             if (!line.name || !line.name.trim()) {
                 errors.push(`明細${i + 1}行目: 品目名は必須です`);
             }
-            if (line.quantity == null || line.quantity <= 0) {
-                errors.push(`明細${i + 1}行目: 数量は0より大きい値を入力してください`);
+            if (line.quantity == null || line.quantity < 0) {
+                errors.push(`明細${i + 1}行目: 数量は0以上の値を入力してください`);
             }
             if (line.quantity != null) {
                 const qtyStr = String(line.quantity);

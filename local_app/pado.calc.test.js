@@ -502,13 +502,13 @@ describe('品目バリデーション (UT-VI)', () => {
     });
 
     test('UT-VI-004: デフォルト単価が負', () => {
-        const result = validateItem({ name: 'テスト', taxRateType: 'standard', defaultPrice: -1 });
+        const result = validateItem({ name: 'テスト', taxRateType: 'standard', defaultUnitPrice: -1 });
         expect(result.valid).toBe(false);
         expect(result.errors).toContain('デフォルト単価は0以上にしてください');
     });
 
     test('UT-VI-005: デフォルト単価が小数', () => {
-        const result = validateItem({ name: 'テスト', taxRateType: 'standard', defaultPrice: 100.5 });
+        const result = validateItem({ name: 'テスト', taxRateType: 'standard', defaultUnitPrice: 100.5 });
         expect(result.valid).toBe(false);
         expect(result.errors).toContain('デフォルト単価は整数にしてください');
     });
@@ -639,9 +639,14 @@ describe('明細行バリデーション (UT-VL)', () => {
         expect(validateDocument(doc).valid).toBe(false);
     });
 
-    test('UT-VL-003: 数量が0以下', () => {
-        const doc = { ...baseDoc, lineItems: [{ name: 'テスト', quantity: 0, unitPrice: 1000 }] };
+    test('UT-VL-003: 数量が負', () => {
+        const doc = { ...baseDoc, lineItems: [{ name: 'テスト', quantity: -1, unitPrice: 1000 }] };
         expect(validateDocument(doc).valid).toBe(false);
+    });
+
+    test('UT-VL-003b: 数量が0でも保存可能', () => {
+        const doc = { ...baseDoc, lineItems: [{ name: 'テスト', quantity: 0, unitPrice: 1000 }] };
+        expect(validateDocument(doc).valid).toBe(true);
     });
 
     test('UT-VL-004: 数量が小数第3位', () => {
