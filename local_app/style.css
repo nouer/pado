@@ -296,6 +296,14 @@ body {
     color: #fff;
 }
 .btn-danger:hover:not(:disabled) { background: #b91c1c; }
+.btn-outline-primary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+.btn-outline-primary:hover:not(:disabled) {
+    background: var(--primary-light);
+}
 .btn-sm {
     padding: 4px 10px;
     font-size: 12px;

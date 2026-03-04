@@ -523,7 +523,42 @@
         <div class="overlay-body" id="doc-detail-body"></div>
         <div class="overlay-footer">
             <button class="btn btn-secondary" id="btn-detail-close">閉じる</button>
+            <button class="btn btn-outline-primary" id="btn-detail-print">印刷</button>
             <button class="btn btn-primary" id="btn-detail-edit">編集</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 取引先詳細 オーバーレイ -->
+<!-- ============================================================ -->
+<div id="partner-detail-overlay" class="overlay" style="display:none">
+    <div class="overlay-content overlay-wide">
+        <div class="overlay-header">
+            <h2 id="partner-detail-title">取引先詳細</h2>
+            <button class="btn-close" id="btn-close-partner-detail">&times;</button>
+        </div>
+        <div class="overlay-body" id="partner-detail-body"></div>
+        <div class="overlay-footer">
+            <button class="btn btn-secondary" id="btn-partner-detail-close">閉じる</button>
+            <button class="btn btn-primary" id="btn-partner-detail-edit">編集</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 品目詳細 オーバーレイ -->
+<!-- ============================================================ -->
+<div id="item-detail-overlay" class="overlay" style="display:none">
+    <div class="overlay-content">
+        <div class="overlay-header">
+            <h2 id="item-detail-title">品目詳細</h2>
+            <button class="btn-close" id="btn-close-item-detail">&times;</button>
+        </div>
+        <div class="overlay-body" id="item-detail-body"></div>
+        <div class="overlay-footer">
+            <button class="btn btn-secondary" id="btn-item-detail-close">閉じる</button>
+            <button class="btn btn-primary" id="btn-item-detail-edit">編集</button>
         </div>
     </div>
 </div>

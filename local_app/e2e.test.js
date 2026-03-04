@@ -800,7 +800,7 @@ describe('E2E Test: Pado App', () => {
         await new Promise(r => setTimeout(r, 300));
 
         // 編集ボタンをクリック
-        const editBtn = await page.$('.partner-card-actions .btn-secondary');
+        const editBtn = await page.$('.partner-card-actions .btn-outline-primary');
         expect(editBtn).not.toBeNull();
         await editBtn.click();
         await page.waitForFunction(() => {
@@ -948,7 +948,7 @@ describe('E2E Test: Pado App', () => {
         await new Promise(r => setTimeout(r, 300));
 
         // 編集ボタンをクリック
-        const editBtn = await page.$('#item-table-body .btn-secondary');
+        const editBtn = await page.$('#item-table-body .btn-outline-primary');
         expect(editBtn).not.toBeNull();
         await editBtn.click();
         await page.waitForFunction(() => {

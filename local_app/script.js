@@ -506,7 +506,8 @@ async function loadPartnerList() {
                     ${p.contactPerson ? ' / 担当: ' + escapeHtml(p.contactPerson) : ''}
                 </div>
                 <div class="partner-card-actions">
-                    <button class="btn btn-sm btn-secondary" onclick="editPartner('${p.id}')">編集</button>
+                    <button class="btn btn-sm btn-secondary" onclick="showPartnerDetail('${p.id}')">詳細</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="editPartner('${p.id}')">編集</button>
                     <button class="btn btn-sm btn-danger" onclick="deletePartner('${p.id}', '${escapeHtml(p.name)}')">削除</button>
                 </div>
             </div>`;
@@ -623,6 +624,65 @@ async function deletePartner(id, name) {
     });
 }
 
+// ============================================================
+// 取引先詳細表示
+// ============================================================
+let detailPartnerId = null;
+
+async function showPartnerDetail(id) {
+    const p = await getFromStore('partners', id);
+    if (!p) return;
+
+    detailPartnerId = id;
+    const typeLabel = p.partnerType === 'customer' ? '得意先' :
+                      p.partnerType === 'supplier' ? '仕入先' : '得意先＆仕入先';
+
+    let html = '<div class="doc-detail-section"><h3>基本情報</h3>';
+    if (p.partnerCode) html += `<div class="detail-row"><span class="detail-label">取引先コード</span><span class="detail-value">${escapeHtml(p.partnerCode)}</span></div>`;
+    html += `<div class="detail-row"><span class="detail-label">取引先名</span><span class="detail-value">${escapeHtml(p.name || '')}</span></div>`;
+    if (p.nameKana) html += `<div class="detail-row"><span class="detail-label">ふりがな</span><span class="detail-value">${escapeHtml(p.nameKana)}</span></div>`;
+    html += `<div class="detail-row"><span class="detail-label">種別</span><span class="detail-value">${typeLabel}</span></div>`;
+    if (p.honorific) html += `<div class="detail-row"><span class="detail-label">敬称</span><span class="detail-value">${escapeHtml(p.honorific)}</span></div>`;
+    html += '</div>';
+
+    // 連絡先セクション
+    let contactHtml = '';
+    if (p.zipCode) contactHtml += `<div class="detail-row"><span class="detail-label">郵便番号</span><span class="detail-value">${escapeHtml(p.zipCode)}</span></div>`;
+    if (p.address1) contactHtml += `<div class="detail-row"><span class="detail-label">住所1</span><span class="detail-value">${escapeHtml(p.address1)}</span></div>`;
+    if (p.address2) contactHtml += `<div class="detail-row"><span class="detail-label">住所2</span><span class="detail-value">${escapeHtml(p.address2)}</span></div>`;
+    if (p.phone) contactHtml += `<div class="detail-row"><span class="detail-label">電話番号</span><span class="detail-value">${escapeHtml(p.phone)}</span></div>`;
+    if (p.fax) contactHtml += `<div class="detail-row"><span class="detail-label">FAX</span><span class="detail-value">${escapeHtml(p.fax)}</span></div>`;
+    if (p.email) contactHtml += `<div class="detail-row"><span class="detail-label">メール</span><span class="detail-value">${escapeHtml(p.email)}</span></div>`;
+    if (p.contactPerson) contactHtml += `<div class="detail-row"><span class="detail-label">担当者名</span><span class="detail-value">${escapeHtml(p.contactPerson)}</span></div>`;
+    if (contactHtml) html += `<div class="doc-detail-section"><h3>連絡先</h3>${contactHtml}</div>`;
+
+    // その他セクション
+    let otherHtml = '';
+    if (p.invoiceRegNumber) otherHtml += `<div class="detail-row"><span class="detail-label">適格請求書番号</span><span class="detail-value">${escapeHtml(p.invoiceRegNumber)}</span></div>`;
+    if (p.paymentTerms) otherHtml += `<div class="detail-row"><span class="detail-label">支払条件</span><span class="detail-value">${escapeHtml(p.paymentTerms)}</span></div>`;
+    if (p.notes) otherHtml += `<div class="detail-row"><span class="detail-label">備考</span><span class="detail-value" style="white-space:pre-wrap">${escapeHtml(p.notes)}</span></div>`;
+    if (otherHtml) html += `<div class="doc-detail-section"><h3>その他</h3>${otherHtml}</div>`;
+
+    document.getElementById('partner-detail-title').textContent = '取引先詳細';
+    document.getElementById('partner-detail-body').innerHTML = html;
+    document.getElementById('partner-detail-overlay').style.display = '';
+}
+
+function initPartnerDetailEvents() {
+    document.getElementById('btn-close-partner-detail').addEventListener('click', () => {
+        document.getElementById('partner-detail-overlay').style.display = 'none';
+    });
+    document.getElementById('btn-partner-detail-close').addEventListener('click', () => {
+        document.getElementById('partner-detail-overlay').style.display = 'none';
+    });
+    document.getElementById('btn-partner-detail-edit').addEventListener('click', async () => {
+        document.getElementById('partner-detail-overlay').style.display = 'none';
+        if (detailPartnerId) {
+            await editPartner(detailPartnerId);
+        }
+    });
+}
+
 function initPartnerEvents() {
     document.getElementById('btn-new-partner').addEventListener('click', () => openPartnerForm(null));
     document.getElementById('btn-save-partner').addEventListener('click', savePartner);
@@ -677,7 +737,8 @@ async function loadItemList() {
             <td><span class="tax-badge ${taxClasses[item.taxRateType] || 'tax-standard'}">${taxLabels[item.taxRateType] || '標準'}</span></td>
             <td>
                 <div style="display:flex;gap:4px">
-                    <button class="btn btn-sm btn-secondary" onclick="editItem('${item.id}')">編集</button>
+                    <button class="btn btn-sm btn-secondary" onclick="showItemDetail('${item.id}')">詳細</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="editItem('${item.id}')">編集</button>
                     <button class="btn btn-sm btn-danger" onclick="deleteItem('${item.id}', '${escapeHtml(item.name)}')">削除</button>
                 </div>
             </td>
@@ -764,6 +825,58 @@ async function deleteItem(id, name) {
     });
 }
 
+// ============================================================
+// 品目詳細表示
+// ============================================================
+let detailItemId = null;
+
+async function showItemDetail(id) {
+    const item = await getFromStore('items', id);
+    if (!item) return;
+
+    detailItemId = id;
+    const taxLabels = { standard: '標準税率（10%）', reduced: '軽減税率（8%）', exempt: '非課税' };
+
+    let html = '<div class="doc-detail-section"><h3>基本情報</h3>';
+    if (item.itemCode) html += `<div class="detail-row"><span class="detail-label">品目コード</span><span class="detail-value">${escapeHtml(item.itemCode)}</span></div>`;
+    html += `<div class="detail-row"><span class="detail-label">品目名</span><span class="detail-value">${escapeHtml(item.name || '')}</span></div>`;
+    if (item.description) html += `<div class="detail-row"><span class="detail-label">説明</span><span class="detail-value">${escapeHtml(item.description)}</span></div>`;
+    html += '</div>';
+
+    // 単価・税区分セクション
+    let priceHtml = '';
+    if (item.defaultUnitPrice != null) priceHtml += `<div class="detail-row"><span class="detail-label">単価</span><span class="detail-value">${formatYen(item.defaultUnitPrice)}</span></div>`;
+    if (item.unit) priceHtml += `<div class="detail-row"><span class="detail-label">単位</span><span class="detail-value">${escapeHtml(item.unit)}</span></div>`;
+    priceHtml += `<div class="detail-row"><span class="detail-label">税区分</span><span class="detail-value">${taxLabels[item.taxRateType] || '標準税率（10%）'}</span></div>`;
+    if (priceHtml) html += `<div class="doc-detail-section"><h3>単価・税区分</h3>${priceHtml}</div>`;
+
+    // 表示順
+    if (item.sortOrder != null && item.sortOrder !== 0) {
+        html += `<div class="doc-detail-section"><h3>表示順</h3>
+            <div class="detail-row"><span class="detail-label">表示順</span><span class="detail-value">${item.sortOrder}</span></div>
+        </div>`;
+    }
+
+    document.getElementById('item-detail-title').textContent = '品目詳細';
+    document.getElementById('item-detail-body').innerHTML = html;
+    document.getElementById('item-detail-overlay').style.display = '';
+}
+
+function initItemDetailEvents() {
+    document.getElementById('btn-close-item-detail').addEventListener('click', () => {
+        document.getElementById('item-detail-overlay').style.display = 'none';
+    });
+    document.getElementById('btn-item-detail-close').addEventListener('click', () => {
+        document.getElementById('item-detail-overlay').style.display = 'none';
+    });
+    document.getElementById('btn-item-detail-edit').addEventListener('click', async () => {
+        document.getElementById('item-detail-overlay').style.display = 'none';
+        if (detailItemId) {
+            await editItem(detailItemId);
+        }
+    });
+}
+
 function initItemEvents() {
     document.getElementById('btn-new-item').addEventListener('click', () => openItemForm(null));
     document.getElementById('btn-save-item').addEventListener('click', saveItem);
@@ -835,10 +948,10 @@ async function loadDocList() {
                     <div class="doc-card-amount">${formatYen(total)}</div>
                     <div class="doc-card-actions">
                         <button class="btn btn-sm btn-secondary" onclick="showDocDetail('${d.id}')" title="詳細">詳細</button>
-                        <button class="btn btn-sm btn-secondary" onclick="editDocument('${d.id}')" title="編集">編集</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editDocument('${d.id}')" title="編集">編集</button>
                         <button class="btn btn-sm btn-secondary" onclick="duplicateDocument('${d.id}')" title="複製">複製</button>
                         ${convTargets.length > 0 ? `<button class="btn btn-sm btn-secondary" onclick="showConvertMenu('${d.id}', event)" title="変換">変換</button>` : ''}
-                        <button class="btn btn-sm btn-secondary" onclick="printDocument('${d.id}')" title="印刷">印刷</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="printDocument('${d.id}')" title="印刷">印刷</button>
                         <button class="btn btn-sm btn-danger" onclick="deleteDocument('${d.id}')" title="削除">削除</button>
                     </div>
                 </div>
@@ -1706,6 +1819,12 @@ function initDocDetailEvents() {
     document.getElementById('btn-detail-close').addEventListener('click', () => {
         document.getElementById('doc-detail-overlay').style.display = 'none';
     });
+    document.getElementById('btn-detail-print').addEventListener('click', async () => {
+        if (detailDocId) {
+            document.getElementById('doc-detail-overlay').style.display = 'none';
+            await printDocument(detailDocId);
+        }
+    });
     document.getElementById('btn-detail-edit').addEventListener('click', async () => {
         document.getElementById('doc-detail-overlay').style.display = 'none';
         if (detailDocId) {
@@ -2217,7 +2336,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     initTabs();
     initSettingsEvents();
     initPartnerEvents();
+    initPartnerDetailEvents();
     initItemEvents();
+    initItemDetailEvents();
     initDocListEvents();
     initDocEditorEvents();
     initDocDetailEvents();
