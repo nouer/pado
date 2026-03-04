@@ -161,6 +161,46 @@
       "notes": "個人事業主・手工芸品",
       "createdAt": "2026-03-03T15:10:40.580Z",
       "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "partner-009",
+      "partnerCode": "P0009",
+      "name": "旬菜ダイニング さくら",
+      "nameKana": "シュンサイダイニングサクラ",
+      "partnerType": "supplier",
+      "honorific": "様",
+      "zipCode": "160-0022",
+      "address1": "東京都新宿区新宿3-5-6",
+      "address2": "",
+      "phone": "03-5555-1234",
+      "fax": "",
+      "email": "",
+      "contactPerson": "",
+      "invoiceRegNumber": "T5566778899001",
+      "paymentTerms": "",
+      "notes": "飲食店",
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "partner-010",
+      "partnerCode": "P0010",
+      "name": "よろず雑貨店 ふくろう",
+      "nameKana": "ヨロズザッカテンフクロウ",
+      "partnerType": "supplier",
+      "honorific": "様",
+      "zipCode": "150-0042",
+      "address1": "東京都渋谷区宇田川町15-8",
+      "address2": "",
+      "phone": "03-6666-7890",
+      "fax": "",
+      "email": "",
+      "contactPerson": "",
+      "invoiceRegNumber": "T6677889900112",
+      "paymentTerms": "",
+      "notes": "雑貨店",
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
     }
   ],
   "items": [
@@ -1897,6 +1937,198 @@
         "address": "東京都千代田区千代田1-1",
         "phone": "03-0000-0000",
         "bankInfo": "○○銀行 本店\n普通 1234567\n口座名義 サンプルジギョウシャ",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-021",
+      "docType": "receipt",
+      "docNumber": "RC-2026-0002",
+      "status": "issued",
+      "issueDate": "2026-02-20",
+      "partnerId": "partner-009",
+      "partnerSnapshot": {
+        "name": "旬菜ダイニング さくら",
+        "honorific": "様",
+        "zipCode": "160-0022",
+        "address1": "東京都新宿区新宿3-5-6",
+        "address2": "",
+        "contactPerson": "",
+        "invoiceRegNumber": "T5566778899001"
+      },
+      "lineItems": [],
+      "taxSummary": {
+        "subtotal": 5000,
+        "taxDetails": [
+          {
+            "rateType": "reduced",
+            "rate": 0.08,
+            "taxableAmount": 5000,
+            "taxAmount": 400
+          }
+        ],
+        "totalTax": 400,
+        "total": 5400
+      },
+      "receiptOf": "飲食代",
+      "revenueStampRequired": false,
+      "revenueStampAmount": 0,
+      "paymentMethod": "cash",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-022",
+      "docType": "receipt",
+      "docNumber": "RC-2026-0003",
+      "status": "issued",
+      "issueDate": "2026-02-25",
+      "partnerId": "partner-010",
+      "partnerSnapshot": {
+        "name": "よろず雑貨店 ふくろう",
+        "honorific": "様",
+        "zipCode": "150-0042",
+        "address1": "東京都渋谷区宇田川町15-8",
+        "address2": "",
+        "contactPerson": "",
+        "invoiceRegNumber": "T6677889900112"
+      },
+      "lineItems": [],
+      "taxSummary": {
+        "subtotal": 3000,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 3000,
+            "taxAmount": 300
+          }
+        ],
+        "totalTax": 300,
+        "total": 3300
+      },
+      "receiptOf": "商品代",
+      "revenueStampRequired": false,
+      "revenueStampAmount": 0,
+      "paymentMethod": "cash",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-023",
+      "docType": "receipt",
+      "docNumber": "RC-2026-0004",
+      "status": "issued",
+      "issueDate": "2026-02-18",
+      "partnerId": "",
+      "partnerSnapshot": {
+        "name": "上様",
+        "honorific": "",
+        "zipCode": "",
+        "address1": "",
+        "address2": "",
+        "contactPerson": "",
+        "invoiceRegNumber": ""
+      },
+      "lineItems": [],
+      "taxSummary": {
+        "subtotal": 3500,
+        "taxDetails": [
+          {
+            "rateType": "reduced",
+            "rate": 0.08,
+            "taxableAmount": 3500,
+            "taxAmount": 280
+          }
+        ],
+        "totalTax": 280,
+        "total": 3780
+      },
+      "receiptOf": "飲食代",
+      "revenueStampRequired": false,
+      "revenueStampAmount": 0,
+      "paymentMethod": "cash",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
+        "sealText": "サンプル"
+      },
+      "childDocIds": [],
+      "createdAt": "2026-03-03T15:10:40.580Z",
+      "updatedAt": "2026-03-03T15:10:40.580Z"
+    },
+    {
+      "id": "doc-024",
+      "docType": "receipt",
+      "docNumber": "RC-2026-0005",
+      "status": "issued",
+      "issueDate": "2026-02-22",
+      "partnerId": "",
+      "partnerSnapshot": {
+        "name": "",
+        "honorific": "",
+        "zipCode": "",
+        "address1": "",
+        "address2": "",
+        "contactPerson": "",
+        "invoiceRegNumber": ""
+      },
+      "lineItems": [],
+      "taxSummary": {
+        "subtotal": 2200,
+        "taxDetails": [
+          {
+            "rateType": "standard",
+            "rate": 0.1,
+            "taxableAmount": 2200,
+            "taxAmount": 220
+          }
+        ],
+        "totalTax": 220,
+        "total": 2420
+      },
+      "receiptOf": "商品代",
+      "revenueStampRequired": false,
+      "revenueStampAmount": 0,
+      "paymentMethod": "cash",
+      "notes": "",
+      "internalMemo": "",
+      "sellerSnapshot": {
+        "companyName": "サンプル事業者",
+        "invoiceRegNumber": "T0000000000000",
+        "zipCode": "100-0001",
+        "address": "東京都千代田区千代田1-1",
+        "phone": "03-0000-0000",
         "sealText": "サンプル"
       },
       "childDocIds": [],

@@ -969,3 +969,73 @@ describe('buildConvertedDocument', () => {
         expect(result.lineItems[0].id).not.toBe('li1');
     });
 });
+
+// ============================================================
+// サンプルデータ整合性検証
+// ============================================================
+describe('サンプルデータ整合性', () => {
+    const sampleData = require('./sample_data.json');
+    const documents = sampleData.documents || [];
+    const partners = sampleData.partners || [];
+    const items = sampleData.items || [];
+    const partnerIds = new Set(partners.map(p => p.id));
+
+    test('全ドキュメントのsellerSnapshotが「サンプル事業者」であること', () => {
+        documents.forEach(doc => {
+            if (doc.sellerSnapshot) {
+                expect(doc.sellerSnapshot.companyName).toBe('サンプル事業者');
+            }
+        });
+    });
+
+    test('receiptOfに「として」が含まれないこと', () => {
+        documents.forEach(doc => {
+            if (doc.receiptOf) {
+                expect(doc.receiptOf).not.toMatch(/として/);
+            }
+        });
+    });
+
+    test('partnerIdが設定されている場合、partners配列に存在すること', () => {
+        documents.forEach(doc => {
+            if (doc.partnerId) {
+                expect(partnerIds.has(doc.partnerId)).toBe(true);
+            }
+        });
+    });
+
+    test('領収書のtaxSummary.totalが計算結果と一致すること', () => {
+        documents.filter(d => d.docType === 'receipt').forEach(doc => {
+            const summary = doc.taxSummary;
+            if (summary) {
+                expect(summary.total).toBe(summary.subtotal + summary.totalTax);
+            }
+        });
+    });
+
+    test('partnerCodeの一意性', () => {
+        const codes = partners.map(p => p.partnerCode);
+        expect(new Set(codes).size).toBe(codes.length);
+    });
+
+    test('itemCodeの一意性', () => {
+        const codes = items.map(i => i.itemCode);
+        expect(new Set(codes).size).toBe(codes.length);
+    });
+
+    test('領収書にrevenueStampRequired/revenueStampAmountが設定されていること', () => {
+        documents.filter(d => d.docType === 'receipt').forEach(doc => {
+            expect(doc).toHaveProperty('revenueStampRequired');
+            expect(doc).toHaveProperty('revenueStampAmount');
+        });
+    });
+
+    test('docNumberの形式が帳票種別に応じたプレフィックスであること', () => {
+        documents.forEach(doc => {
+            const prefix = DEFAULT_DOC_PREFIXES[doc.docType];
+            if (prefix && doc.docNumber) {
+                expect(doc.docNumber.startsWith(prefix + '-')).toBe(true);
+            }
+        });
+    });
+});

@@ -329,7 +329,7 @@ describe('E2E Test: Pado App', () => {
         await page.evaluate(() => { window._printCalled = false; window.print = () => { window._printCalled = true; }; });
 
         // 印刷ボタンをクリック
-        const printBtn = await page.$('.doc-card-actions button:nth-child(4)');
+        const printBtn = await page.$('.doc-card-actions button[title="印刷"]');
         expect(printBtn).not.toBeNull();
         await printBtn.click();
         await new Promise(r => setTimeout(r, 500));
@@ -485,7 +485,7 @@ describe('E2E Test: Pado App', () => {
 
         await page.evaluate(() => { window._printCalled = false; window.print = () => { window._printCalled = true; }; });
 
-        const printBtn = await page.$('.doc-card-actions button:nth-child(4)');
+        const printBtn = await page.$('.doc-card-actions button[title="印刷"]');
         if (printBtn) {
             await printBtn.click();
             await new Promise(r => setTimeout(r, 500));
@@ -702,7 +702,7 @@ describe('E2E Test: Pado App', () => {
 
         await page.evaluate(() => { window._printCalled = false; window.print = () => { window._printCalled = true; }; });
 
-        const printBtn = await page.$('.doc-card-actions button:nth-child(4)');
+        const printBtn = await page.$('.doc-card-actions button[title="印刷"]');
         if (printBtn) {
             await printBtn.click();
             await new Promise(r => setTimeout(r, 500));
@@ -1138,7 +1138,7 @@ describe('E2E Test: Pado App', () => {
         await new Promise(r => setTimeout(r, 300));
 
         // 編集ボタンをクリック
-        const editBtn = await page.$('.doc-card-actions .btn-secondary');
+        const editBtn = await page.$('.doc-card-actions button[title="編集"]');
         expect(editBtn).not.toBeNull();
         await editBtn.click();
         await page.waitForFunction(() => {
@@ -1159,7 +1159,7 @@ describe('E2E Test: Pado App', () => {
         }, { timeout: 10000 });
 
         // 再度編集画面を開いて変更が反映されていることを確認
-        const editBtnAfter = await page.$('.doc-card-actions .btn-secondary');
+        const editBtnAfter = await page.$('.doc-card-actions button[title="編集"]');
         await editBtnAfter.click();
         await page.waitForFunction(() => {
             const o = document.querySelector('#doc-editor-overlay');

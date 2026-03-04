@@ -186,9 +186,20 @@ async function loadDisplaySettings() {
         dateFormat: s.dateFormat || 'japanese',
         showSeal: s.showSeal !== false,
         showBank: s.showBank !== false,
-        estimateValidDays: s.estimateValidDays || 30
+        estimateValidDays: s.estimateValidDays || 30,
+        hiddenDocTypes: s.hiddenDocTypes || []
     };
 }
+
+const CONFIGURABLE_DOC_TYPES = ['estimate','purchase_order','invoice','delivery_note','sales_slip','purchase_slip'];
+
+const PAYMENT_METHOD_LABELS = {
+    bank_transfer: '銀行振込',
+    cash: '現金',
+    check: '小切手',
+    credit_card: 'クレジットカード',
+    other: 'その他'
+};
 
 // ============================================================
 // タブ切替
@@ -270,6 +281,11 @@ async function loadSettings() {
     document.getElementById('setting-show-seal').checked = ds.showSeal;
     document.getElementById('setting-show-bank').checked = ds.showBank;
     document.getElementById('setting-estimate-valid-days').value = ds.estimateValidDays;
+
+    // 帳票タブ表示設定
+    CONFIGURABLE_DOC_TYPES.forEach(type => {
+        document.getElementById('setting-show-' + type).checked = !ds.hiddenDocTypes.includes(type);
+    });
 
     // 帳票番号設定を生成
     renderNumberFormatSettings();
@@ -394,13 +410,18 @@ function initSettingsEvents() {
 
     // 表示設定保存
     document.getElementById('btn-save-display').addEventListener('click', async () => {
+        const hiddenDocTypes = CONFIGURABLE_DOC_TYPES.filter(type =>
+            !document.getElementById('setting-show-' + type).checked
+        );
         await saveSetting('display_settings', {
             defaultDocType: document.getElementById('setting-default-doc-type').value,
             dateFormat: document.getElementById('setting-date-format').value,
             showSeal: document.getElementById('setting-show-seal').checked,
             showBank: document.getElementById('setting-show-bank').checked,
-            estimateValidDays: parseInt(document.getElementById('setting-estimate-valid-days').value) || 30
+            estimateValidDays: parseInt(document.getElementById('setting-estimate-valid-days').value) || 30,
+            hiddenDocTypes: hiddenDocTypes
         });
+        applyDocTabVisibility(hiddenDocTypes);
         alert('表示設定を保存しました');
     });
 
@@ -415,7 +436,6 @@ function initSettingsEvents() {
     window.addEventListener('online', updateSampleImportAvailability);
     window.addEventListener('offline', updateSampleImportAvailability);
     updateSampleImportAvailability();
-    document.getElementById('btn-check-update').addEventListener('click', checkForUpdate);
 }
 
 // ============================================================
@@ -798,6 +818,7 @@ async function loadDocList() {
                 <div class="doc-card-right">
                     <div class="doc-card-amount">${formatYen(total)}</div>
                     <div class="doc-card-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="showDocDetail('${d.id}')" title="詳細">詳細</button>
                         <button class="btn btn-sm btn-secondary" onclick="editDocument('${d.id}')" title="編集">編集</button>
                         <button class="btn btn-sm btn-secondary" onclick="duplicateDocument('${d.id}')" title="複製">複製</button>
                         ${convTargets.length > 0 ? `<button class="btn btn-sm btn-secondary" onclick="showConvertMenu('${d.id}', event)" title="変換">変換</button>` : ''}
@@ -1470,12 +1491,20 @@ function generateReceiptPrintHtml(doc, displaySettings) {
     const sealHtml = displaySettings.showSeal && seller.sealText ?
         `<span class="print-seal" style="width:36px;height:36px;font-size:8pt">${escapeHtml(seller.sealText)}</span>` : '';
 
+    // 税内訳（税率別）
+    const taxDetails = summary.taxDetails || [];
+    const taxDetailHtml = taxDetails.map(d => {
+        const label = d.rateType === 'standard' ? '10%対象' :
+                      d.rateType === 'reduced' ? '8%対象' : '非課税';
+        return `${escapeHtml(label)} ${formatYen(d.taxableAmount)}（税 ${formatYen(d.taxAmount)}）`;
+    }).join(' / ');
+
     // 印紙欄
     let stampHtml = '';
     if (doc.revenueStampRequired) {
         stampHtml = `<div class="print-receipt-stamp-area">
             <div class="print-stamp-box">収入印紙<br>貼付欄</div>
-            <div class="print-stamp-info">印紙税額 ${formatYen(doc.revenueStampAmount || 0)}</div>
+            <div class="print-stamp-info">※印紙税額 ${formatYen(doc.revenueStampAmount || 0)}（税抜${formatYen(summary.subtotal)}）</div>
         </div>`;
     }
 
@@ -1487,7 +1516,7 @@ function generateReceiptPrintHtml(doc, displaySettings) {
         </div>
         <div class="print-receipt-addressee">${escapeHtml(partner.name || '')} ${escapeHtml(partner.honorific || '様')}</div>
         <div class="print-receipt-amount">${formatYen(summary.total)}-</div>
-        <div class="print-receipt-tax-detail">(税抜${formatYen(summary.subtotal)} 消費税${formatYen(summary.totalTax)})</div>
+        <div class="print-receipt-tax-detail">${taxDetailHtml}</div>
         <div class="print-receipt-but">但し ${escapeHtml(doc.receiptOf || '')}として</div>
         <div class="print-receipt-statement">上記正に領収いたしました</div>
         ${stampHtml}
@@ -1498,6 +1527,186 @@ function generateReceiptPrintHtml(doc, displaySettings) {
             ${seller.phone ? '<div>TEL: ' + escapeHtml(seller.phone) + '</div>' : ''}
         </div>
     </div>`;
+}
+
+// ============================================================
+// 帳票詳細表示
+// ============================================================
+let detailDocId = null;
+
+async function showDocDetail(id) {
+    const doc = await getFromStore('documents', id);
+    if (!doc) return;
+
+    detailDocId = id;
+    const displaySettings = await loadDisplaySettings();
+    const typeName = DOC_TYPE_LABELS[doc.docType] || '帳票';
+    const partner = doc.partnerSnapshot || {};
+    const summary = doc.taxSummary || { subtotal: 0, taxDetails: [], totalTax: 0, total: 0 };
+    const dateStr = displaySettings.dateFormat === 'japanese' ?
+        formatDateJapanese(doc.issueDate) : (doc.issueDate || '');
+    const statusLabel = STATUS_LABELS[doc.status] || '下書き';
+    const statusClass = 'status-' + (doc.status || 'draft');
+
+    // 基本情報セクション
+    let html = `<div class="doc-detail-section">
+        <h3>基本情報</h3>
+        <div class="detail-row"><span class="detail-label">帳票番号</span><span class="detail-value">${escapeHtml(doc.docNumber || '(未採番)')}</span></div>
+        <div class="detail-row"><span class="detail-label">種別</span><span class="detail-value">${escapeHtml(typeName)}</span></div>
+        <div class="detail-row"><span class="detail-label">発行日</span><span class="detail-value">${escapeHtml(dateStr)}</span></div>
+        <div class="detail-row"><span class="detail-label">ステータス</span><span class="detail-value"><span class="status-badge ${statusClass}">${statusLabel}</span></span></div>
+    </div>`;
+
+    // 取引先情報セクション
+    if (partner.name) {
+        html += `<div class="doc-detail-section">
+            <h3>取引先</h3>
+            <div class="detail-row"><span class="detail-label">名称</span><span class="detail-value">${escapeHtml(partner.name)}${partner.honorific ? ' ' + escapeHtml(partner.honorific) : ''}</span></div>
+            ${partner.address1 ? `<div class="detail-row"><span class="detail-label">住所</span><span class="detail-value">${escapeHtml(partner.address1)}${partner.address2 ? ' ' + escapeHtml(partner.address2) : ''}</span></div>` : ''}
+            ${partner.contactPerson ? `<div class="detail-row"><span class="detail-label">担当者</span><span class="detail-value">${escapeHtml(partner.contactPerson)}</span></div>` : ''}
+        </div>`;
+    }
+
+    // 種別固有情報セクション
+    let typeSpecificHtml = '';
+    if (doc.docType === 'estimate' && doc.validUntil) {
+        const validStr = displaySettings.dateFormat === 'japanese' ? formatDateJapanese(doc.validUntil) : doc.validUntil;
+        typeSpecificHtml += `<div class="detail-row"><span class="detail-label">有効期限</span><span class="detail-value">${escapeHtml(validStr)}</span></div>`;
+    }
+    if ((doc.docType === 'invoice') && doc.dueDate) {
+        const dueStr = displaySettings.dateFormat === 'japanese' ? formatDateJapanese(doc.dueDate) : doc.dueDate;
+        typeSpecificHtml += `<div class="detail-row"><span class="detail-label">支払期限</span><span class="detail-value">${escapeHtml(dueStr)}</span></div>`;
+    }
+    if (doc.docType === 'delivery_note' && doc.deliveryDate) {
+        const delStr = displaySettings.dateFormat === 'japanese' ? formatDateJapanese(doc.deliveryDate) : doc.deliveryDate;
+        typeSpecificHtml += `<div class="detail-row"><span class="detail-label">納品日</span><span class="detail-value">${escapeHtml(delStr)}</span></div>`;
+    }
+    if (doc.docType === 'receipt' && doc.receiptOf) {
+        typeSpecificHtml += `<div class="detail-row"><span class="detail-label">但し書き</span><span class="detail-value">${escapeHtml(doc.receiptOf)}</span></div>`;
+    }
+    if (doc.paymentMethod) {
+        typeSpecificHtml += `<div class="detail-row"><span class="detail-label">支払方法</span><span class="detail-value">${escapeHtml(PAYMENT_METHOD_LABELS[doc.paymentMethod] || doc.paymentMethod)}</span></div>`;
+    }
+    if (typeSpecificHtml) {
+        html += `<div class="doc-detail-section"><h3>詳細情報</h3>${typeSpecificHtml}</div>`;
+    }
+
+    // 明細テーブル
+    if (doc.lineItems && doc.lineItems.length > 0) {
+        const lineRows = doc.lineItems.map((line, i) => {
+            const taxLabel = line.taxRateType === 'standard' ? '標準' :
+                             line.taxRateType === 'reduced' ? '軽減' : '非課税';
+            return `<tr>
+                <td class="text-center">${i + 1}</td>
+                <td>${escapeHtml(line.name || '')}</td>
+                <td>${escapeHtml(line.description || '')}</td>
+                <td class="text-right">${line.quantity}</td>
+                <td class="text-center">${escapeHtml(line.unit || '')}</td>
+                <td class="text-right">${formatCurrency(line.unitPrice)}</td>
+                <td class="text-center">${taxLabel}</td>
+                <td class="text-right">${formatCurrency(line.amount)}</td>
+            </tr>`;
+        }).join('');
+
+        html += `<div class="doc-detail-section">
+            <h3>明細</h3>
+            <div style="overflow-x:auto">
+            <table class="doc-detail-table">
+                <thead><tr>
+                    <th style="width:36px">No</th>
+                    <th>品目名</th>
+                    <th>摘要</th>
+                    <th style="width:60px;text-align:right">数量</th>
+                    <th style="width:50px;text-align:center">単位</th>
+                    <th style="width:80px;text-align:right">単価</th>
+                    <th style="width:60px;text-align:center">税区分</th>
+                    <th style="width:90px;text-align:right">金額</th>
+                </tr></thead>
+                <tbody>${lineRows}</tbody>
+            </table>
+            </div>
+        </div>`;
+    }
+
+    // 金額サマリー
+    const taxDetailRows = (summary.taxDetails || []).map(d => {
+        const label = d.rateType === 'standard' ? '10%対象' :
+                      d.rateType === 'reduced' ? ' 8%対象' : '非課税';
+        return `<div class="summary-tax-row"><span>${label} ${formatCurrency(d.taxableAmount)}</span><span>${formatCurrency(d.taxAmount)}</span></div>`;
+    }).join('');
+
+    html += `<div class="doc-detail-section">
+        <h3>金額</h3>
+        <div class="doc-detail-summary">
+            <div class="summary-row"><span>小計（税抜）</span><span>${formatCurrency(summary.subtotal)}</span></div>
+            ${taxDetailRows}
+            <div class="summary-row"><span>消費税合計</span><span>${formatCurrency(summary.totalTax)}</span></div>
+            <div class="summary-row summary-total"><span>合計（税込）</span><span>${formatCurrency(summary.total)}</span></div>
+        </div>
+    </div>`;
+
+    // 備考
+    if (doc.notes) {
+        html += `<div class="doc-detail-section">
+            <h3>備考</h3>
+            <div style="font-size:13px;white-space:pre-wrap">${escapeHtml(doc.notes)}</div>
+        </div>`;
+    }
+
+    // 変換元情報
+    if (doc.sourceDocId) {
+        html += `<div class="doc-detail-section">
+            <h3>変換元</h3>
+            <div class="detail-row"><span class="detail-value">${escapeHtml(DOC_TYPE_LABELS[doc.sourceDocType] || '帳票')} ${escapeHtml(doc.sourceDocNumber || '')} から作成</span></div>
+        </div>`;
+    }
+
+    document.getElementById('doc-detail-title').textContent = typeName + '詳細';
+    document.getElementById('doc-detail-body').innerHTML = html;
+    document.getElementById('doc-detail-overlay').style.display = '';
+}
+
+function initDocDetailEvents() {
+    document.getElementById('btn-close-doc-detail').addEventListener('click', () => {
+        document.getElementById('doc-detail-overlay').style.display = 'none';
+    });
+    document.getElementById('btn-detail-close').addEventListener('click', () => {
+        document.getElementById('doc-detail-overlay').style.display = 'none';
+    });
+    document.getElementById('btn-detail-edit').addEventListener('click', async () => {
+        document.getElementById('doc-detail-overlay').style.display = 'none';
+        if (detailDocId) {
+            await editDocument(detailDocId);
+        }
+    });
+}
+
+// ============================================================
+// 帳票サブタブ表示制御
+// ============================================================
+function applyDocTabVisibility(hiddenDocTypes) {
+    const buttons = document.querySelectorAll('#doc-sub-tab-nav .sub-tab-btn');
+    let activeHidden = false;
+
+    buttons.forEach(btn => {
+        const docType = btn.dataset.docType;
+        if (hiddenDocTypes.includes(docType)) {
+            btn.style.display = 'none';
+            if (btn.classList.contains('active')) {
+                activeHidden = true;
+            }
+        } else {
+            btn.style.display = '';
+        }
+    });
+
+    // アクティブタブが非表示にされた場合、最初の表示可能タブに切り替え
+    if (activeHidden) {
+        const firstVisible = Array.from(buttons).find(btn => btn.style.display !== 'none');
+        if (firstVisible) {
+            switchDocSubTab(firstVisible.dataset.docType);
+        }
+    }
 }
 
 // ============================================================
@@ -1612,7 +1821,7 @@ async function importSampleData() {
     }
 
     showConfirm(
-        'サンプルデータ（取引先3件、品目6件、帳票3件）をダウンロードしてインポートします。既存データとマージされます。',
+        'サンプルデータ（取引先10件、品目15件、帳票24件）をダウンロードしてインポートします。既存データとマージされます。',
         async () => {
             btn.disabled = true;
             msgEl.textContent = 'サンプルデータをダウンロード中...';
@@ -1629,16 +1838,28 @@ async function importSampleData() {
 
                 let counts = { partners: 0, items: 0, documents: 0, settings: 0 };
                 if (data.partners) {
-                    for (const p of data.partners) { await updateInStore('partners', p); counts.partners++; }
+                    for (const p of data.partners) {
+                        const existing = await getFromStore('partners', p.id);
+                        if (!existing) { await updateInStore('partners', p); counts.partners++; }
+                    }
                 }
                 if (data.items) {
-                    for (const item of data.items) { await updateInStore('items', item); counts.items++; }
+                    for (const item of data.items) {
+                        const existing = await getFromStore('items', item.id);
+                        if (!existing) { await updateInStore('items', item); counts.items++; }
+                    }
                 }
                 if (data.documents) {
-                    for (const doc of data.documents) { await updateInStore('documents', doc); counts.documents++; }
+                    for (const doc of data.documents) {
+                        const existing = await getFromStore('documents', doc.id);
+                        if (!existing) { await updateInStore('documents', doc); counts.documents++; }
+                    }
                 }
                 if (data.settings) {
-                    for (const [key, value] of Object.entries(data.settings)) { await saveSetting(key, value); counts.settings++; }
+                    for (const [key, value] of Object.entries(data.settings)) {
+                        const existing = await getSetting(key);
+                        if (existing === null) { await saveSetting(key, value); counts.settings++; }
+                    }
                 }
 
                 msgEl.textContent = 'インポート完了: 取引先' + counts.partners + '件、品目' + counts.items + '件、帳票' + counts.documents + '件';
@@ -1695,37 +1916,107 @@ function initConfirmDialog() {
 // PWA & 更新
 // ============================================================
 let swRegistration = null;
+let lastUpdateCheck = 0;
+const UPDATE_CHECK_THROTTLE_MS = 30000;
 
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').then(reg => {
-            swRegistration = reg;
-            reg.addEventListener('updatefound', () => {
-                const newWorker = reg.installing;
+async function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+
+    const hadController = !!navigator.serviceWorker.controller;
+
+    try {
+        swRegistration = await navigator.serviceWorker.register('/sw.js');
+
+        swRegistration.addEventListener('updatefound', () => {
+            const newWorker = swRegistration.installing;
+            if (newWorker) {
                 newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        document.getElementById('update-banner').style.display = 'flex';
+                    if (newWorker.state === 'activated' && hadController) {
+                        showUpdateBanner();
                     }
                 });
-            });
+            }
         });
+
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (hadController) {
+                showUpdateBanner();
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                throttledUpdateCheck();
+            }
+        });
+    } catch (e) {
+        // SW登録失敗は無視（HTTP環境等）
     }
 }
 
-function applyUpdate() {
-    if (swRegistration && swRegistration.waiting) {
-        swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
-    }
-    window.location.reload();
-}
-
-function checkForUpdate() {
+function throttledUpdateCheck() {
+    const now = Date.now();
+    if (now - lastUpdateCheck < UPDATE_CHECK_THROTTLE_MS) return;
+    lastUpdateCheck = now;
     if (swRegistration) {
-        swRegistration.update().then(() => {
-            alert('更新を確認しました');
+        swRegistration.update().catch(() => {});
+    }
+}
+
+async function checkForUpdate() {
+    const statusEl = document.getElementById('update-check-status');
+    if (!swRegistration) {
+        if (statusEl) statusEl.textContent = 'Service Workerが未登録です';
+        return;
+    }
+
+    if (statusEl) statusEl.textContent = '確認中...';
+
+    try {
+        await swRegistration.update();
+        const waiting = swRegistration.waiting;
+        const installing = swRegistration.installing;
+
+        if (waiting || installing) {
+            if (statusEl) statusEl.textContent = '新しいバージョンを検出しました';
+            showUpdateBanner();
+        } else {
+            if (statusEl) statusEl.textContent = '最新バージョンです';
+            setTimeout(() => {
+                if (statusEl) statusEl.textContent = '';
+            }, 3000);
+        }
+    } catch (e) {
+        if (statusEl) statusEl.textContent = '確認に失敗しました';
+    }
+}
+
+function showUpdateBanner() {
+    const banner = document.getElementById('update-banner');
+    if (banner) banner.style.display = 'flex';
+}
+
+function hideUpdateBanner() {
+    const banner = document.getElementById('update-banner');
+    if (banner) banner.style.display = 'none';
+}
+
+function initUpdateBanner() {
+    const updateBtn = document.getElementById('update-banner-btn');
+    if (updateBtn) {
+        updateBtn.addEventListener('click', () => {
+            location.reload();
         });
-    } else {
-        alert('Service Workerが登録されていません');
+    }
+    const closeBtn = document.getElementById('update-banner-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            hideUpdateBanner();
+        });
+    }
+    const checkUpdateBtn = document.getElementById('check-update-btn');
+    if (checkUpdateBtn) {
+        checkUpdateBtn.addEventListener('click', checkForUpdate);
     }
 }
 
@@ -1745,9 +2036,17 @@ function initScrollTop() {
 // ============================================================
 // アプリ情報表示
 // ============================================================
-function showAppInfo() {
-    if (window.APP_INFO) {
-        document.getElementById('app-info-display').textContent = `v${APP_INFO.version}`;
+function initVersionInfo() {
+    const info = window.APP_INFO || {};
+
+    const infoDisplay = document.getElementById('app-info-display');
+    if (infoDisplay) {
+        infoDisplay.textContent = `Build: ${info.buildTime || '---'}`;
+    }
+
+    const versionDetail = document.getElementById('app-version-info');
+    if (versionDetail) {
+        versionDetail.textContent = `Build: ${info.buildTime || '---'}`;
     }
 }
 
@@ -1768,13 +2067,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     initItemEvents();
     initDocListEvents();
     initDocEditorEvents();
+    initDocDetailEvents();
     initConfirmDialog();
     initScrollTop();
-    showAppInfo();
+    initVersionInfo();
+    initUpdateBanner();
     registerServiceWorker();
 
     // デフォルトタブ読込
     const ds = await loadDisplaySettings();
+    applyDocTabVisibility(ds.hiddenDocTypes);
     currentDocType = ds.defaultDocType || 'estimate';
     switchDocSubTab(currentDocType);
     loadDocList();

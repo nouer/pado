@@ -17,7 +17,7 @@
 <!-- スクロールトップ & アプリ情報 -->
 <!-- ============================================================ -->
 <button id="scroll-top-btn" class="scroll-top-btn" style="display:none" title="トップへ戻る">▲</button>
-<div id="app-info-display" class="app-info-display"></div>
+<div id="app-info-display" class="app-info-display no-print"></div>
 
 <!-- ============================================================ -->
 <!-- ヘッダー -->
@@ -29,7 +29,8 @@
 <!-- 更新バナー -->
 <div id="update-banner" class="update-banner" style="display:none">
     <span>新しいバージョンが利用可能です</span>
-    <button onclick="applyUpdate()">更新する</button>
+    <button id="update-banner-btn" class="btn btn-sm" type="button">今すぐ更新</button>
+    <button id="update-banner-close" class="update-banner-close" type="button" aria-label="閉じる">&times;</button>
 </div>
 
 <!-- ============================================================ -->
@@ -277,6 +278,18 @@
                 <label for="setting-estimate-valid-days">見積有効日数（デフォルト）</label>
                 <input type="number" id="setting-estimate-valid-days" value="30" min="1" max="365">
             </div>
+            <div class="form-group">
+                <label>帳票タブの表示</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label"><input type="checkbox" id="setting-show-estimate" checked> 見積書</label>
+                    <label class="checkbox-label"><input type="checkbox" id="setting-show-purchase_order" checked> 発注書</label>
+                    <label class="checkbox-label"><input type="checkbox" id="setting-show-invoice" checked> 請求書</label>
+                    <label class="checkbox-label"><input type="checkbox" id="setting-show-delivery_note" checked> 納品書</label>
+                    <label class="checkbox-label"><input type="checkbox" id="setting-show-sales_slip" checked> 売上伝票</label>
+                    <label class="checkbox-label"><input type="checkbox" id="setting-show-purchase_slip" checked> 仕入伝票</label>
+                </div>
+                <span class="form-hint">領収書は常に表示されます</span>
+            </div>
             <button class="btn btn-primary" id="btn-save-display">表示設定を保存</button>
         </section>
 
@@ -312,7 +325,8 @@
                 <p>バージョン: <span id="app-version">-</span></p>
                 <p>ビルド日時: <span id="app-build-time">-</span></p>
             </div>
-            <button class="btn btn-secondary" id="btn-check-update">更新を確認</button>
+            <button class="btn btn-secondary btn-sm" id="check-update-btn">更新を確認</button>
+            <div id="update-check-status"></div>
         </section>
     </div>
 </div>
@@ -463,6 +477,23 @@
         <div class="overlay-footer">
             <button class="btn btn-secondary" id="btn-cancel-doc">キャンセル</button>
             <button class="btn btn-primary" id="btn-save-doc">保存</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 帳票詳細 オーバーレイ -->
+<!-- ============================================================ -->
+<div id="doc-detail-overlay" class="overlay" style="display:none">
+    <div class="overlay-content overlay-wide">
+        <div class="overlay-header">
+            <h2 id="doc-detail-title">帳票詳細</h2>
+            <button class="btn-close" id="btn-close-doc-detail">&times;</button>
+        </div>
+        <div class="overlay-body" id="doc-detail-body"></div>
+        <div class="overlay-footer">
+            <button class="btn btn-secondary" id="btn-detail-close">閉じる</button>
+            <button class="btn btn-primary" id="btn-detail-edit">編集</button>
         </div>
     </div>
 </div>
