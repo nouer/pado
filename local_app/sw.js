@@ -3,7 +3,7 @@
  * アセットキャッシュによる完全オフライン対応
  */
 
-const CACHE_NAME = 'pado-v1.0.0-1772612116';
+const CACHE_NAME = 'pado-v1.0.0-1772612529';
 
 const PRECACHE_ASSETS = [
     '/',
