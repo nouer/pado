@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お知らせ — Pado</title>
+<meta name="description" content="Pado 帳票管理アプリからのお知らせ">
+<meta property="og:title" content="お知らせ — Pado">
+<meta property="og:description" content="Pado 帳票管理アプリからのお知らせ">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pado 帳票管理">
+<link rel="icon" href="/icons/favicon-32.png" type="image/png">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Serif CJK JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a1a1a;
+    background-color: #f8f8f8;
+}
+
+.container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 32px 64px;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+nav.back-link {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+nav.back-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav.back-link a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid #333;
+}
+
+h2 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+    padding-bottom: 0.2em;
+    border-bottom: 1px solid #ccc;
+}
+
+h3 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 1.5em;
+    margin-bottom: 0.4em;
+}
+
+p {
+    margin: 0.6em 0;
+    text-align: justify;
+}
+
+ul, ol {
+    margin: 0.6em 0;
+    padding-left: 2em;
+}
+
+li {
+    margin: 0.3em 0;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2em 0;
+}
+
+strong {
+    font-weight: bold;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+sub {
+    font-size: 12px;
+    color: #888;
+}
+
+.notice {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 1.5em 0;
+    background-color: #fafafa;
+}
+
+.notice-date {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 0.4em;
+}
+
+.feature-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 1em 0;
+}
+
+.feature-list li {
+    padding: 6px 0 6px 1.6em;
+    position: relative;
+}
+
+.feature-list li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.link-btn {
+    display: inline-block;
+    background-color: #2563eb;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 1em;
+    transition: background-color 0.2s;
+}
+
+.link-btn:hover {
+    background-color: #1d4ed8;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 16px 16px 48px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 19px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    .notice {
+        padding: 16px 18px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<nav class="back-link"><a href="/">← Pado アプリに戻る</a></nav>
+<h1>Pado — お知らせ</h1>
+
+<div class="notice">
+<p class="notice-date">2026年3月4日</p>
+<h2 style="margin-top: 0;">Pado v1.0 リリースのお知らせ</h2>
+<p>このたび、帳票管理アプリ「Pado（パド）」をリリースいたしました。</p>
+<p>Pado は、個人事業主・小規模事業者の方が<strong>ブラウザだけで手軽に帳票を作成・管理</strong>できるアプリケーションです。アカウント登録不要・完全無料でお使いいただけます。</p>
+
+<h3>主な機能</h3>
+<ul class="feature-list">
+<li><strong>7種類の帳票作成</strong> — 見積書・発注書・請求書・納品書・売上伝票・仕入伝票・領収書</li>
+<li><strong>インボイス制度対応</strong> — 適格請求書番号・税率別消費税額の自動レイアウト</li>
+<li><strong>取引先・品目のマスター管理</strong> — 選ぶだけで入力完了、転記ミスを防止</li>
+<li><strong>データのエクスポート/インポート</strong> — JSON形式でバックアップ・端末移行が簡単</li>
+<li><strong>オフライン対応（PWA）</strong> — インターネット接続なしでも全機能が利用可能</li>
+<li><strong>印刷・PDF出力</strong> — A4帳票・領収書をプロ品質で印刷</li>
+</ul>
+
+<p>操作方法の詳細は、ユーザーマニュアルをご覧ください。</p>
+<a href="/manual.html" class="link-btn">ユーザーマニュアルを見る</a>
+</div>
+
+<hr />
+<p><sub>ご不明な点やご要望がございましたら、<a href="https://github.com/nouer/pado/issues">GitHub Issues</a> にてお気軽にお知らせください。</sub></p>
+
+</div>
+</body>
+</html>

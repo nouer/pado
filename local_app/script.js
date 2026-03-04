@@ -13,12 +13,19 @@ function generateId() {
     return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
 }
 
+async function hashString(str) {
+    const data = new TextEncoder().encode(str);
+    const buf = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 // ============================================================
 // グローバル状態
 // ============================================================
 let db = null;
 let currentDocType = 'estimate';
 let editingDocId = null;
+let _pendingNotificationHash = null;
 
 const STATUS_LABELS = {
     draft: '下書き', issued: '発行済', sent: '送付済',
@@ -291,6 +298,10 @@ async function loadSettings() {
     // 帳票番号設定を生成
     renderNumberFormatSettings();
 
+    // お知らせ設定
+    const notifyEnabled = await getSetting('notification_enabled');
+    document.getElementById('setting-notify-enabled').checked = notifyEnabled !== false;
+
     // アプリ情報
     if (window.APP_INFO) {
         document.getElementById('app-version').textContent = APP_INFO.version;
@@ -435,6 +446,12 @@ function initSettingsEvents() {
     window.addEventListener('online', updateSampleImportAvailability);
     window.addEventListener('offline', updateSampleImportAvailability);
     updateSampleImportAvailability();
+
+    // お知らせ
+    document.getElementById('btn-open-notification').addEventListener('click', openNotificationPage);
+    document.getElementById('setting-notify-enabled').addEventListener('change', (e) => {
+        saveSetting('notification_enabled', e.target.checked);
+    });
 }
 
 // ============================================================
@@ -1745,6 +1762,57 @@ function initToast() {
     });
 }
 
+// ============================================================
+// お知らせ通知
+// ============================================================
+const NOTIFY_URL = '/notify.html';
+
+async function checkNotification() {
+    try {
+        const enabled = await getSetting('notification_enabled');
+        if (enabled === false) return;
+
+        const res = await fetch(NOTIFY_URL + '?_t=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) return;
+
+        const html = await res.text();
+        const newHash = await hashString(html);
+        const savedHash = await getSetting('notification_hash');
+
+        if (newHash !== savedHash) {
+            _pendingNotificationHash = newHash;
+            showNotificationToast('開発元からのお知らせがあります。タップして確認');
+        }
+    } catch (e) {
+        // オフライン or ネットワークエラー時は静かにスキップ
+    }
+}
+
+function showNotificationToast(text) {
+    const el = document.getElementById('toast');
+    document.getElementById('toast-text').textContent = text;
+    el.className = 'toast info clickable';
+    el.style.display = 'block';
+    clearTimeout(_toastTimer);
+
+    // クリックハンドラ（閉じるボタン以外）
+    function onToastClick(e) {
+        if (e.target.id === 'toast-close') return;
+        el.removeEventListener('click', onToastClick);
+        el.style.display = 'none';
+        openNotificationPage();
+    }
+    el.addEventListener('click', onToastClick);
+}
+
+function openNotificationPage() {
+    window.open(NOTIFY_URL, '_blank');
+    if (_pendingNotificationHash) {
+        saveSetting('notification_hash', _pendingNotificationHash);
+        _pendingNotificationHash = null;
+    }
+}
+
 async function exportData() {
     try {
         const data = {
@@ -2158,6 +2226,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initVersionInfo();
     initUpdateBanner();
     registerServiceWorker();
+    checkNotification();
 
     // デフォルトタブ読込
     const ds = await loadDisplaySettings();
