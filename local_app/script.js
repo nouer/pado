@@ -427,9 +427,6 @@ function initSettingsEvents() {
 
     // データ管理
     document.getElementById('btn-export').addEventListener('click', exportData);
-    document.getElementById('btn-import').addEventListener('click', () => {
-        document.getElementById('import-file').click();
-    });
     document.getElementById('import-file').addEventListener('change', importData);
     document.getElementById('btn-delete-all').addEventListener('click', deleteAllData);
     document.getElementById('import-sample-btn').addEventListener('click', importSampleData);
@@ -1712,30 +1709,56 @@ function applyDocTabVisibility(hiddenDocTypes) {
 // ============================================================
 // データ管理（エクスポート/インポート/削除）
 // ============================================================
+function showMessage(elementId, text, type) {
+    const el = document.getElementById(elementId);
+    el.textContent = text;
+    el.className = `message show ${type}`;
+    setTimeout(() => { el.classList.remove('show'); }, 3000);
+}
+
 async function exportData() {
-    const data = {
-        exportedAt: new Date().toISOString(),
-        version: '1.0.0',
-        partners: await getAllFromStore('partners'),
-        items: await getAllFromStore('items'),
-        documents: await getAllFromStore('documents'),
-        settings: {}
-    };
+    try {
+        const data = {
+            exportedAt: new Date().toISOString(),
+            version: '1.0.0',
+            appName: 'pado',
+            partners: await getAllFromStore('partners'),
+            items: await getAllFromStore('items'),
+            documents: await getAllFromStore('documents'),
+            settings: {}
+        };
 
-    // 設定を収集
-    const settingKeys = ['company_info', 'tax_settings', 'number_format', 'display_settings'];
-    for (const key of settingKeys) {
-        const val = await getSetting(key);
-        if (val) data.settings[key] = val;
+        // 設定を収集
+        const settingKeys = ['company_info', 'tax_settings', 'number_format', 'display_settings'];
+        for (const key of settingKeys) {
+            const val = await getSetting(key);
+            if (val) data.settings[key] = val;
+        }
+
+        const now = new Date();
+        const ts = now.getFullYear()
+            + String(now.getMonth() + 1).padStart(2, '0')
+            + String(now.getDate()).padStart(2, '0')
+            + '_'
+            + String(now.getHours()).padStart(2, '0')
+            + String(now.getMinutes()).padStart(2, '0')
+            + String(now.getSeconds()).padStart(2, '0');
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `pado_export_${ts}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        const pc = data.partners.length;
+        const ic = data.items.length;
+        const dc = data.documents.length;
+        showMessage('data-message', `${pc}件の取引先、${ic}件の品目、${dc}件の帳票をエクスポートしました`, 'success');
+    } catch (err) {
+        showMessage('data-message', 'エクスポート中にエラーが発生しました: ' + err.message, 'error');
     }
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `pado_export_${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
 }
 
 async function importData(event) {
@@ -1747,13 +1770,15 @@ async function importData(event) {
     try {
         data = JSON.parse(text);
     } catch {
-        alert('JSONファイルの形式が不正です');
+        showMessage('data-message', 'JSONファイルの形式が不正です', 'error');
+        event.target.value = '';
         return;
     }
 
     const v = validateImportData(data);
     if (!v.valid) {
-        alert('インポートエラー:\n' + v.errors.join('\n'));
+        showMessage('data-message', 'インポートエラー: ' + v.errors.join(', '), 'error');
+        event.target.value = '';
         return;
     }
 
@@ -1786,10 +1811,12 @@ async function importData(event) {
                     await saveSetting(key, value);
                 }
             }
-            alert('インポートが完了しました');
+            showMessage('data-message', 'インポートが完了しました', 'success');
             loadDocList();
+            loadPartnerList();
+            loadItemList();
         } catch (err) {
-            alert('インポート中にエラーが発生しました: ' + err.message);
+            showMessage('data-message', 'インポート中にエラーが発生しました: ' + err.message, 'error');
         }
     });
 
@@ -1884,8 +1911,10 @@ async function deleteAllData() {
         await clearStore('documents');
         await clearStore('doc_sequences');
         await clearStore('app_settings');
-        alert('すべてのデータを削除しました');
+        showMessage('data-message', 'すべてのデータを削除しました', 'success');
         loadDocList();
+        loadPartnerList();
+        loadItemList();
     });
 }
 

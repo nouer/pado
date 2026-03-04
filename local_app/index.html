@@ -296,12 +296,16 @@
         <!-- データ管理 -->
         <section class="settings-section">
             <h2>データ管理</h2>
-            <div class="btn-group-vertical">
-                <button class="btn btn-secondary" id="btn-export">データをエクスポート</button>
-                <button class="btn btn-secondary" id="btn-import">データをインポート</button>
-                <input type="file" id="import-file" accept=".json" style="display:none">
-                <button class="btn btn-danger" id="btn-delete-all">全データを削除</button>
+            <div class="settings-buttons">
+                <button class="btn btn-primary" id="btn-export">エクスポート</button>
+                <label class="btn btn-secondary">
+                    インポート
+                    <input type="file" id="import-file" accept=".json" style="display:none">
+                </label>
             </div>
+            <div id="data-message" class="message"></div>
+            <hr>
+            <button class="btn btn-danger btn-sm" id="btn-delete-all">全データ削除</button>
         </section>
 
         <!-- サンプルデータ -->

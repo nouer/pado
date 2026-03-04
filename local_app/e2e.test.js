@@ -1549,9 +1549,6 @@ describe('E2E Test: Pado App', () => {
             return d && d.style.display === 'flex';
         }, { timeout: 5000 });
 
-        // インポート完了後のalertハンドラーを先に設定
-        page._dialogQueue.push(async dialog => await dialog.accept());
-
         // 確認ダイアログでOK（JSクリック）
         await page.evaluate(() => document.getElementById('btn-confirm-ok').click());
         await new Promise(r => setTimeout(r, 3000));
@@ -1582,17 +1579,13 @@ describe('E2E Test: Pado App', () => {
         await page.click('[data-tab="settings"]');
         await new Promise(r => setTimeout(r, 300));
 
-        let alertMsg = '';
-        page._dialogQueue.push(async dialog => {
-            alertMsg = dialog.message();
-            await dialog.accept();
-        });
-
         const fileInput = await page.$('#import-file');
         await fileInput.uploadFile(invalidFilePath);
         await new Promise(r => setTimeout(r, 1000));
 
-        expect(alertMsg).toContain('不正');
+        // showMessageでエラーが表示される
+        const msgText = await page.$eval('#data-message', el => el.textContent);
+        expect(msgText).toContain('不正');
 
         // クリーンアップ
         fs.unlinkSync(invalidFilePath);
@@ -1613,9 +1606,6 @@ describe('E2E Test: Pado App', () => {
             const d = document.getElementById('confirm-dialog');
             return d && d.style.display === 'flex';
         }, { timeout: 5000 });
-
-        // 削除完了後のalertハンドラーを先に設定
-        page._dialogQueue.push(async dialog => await dialog.accept());
 
         // 確認ダイアログでOK（JSクリック）
         await page.evaluate(() => document.getElementById('btn-confirm-ok').click());

@@ -306,6 +306,16 @@ body {
     gap: 8px;
 }
 .btn-group-vertical .btn { width: 100%; }
+.settings-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.message { padding: 10px 16px; border-radius: 6px; font-size: 0.9em; margin-bottom: 12px; display: none; }
+.message.show { display: block; }
+.message.success { background: var(--success-light); color: var(--success); border: 1px solid #86efac; }
+.message.error { background: var(--danger-light); color: var(--danger); border: 1px solid #fca5a5; }
 
 /* ============================================================
    空状態
