@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Receipt/document icon for Pado invoice management app -->
+  <!-- Theme color: #1e40af (blue) -->
+
+  <!-- Paper body with slight shadow -->
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="2" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+    <!-- Zigzag bottom clip for receipt look -->
+    <clipPath id="receiptBottom">
+      <path d="M80,40 H432 V440
+        L420,430 L408,440 L396,430 L384,440 L372,430 L360,440
+        L348,430 L336,440 L324,430 L312,440 L300,430 L288,440
+        L276,430 L264,440 L252,430 L240,440 L228,430 L216,440
+        L204,430 L192,440 L180,430 L168,440 L156,430 L144,440
+        L132,430 L120,440 L108,430 L96,440 L84,430 L80,440 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Receipt paper -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="40" width="352" height="400" rx="8" ry="8" fill="#ffffff" clip-path="url(#receiptBottom)"/>
+    <!-- Top edge with slight fold effect -->
+    <rect x="80" y="40" width="352" height="12" rx="8" ry="8" fill="#f0f0f0" clip-path="url(#receiptBottom)"/>
+  </g>
+
+  <!-- Yen symbol at top -->
+  <text x="256" y="120" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="64" fill="#1e40af">¥</text>
+
+  <!-- Horizontal rule -->
+  <line x1="130" y1="145" x2="382" y2="145" stroke="#1e40af" stroke-width="2.5" stroke-dasharray="6,3"/>
+
+  <!-- Text lines representing invoice items -->
+  <rect x="130" y="170" width="180" height="14" rx="7" fill="#1e40af" opacity="0.7"/>
+  <rect x="330" y="170" width="52" height="14" rx="7" fill="#1e40af" opacity="0.5"/>
+
+  <rect x="130" y="200" width="140" height="14" rx="7" fill="#1e40af" opacity="0.55"/>
+  <rect x="330" y="200" width="52" height="14" rx="7" fill="#1e40af" opacity="0.4"/>
+
+  <rect x="130" y="230" width="160" height="14" rx="7" fill="#1e40af" opacity="0.45"/>
+  <rect x="330" y="230" width="52" height="14" rx="7" fill="#1e40af" opacity="0.35"/>
+
+  <!-- Separator line -->
+  <line x1="130" y1="260" x2="382" y2="260" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- Total line (bolder) -->
+  <rect x="130" y="280" width="80" height="16" rx="8" fill="#1e40af" opacity="0.8"/>
+  <rect x="300" y="280" width="82" height="16" rx="8" fill="#1e40af" opacity="0.9"/>
+
+  <!-- Bottom decorative dots -->
+  <circle cx="200" cy="340" r="6" fill="#1e40af" opacity="0.2"/>
+  <circle cx="256" cy="340" r="6" fill="#1e40af" opacity="0.2"/>
+  <circle cx="312" cy="340" r="6" fill="#1e40af" opacity="0.2"/>
+
+  <!-- Small stamp/seal circle (bottom right, like Japanese hanko) -->
+  <circle cx="360" cy="370" r="22" fill="none" stroke="#dc2626" stroke-width="3" opacity="0.6"/>
+  <text x="360" y="377" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="18" fill="#dc2626" opacity="0.6">印</text>
+</svg>

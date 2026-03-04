@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Maskable version: icon within safe zone (center 80% = 409.6px) -->
+  <!-- Background fills entire canvas, icon is centered in safe area -->
+
+  <!-- Full background -->
+  <rect width="512" height="512" fill="#1e40af"/>
+
+  <!-- Receipt paper (scaled to fit within safe zone ~51-461) -->
+  <defs>
+    <clipPath id="receiptBottom">
+      <path d="M156,76 H356 V408
+        L348,400 L340,408 L332,400 L324,408 L316,400 L308,408
+        L300,400 L292,408 L284,400 L276,408 L268,400 L260,408
+        L252,400 L244,408 L236,400 L228,408 L220,400 L212,408
+        L204,400 L196,408 L188,400 L180,408 L172,400 L164,408
+        L156,400 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Paper with receipt bottom -->
+  <rect x="156" y="76" width="200" height="332" rx="6" ry="6" fill="#ffffff" clip-path="url(#receiptBottom)"/>
+  <!-- Top fold -->
+  <rect x="156" y="76" width="200" height="8" rx="6" ry="6" fill="#e8e8e8" clip-path="url(#receiptBottom)"/>
+
+  <!-- Yen symbol -->
+  <text x="256" y="140" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="44" fill="#1e40af">¥</text>
+
+  <!-- Dashed line -->
+  <line x1="185" y1="158" x2="327" y2="158" stroke="#1e40af" stroke-width="2" stroke-dasharray="5,2.5"/>
+
+  <!-- Item lines -->
+  <rect x="185" y="175" width="100" height="10" rx="5" fill="#1e40af" opacity="0.65"/>
+  <rect x="300" y="175" width="27" height="10" rx="5" fill="#1e40af" opacity="0.45"/>
+
+  <rect x="185" y="198" width="80" height="10" rx="5" fill="#1e40af" opacity="0.5"/>
+  <rect x="300" y="198" width="27" height="10" rx="5" fill="#1e40af" opacity="0.35"/>
+
+  <rect x="185" y="221" width="90" height="10" rx="5" fill="#1e40af" opacity="0.4"/>
+  <rect x="300" y="221" width="27" height="10" rx="5" fill="#1e40af" opacity="0.3"/>
+
+  <!-- Separator -->
+  <line x1="185" y1="244" x2="327" y2="244" stroke="#1e40af" stroke-width="1.5"/>
+
+  <!-- Total -->
+  <rect x="185" y="258" width="50" height="12" rx="6" fill="#1e40af" opacity="0.75"/>
+  <rect x="280" y="258" width="47" height="12" rx="6" fill="#1e40af" opacity="0.85"/>
+
+  <!-- Decorative dots -->
+  <circle cx="228" cy="300" r="4" fill="#1e40af" opacity="0.2"/>
+  <circle cx="256" cy="300" r="4" fill="#1e40af" opacity="0.2"/>
+  <circle cx="284" cy="300" r="4" fill="#1e40af" opacity="0.2"/>
+
+  <!-- Hanko seal -->
+  <circle cx="315" cy="335" r="16" fill="none" stroke="#dc2626" stroke-width="2.5" opacity="0.7"/>
+  <text x="315" y="341" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14" fill="#dc2626" opacity="0.7">印</text>
+</svg>
