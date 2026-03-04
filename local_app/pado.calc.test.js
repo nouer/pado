@@ -32,7 +32,8 @@ const {
     escapeHtml,
     DOC_TYPE_LABELS,
     CONVERSION_RULES,
-    buildConvertedDocument
+    buildConvertedDocument,
+    formatSealText
 } = require('./pado.calc.js');
 
 // ============================================================
@@ -1042,5 +1043,55 @@ describe('サンプルデータ整合性', () => {
                 expect(doc.docNumber.startsWith(prefix + '-')).toBe(true);
             }
         });
+    });
+});
+
+// ============================================================
+// formatSealText テスト
+// ============================================================
+
+describe('formatSealText', () => {
+    test('wrapCount=0 → 折返しなし（元テキストそのまま）', () => {
+        expect(formatSealText('山田商店', 0)).toBe('山田商店');
+    });
+
+    test('wrapCount=2 + 4文字 → 2列に分割', () => {
+        expect(formatSealText('山田商店', 2)).toBe('山田\n商店');
+    });
+
+    test('wrapCount=3 + 6文字 → 2列に分割', () => {
+        expect(formatSealText('山田商店之印', 3)).toBe('山田商\n店之印');
+    });
+
+    test('余り文字あり → 最終列は短い列になる', () => {
+        expect(formatSealText('山田商店之', 2)).toBe('山田\n商店\n之');
+    });
+
+    test('テキスト長 ≦ wrapCount → 1列のまま', () => {
+        expect(formatSealText('山田', 4)).toBe('山田');
+    });
+
+    test('空文字 → 空文字を返す', () => {
+        expect(formatSealText('', 2)).toBe('');
+    });
+
+    test('null → 空文字を返す', () => {
+        expect(formatSealText(null, 2)).toBe('');
+    });
+
+    test('undefined → 空文字を返す', () => {
+        expect(formatSealText(undefined, 2)).toBe('');
+    });
+
+    test('負数のwrapCount → 折返しなし', () => {
+        expect(formatSealText('山田商店', -1)).toBe('山田商店');
+    });
+
+    test('wrapCountがnull → 折返しなし', () => {
+        expect(formatSealText('山田商店', null)).toBe('山田商店');
+    });
+
+    test('サロゲートペア文字を正しく扱う', () => {
+        expect(formatSealText('𠮷野家店', 2)).toBe('𠮷野\n家店');
     });
 });

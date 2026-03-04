@@ -265,6 +265,7 @@ async function loadSettings() {
     document.getElementById('setting-fax').value = ci.fax || '';
     document.getElementById('setting-bank-info').value = ci.bankInfo || '';
     document.getElementById('setting-seal-text').value = ci.sealText || '';
+    document.getElementById('setting-seal-wrap').value = ci.sealWrapCount || '0';
     document.getElementById('setting-fiscal-start').value = ci.fiscalStartMonth || '4';
 
     // 税設定
@@ -376,6 +377,7 @@ function initSettingsEvents() {
             fax: document.getElementById('setting-fax').value.trim(),
             bankInfo: document.getElementById('setting-bank-info').value.trim(),
             sealText: document.getElementById('setting-seal-text').value.trim(),
+            sealWrapCount: parseInt(document.getElementById('setting-seal-wrap').value) || 0,
             fiscalStartMonth: parseInt(document.getElementById('setting-fiscal-start').value)
         });
         showToast('自社情報を保存しました', 'success');
@@ -1174,7 +1176,8 @@ async function saveDocument() {
             phone: companyInfo.phone || '',
             fax: companyInfo.fax || '',
             bankInfo: companyInfo.bankInfo || '',
-            sealText: companyInfo.sealText || ''
+            sealText: companyInfo.sealText || '',
+            sealWrapCount: companyInfo.sealWrapCount || 0
         },
         updatedAt: new Date().toISOString()
     };
@@ -1373,6 +1376,17 @@ async function printDocument(id) {
     window.print();
 }
 
+function buildSealHtml(seller, displaySettings, sizeOverride) {
+    if (!displaySettings.showSeal || !seller.sealText) return '';
+    const formatted = formatSealText(seller.sealText, seller.sealWrapCount || 0);
+    const isWrapped = formatted.includes('\n');
+    const styles = [];
+    if (sizeOverride) styles.push(sizeOverride);
+    if (isWrapped) styles.push('letter-spacing:0px');
+    const styleAttr = styles.length ? ` style="${styles.join(';')}"` : '';
+    return `<span class="print-seal"${styleAttr}>${escapeHtml(formatted).replace(/\n/g, '<br>')}</span>`;
+}
+
 function generateA4PrintHtml(doc, displaySettings) {
     const seller = doc.sellerSnapshot || {};
     const partner = doc.partnerSnapshot || {};
@@ -1382,8 +1396,7 @@ function generateA4PrintHtml(doc, displaySettings) {
     const summary = doc.taxSummary || { subtotal: 0, taxDetails: [], totalTax: 0, total: 0 };
 
     // 角印HTML
-    const sealHtml = displaySettings.showSeal && seller.sealText ?
-        `<span class="print-seal">${escapeHtml(seller.sealText)}</span>` : '';
+    const sealHtml = buildSealHtml(seller, displaySettings, '');
 
     // 種別固有情報
     let typeSpecific = '';
@@ -1492,8 +1505,7 @@ function generateReceiptPrintHtml(doc, displaySettings) {
         formatDateJapanese(doc.issueDate) : (doc.issueDate || '');
     const summary = doc.taxSummary || { subtotal: 0, totalTax: 0, total: 0 };
 
-    const sealHtml = displaySettings.showSeal && seller.sealText ?
-        `<span class="print-seal" style="width:36px;height:36px;font-size:8pt">${escapeHtml(seller.sealText)}</span>` : '';
+    const sealHtml = buildSealHtml(seller, displaySettings, 'width:36px;height:36px;font-size:8pt');
 
     // 税内訳（税率別）
     const taxDetails = summary.taxDetails || [];

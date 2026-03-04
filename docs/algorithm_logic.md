@@ -560,3 +560,50 @@ ERA_TABLE = [
 ```
 
 実装: `'¥' + amount.toLocaleString('ja-JP')`
+
+---
+
+## 14. 角印テキスト折り返しアルゴリズム
+
+### 関数: `formatSealText(text, wrapCount)`
+
+**ファイル**: `pado.calc.js`
+
+#### アルゴリズム
+
+```
+入力: text (string, 角印テキスト), wrapCount (number, 1列あたりの文字数)
+出力: string (改行区切りのテキスト)
+
+1. IF text が null/undefined/空文字 THEN RETURN ''
+2. IF wrapCount <= 0 THEN RETURN text（折り返しなし）
+3. chars = Array.from(text)  // サロゲートペア対応のためArray.fromで分割
+4. chunks = []
+5. FOR i = 0; i < chars.length; i += wrapCount:
+     chunk = chars.slice(i, i + wrapCount).join('')
+     chunks.push(chunk)
+6. RETURN chunks.join('\n')
+```
+
+#### HTML描画時の処理
+
+角印テキストをHTMLとして描画する際は以下の手順で処理する:
+
+1. `escapeHtml(text)` でHTMLエスケープを適用
+2. `formatSealText()` で折り返し処理を実行
+3. 改行文字 `\n` を `<br>` に置換して出力
+4. 折り返しあり（`sealWrapCount > 0`）の場合は `letter-spacing: 0px` を適用
+
+描画は `buildSealHtml(seller, displaySettings, sizeOverride)` ヘルパー関数（`script.js`）で行う。
+
+#### 計算例
+
+| テキスト | wrapCount | 結果 |
+|---------|-----------|------|
+| `'山田商店'` | 0 | `'山田商店'` |
+| `'山田商店'` | 2 | `'山田\n商店'` |
+| `'あいうえお'` | 2 | `'あい\nうえ\nお'` |
+| `'あいうえおか'` | 3 | `'あいう\nえおか'` |
+| `'𠮷野家𠮷'` | 2 | `'𠮷野\n家𠮷'` |
+| `''` | 2 | `''` |
+| `'AB'` | 3 | `'AB'` |

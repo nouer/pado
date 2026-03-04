@@ -251,6 +251,19 @@ docker compose run --rm pado-test
 | UT-DT-007 | 日付フォーマット | `formatDate` | `'2026-03-01'` | `'2026/03/01'` |
 | UT-DT-008 | 不正日付 | `formatDate` | `'invalid'` | `'---'` |
 
+### 2.18 角印テキスト折り返し (`formatSealText`)
+
+| テストID | テスト名 | 入力 | 期待結果 |
+|---------|---------|------|---------|
+| UT-SEAL-001 | wrapCount=0 → 折返しなし | `text='テスト', wrapCount=0` | `'テスト'`（そのまま返す） |
+| UT-SEAL-002 | wrapCount=2 + 4文字 → 2列分割 | `text='あいうえ', wrapCount=2` | `'あい\nうえ'` |
+| UT-SEAL-003 | wrapCount=3 + 6文字 → 2列分割 | `text='あいうえおか', wrapCount=3` | `'あいう\nえおか'` |
+| UT-SEAL-004 | 余り文字あり → 最終列は短い | `text='あいうえお', wrapCount=2` | `'あい\nうえ\nお'` |
+| UT-SEAL-005 | テキスト長 ≦ wrapCount → 1列 | `text='あい', wrapCount=3` | `'あい'` |
+| UT-SEAL-006 | 空/null/undefined → 空文字 | `text=null, wrapCount=2` | `''` |
+| UT-SEAL-007 | 負数 → 折返しなし | `text='テスト', wrapCount=-1` | `'テスト'`（そのまま返す） |
+| UT-SEAL-008 | サロゲートペア対応 | `text='𠮷野家𠮷', wrapCount=2` | `'𠮷野\n家𠮷'`（Array.fromで正しく分割） |
+
 ---
 
 ## 3. E2Eテスト仕様

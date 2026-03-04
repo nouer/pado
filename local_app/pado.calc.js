@@ -522,6 +522,22 @@ function escapeHtml(str) {
         .replace(/'/g, '&#39;');
 }
 
+/**
+ * 角印テキストを指定文字数で折り返す
+ * @param {string} text - 角印テキスト
+ * @param {number} wrapCount - 1列あたりの文字数（0以下で折返しなし）
+ * @returns {string} 改行区切りのテキスト
+ */
+function formatSealText(text, wrapCount) {
+    if (!text || !wrapCount || wrapCount <= 0) return text || '';
+    const chars = Array.from(text);
+    const columns = [];
+    for (let i = 0; i < chars.length; i += wrapCount) {
+        columns.push(chars.slice(i, i + wrapCount).join(''));
+    }
+    return columns.join('\n');
+}
+
 // ============================================================
 // 3-6. 帳票変換
 // ============================================================
@@ -580,7 +596,9 @@ function buildConvertedDocument(sourceDoc, targetDocType, companyInfo, taxSettin
             zipCode: companyInfo.zipCode,
             address: companyInfo.address,
             phone: companyInfo.phone,
-            bankInfo: companyInfo.bankInfo
+            bankInfo: companyInfo.bankInfo,
+            sealText: companyInfo.sealText || '',
+            sealWrapCount: companyInfo.sealWrapCount || 0
         } : null,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -646,6 +664,7 @@ if (typeof module !== 'undefined' && module.exports) {
         escapeHtml,
         DOC_TYPE_LABELS,
         CONVERSION_RULES,
-        buildConvertedDocument
+        buildConvertedDocument,
+        formatSealText
     };
 }
