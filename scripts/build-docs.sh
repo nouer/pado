@@ -27,7 +27,7 @@ cp "$IMAGES_SRC"/*.png "$IMAGES_DST/"
 echo "  $(ls "$IMAGES_DST" | wc -l) 件コピー完了"
 
 # Generate HTML files
-for name in manual promotion; do
+for name in manual promotion usecases_showcase; do
     src="$DOCS_DIR/${name}.md"
     dst="$APP_DIR/${name}.html"
     if [ -f "$src" ]; then

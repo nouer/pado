@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pado 活用事例 — フリーランスデザイナーの帳票管理 — Pado</title>
+<meta name="description" content="「もう、帳票番号をExcelで手打ちする必要はありません」">
+<meta property="og:title" content="Pado 活用事例 — フリーランスデザイナーの帳票管理 — Pado">
+<meta property="og:description" content="「もう、帳票番号をExcelで手打ちする必要はありません」">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pado 帳票管理">
+<link rel="icon" href="/icons/favicon-32.png" type="image/png">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Serif CJK JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a1a1a;
+    background-color: #f8f8f8;
+}
+
+.container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 32px 64px;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+nav.back-link {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+nav.back-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav.back-link a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid #333;
+}
+
+h2 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+    padding-bottom: 0.2em;
+    border-bottom: 1px solid #ccc;
+}
+
+h3 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 1.5em;
+    margin-bottom: 0.4em;
+}
+
+h4 {
+    font-family: 'Noto Sans CJK JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.3em;
+}
+
+p {
+    margin: 0.6em 0;
+    text-align: justify;
+}
+
+ul, ol {
+    margin: 0.6em 0;
+    padding-left: 2em;
+}
+
+li {
+    margin: 0.3em 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 15px;
+}
+
+th, td {
+    border: 1px solid #999;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2em 0;
+}
+
+code {
+    font-family: 'UDEV Gothic NF', 'Cica', monospace;
+    font-size: 14px;
+    background-color: #f5f5f5;
+    padding: 0.15em 0.3em;
+    border-radius: 3px;
+}
+
+pre {
+    background-color: #f5f5f5;
+    padding: 1em;
+    overflow-x: auto;
+    font-size: 14px;
+    line-height: 1.4;
+    border-radius: 4px;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+blockquote {
+    border-left: 3px solid #ccc;
+    margin: 0.8em 0;
+    padding: 0.2em 0 0.2em 1em;
+    color: #555;
+}
+
+strong {
+    font-weight: bold;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0.5em auto;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+sub {
+    font-size: 12px;
+    color: #888;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 16px 16px 48px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 19px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 6px 8px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<nav class="back-link"><a href="/">← Pado アプリに戻る</a></nav>
+<h1 id="pado-活用事例-フリーランスデザイナーの帳票管理">Pado 活用事例 — フリーランスデザイナーの帳票管理</h1>
+<p><strong>「もう、帳票番号をExcelで手打ちする必要はありません」</strong></p>
+<p>東京・目黒のフリーランスWebデザイナー「Studio Sato」は、帳票管理に Pado を導入しました。佐藤美咲さんが一人で運営する小さなデザイン事務所が、どのように Pado を活用しているのか — 8つのシーンでご紹介します。</p>
+<hr />
+<h2 id="uc1-開業準備-初期セットアップ">UC1: 開業準備 — 初期セットアップ</h2>
+<p>Pado を開いたら、まず設定タブで自社情報を登録します。事業者名・住所・電話番号・振込先を入力して保存するだけ。アカウント登録もメールアドレスも不要です。</p>
+<p>税設定では標準税率10%と軽減税率8%を確認し、端数処理を「切り捨て」に設定。表示設定では日付形式を「和暦」に、角印と振込先の印刷表示をONにします。</p>
+<img src="/docs-images/08_settings_company.png" width="720" alt="設定画面 — 自社情報の入力">
+<p><strong>ポイント</strong></p>
+<ul>
+<li>帳票番号のプレフィックス（QT, INV, RC など）はカスタマイズ可能</li>
+<li>使わない帳票タブ（仕入伝票など）は非表示にして画面をすっきり</li>
+<li>見積有効日数のデフォルト（30日）を設定しておけば、毎回入力不要</li>
+</ul>
+<hr />
+<h2 id="uc2-取引先と品目の登録-マスタデータ準備">UC2: 取引先と品目の登録 — マスタデータ準備</h2>
+<p>取引先タブから得意先「株式会社ミドリ商事」と仕入先「デザインツール商社」を登録。品目タブではよく使うサービスメニュー（Webサイト制作、ロゴデザインなど）を単価・税区分付きで登録します。</p>
+<p><img src="/docs-images/05_partners.png" width="350" alt="取引先一覧"> <img src="/docs-images/07_items.png" width="350" alt="品目一覧"></p>
+<p><strong>ポイント</strong></p>
+<ul>
+<li>取引先コードは自動採番（P0001, P0002...）、手入力不要</li>
+<li>品目に単価と税区分を登録しておけば、帳票作成時に選ぶだけで自動入力</li>
+<li>標準税率と軽減税率の品目を混在登録OK</li>
+</ul>
+<hr />
+<h2 id="uc3-見積書の作成-最初の帳票">UC3: 見積書の作成 — 最初の帳票</h2>
+<p>帳票タブの「見積書」サブタブから新規作成。取引先をドロップダウンから選び、明細行で品目を選択すると単価が自動入力されます。</p>
+<p>3行の明細を入力すると、税率別の消費税（10%と8%を自動分離）と合計金額がリアルタイムで計算されます。見積有効期限も30日後が自動設定。</p>
+<p>保存後、帳票番号が <code>QT-2026-0001</code> のように自動採番。「詳細」ボタンで保存内容を確認し、「印刷」ボタンで角印付きのA4帳票をプレビューできます。</p>
+<img src="/docs-images/02_doc_editor.png" width="720" alt="帳票編集画面 — 品目選択と自動計算">
+<p><strong>ポイント</strong></p>
+<ul>
+<li>品目ドロップダウンから選ぶだけで単価・税区分が自動入力</li>
+<li>標準税率と軽減税率の混在を自動で分離計算</li>
+<li>帳票番号は種類ごとに自動採番（QT-年度-連番）</li>
+<li>印刷プレビューにインボイス登録番号が自動表示</li>
+</ul>
+<hr />
+<h2 id="uc4-受注から入金まで-帳票変換ワークフロー">UC4: 受注から入金まで — 帳票変換ワークフロー</h2>
+<p>見積書がOKになったら、「変換」ボタンから請求書に変換。明細行がそのままコピーされ、転記ミスはゼロ。変換元リンクで「どの見積書から作ったか」が一目瞭然です。</p>
+<p>請求書からは「領収書」にもワンクリック変換。但し書きを入力すれば、収入印紙の要否と金額も自動判定されます。</p>
+<p>領収書は専用のコンパクトレイアウトで印刷。収入印紙欄も自動表示されます。</p>
+<p><img src="/docs-images/03_print_invoice.png" width="520" alt="請求書印刷プレビュー"> <img src="/docs-images/04_print_receipt.png" width="520" alt="領収書印刷プレビュー"></p>
+<p><strong>ポイント</strong></p>
+<ul>
+<li>見積書 → 請求書 → 領収書と、業務の流れに沿ってワンクリック変換</li>
+<li>変換元リンクで帳票間のトレーサビリティを確保</li>
+<li>収入印紙は税抜金額から自動判定（5万円以上で必要）</li>
+<li>請求書 → 売上伝票の変換で、売上管理も同時に</li>
+</ul>
+<hr />
+<h2 id="uc5-仕入業務-発注から仕入計上まで">UC5: 仕入業務 — 発注から仕入計上まで</h2>
+<p>発注書を新規作成して仕入先に送付。入荷後は「変換」から納品書を作成。さらに納品書から売上伝票、発注書から仕入伝票への変換も可能です。</p>
+<p>見積書から発注書への変換にも対応しているので、仕入業務もPadoで完結します。</p>
+<p><strong>ポイント</strong></p>
+<ul>
+<li>発注書 → 納品書の受入フローと、納品書 → 売上伝票の売上計上に対応</li>
+<li>発注書 → 仕入伝票で仕入計上も管理</li>
+<li>見積書 → 発注書の変換で、受け取った見積もりをそのまま発注に</li>
+</ul>
+<hr />
+<h2 id="uc6-帳票の検索と日常管理">UC6: 帳票の検索と日常管理</h2>
+<p>帳票が増えてきても大丈夫。検索バーに帳票番号や取引先名を入力すれば、瞬時に絞り込めます。ステータスフィルターで「発行済」だけを表示したり、サブタブで帳票種類を切り替えたり。</p>
+<p>帳票の編集（ステータス変更など）や削除も、一覧画面からワンクリックで操作できます。</p>
+<img src="/docs-images/01_doc_list.png" width="720" alt="帳票一覧 — 検索・フィルター・サブタブ">
+<p><strong>ポイント</strong></p>
+<ul>
+<li>帳票番号・取引先名で部分一致検索</li>
+<li>ステータスフィルター（下書き・発行済・送付済など）で絞り込み</li>
+<li>7種類の帳票サブタブで種類ごとに一覧管理</li>
+<li>売上伝票の直接作成や、売上伝票→領収書の変換も対応</li>
+</ul>
+<hr />
+<h2 id="uc7-マスタデータの活用-検索編集削除">UC7: マスタデータの活用 — 検索・編集・削除</h2>
+<p>取引先や品目が増えてきたら、検索機能で素早く見つけられます。取引先は名前検索と種別フィルター（得意先/仕入先）の組み合わせで効率的に絞り込み。</p>
+<p>「詳細」ボタンで読み取り専用の一覧表示、「編集」ボタンで変更、「削除」ボタンで不要なデータを整理できます。</p>
+<p><img src="/docs-images/14_partner_detail.png" width="350" alt="取引先詳細表示"> <img src="/docs-images/15_item_detail.png" width="350" alt="品目詳細表示"></p>
+<p><strong>ポイント</strong></p>
+<ul>
+<li>取引先・品目の詳細表示オーバーレイで情報を素早く確認</li>
+<li>詳細画面から直接「編集」に遷移できる</li>
+<li>取引先の種別フィルター（得意先・仕入先）で表示を切り替え</li>
+<li>不要な品目・取引先は削除で整理。帳票に使用済みのデータは影響なし</li>
+</ul>
+<hr />
+<h2 id="uc8-データ保全-バックアップと復元">UC8: データ保全 — バックアップと復元</h2>
+<p>スマートフォンの機種変更や万が一のデータ消失に備えて、設定タブの「データ管理」からワンタップでバックアップ。JSON形式のファイルとしてダウンロードされます。</p>
+<img src="/docs-images/11_settings_data.png" width="520" alt="データ管理画面">
+<p><strong>ポイント</strong></p>
+<ul>
+<li>エクスポートファイルには取引先・品目・帳票・設定のすべてが含まれる</li>
+<li>インポートで別の端末にデータをそのまま復元可能</li>
+<li>データはすべて端末内（ブラウザ）に保存。外部サーバーへの送信は一切なし</li>
+</ul>
+<hr />
+<h2 id="まとめ-pado-が-studio-sato-にもたらした変化">まとめ — Pado が Studio Sato にもたらした変化</h2>
+<p>Pado の導入により、佐藤さんの帳票業務は大きく変わりました。</p>
+<ul>
+<li><strong>転記ミスゼロ</strong> — 見積書→請求書→領収書をワンクリック変換。コピペミスから解放</li>
+<li><strong>番号管理の自動化</strong> — 帳票番号は種類ごとに自動採番。Excelの連番管理から卒業</li>
+<li><strong>インボイス制度対応</strong> — 登録番号・税率別消費税を自動レイアウト。制度対応の不安を解消</li>
+<li><strong>どこでも使える</strong> — スマホでもPCでも、ブラウザさえあればOK。月額費用ゼロ</li>
+</ul>
+<p>すべてブラウザだけで完結。月額料金もアカウント登録も不要。データは端末内に安全に保存されます。</p>
+<hr />
+<h2 id="今すぐ試してみましょう">今すぐ試してみましょう</h2>
+<p>サンプルデータを読み込めば、このページで紹介した機能をすぐに体験できます。</p>
+<p><a href="index.html"><strong>Pado を試してみる →</strong></a></p>
+<p>使い方を詳しく知りたい方は <a href="manual.html"><strong>ユーザーマニュアル →</strong></a> をご覧ください。</p>
+<p>Pado の機能概要・比較は <a href="promotion.html"><strong>プロモーションページ →</strong></a> をご覧ください。</p>
+<hr />
+<p><sub>Pado はオープンソースソフトウェアです（MIT License）。</sub></p>
+
+</div>
+</body>
+</html>

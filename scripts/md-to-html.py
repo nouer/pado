@@ -227,6 +227,37 @@ def rewrite_image_paths(html: str, images_dir: str) -> str:
     return html
 
 
+def add_heading_ids(html: str) -> str:
+    """Add id attributes to heading tags for anchor navigation."""
+    def slugify(text):
+        # Strip HTML tags
+        text = re.sub(r'<[^>]+>', '', text)
+        # Lowercase ASCII only
+        result = []
+        for ch in text:
+            if 'A' <= ch <= 'Z':
+                result.append(ch.lower())
+            else:
+                result.append(ch)
+        text = ''.join(result)
+        # Keep: word chars (including CJK via \w), hyphens, spaces
+        text = re.sub(r'[^\w\s-]', '', text, flags=re.UNICODE)
+        # Spaces and underscores to hyphens
+        text = re.sub(r'[\s_]+', '-', text)
+        # Collapse multiple hyphens
+        text = re.sub(r'-+', '-', text)
+        # Strip leading/trailing hyphens
+        return text.strip('-')
+
+    def replace_heading(match):
+        tag = match.group(1)
+        content = match.group(2)
+        slug = slugify(content)
+        return f'<{tag} id="{slug}">{content}</{tag}>'
+
+    return re.sub(r'<(h[1-6])>(.*?)</\1>', replace_heading, html)
+
+
 def rewrite_app_links(html: str) -> str:
     """Rewrite relative app links to absolute root paths."""
     html = html.replace('../local_app/index.html', '/')
@@ -271,6 +302,7 @@ def markdown_to_html(md_file: str, html_file: str, images_dir: str = 'docs-image
 
     # Rewrite paths
     html_body = rewrite_image_paths(html_body, images_dir)
+    html_body = add_heading_ids(html_body)
     html_body = rewrite_app_links(html_body)
 
     title = extract_title(md_content)

@@ -3,7 +3,7 @@
  * アセットキャッシュによる完全オフライン対応
  */
 
-const CACHE_NAME = 'pado-v1.0.0-1773056906';
+const CACHE_NAME = 'pado-v1.0.0-1773064948';
 
 const PRECACHE_ASSETS = [
     '/',
@@ -18,7 +18,8 @@ const PRECACHE_ASSETS = [
     '/icons/icon-maskable-512.png',
     '/icons/apple-touch-icon.png',
     '/icons/favicon-32.png',
-    '/icons/favicon-16.png'
+    '/icons/favicon-16.png',
+    '/usecases_showcase.html'
 ];
 
 const SPLASH_IMAGES = [

@@ -159,7 +159,7 @@ async function main() {
 
         // 02: 帳票編集画面（見積書の1件目を編集）
         await page.setViewport({ width: 1280, height: 1200 });
-        const editBtns = await page.$$('#doc-list .btn-secondary');
+        const editBtns = await page.$$('#doc-list button[title="編集"]');
         // 「編集」ボタンを探す
         let editClicked = false;
         for (const btn of editBtns) {
@@ -187,7 +187,7 @@ async function main() {
         await page.evaluate(() => { window.print = () => {}; });
 
         // 請求書一覧から「印刷」ボタンをクリック
-        const invoicePrintBtns = await page.$$('#doc-list .btn-secondary');
+        const invoicePrintBtns = await page.$$('#doc-list button[title="印刷"]');
         for (const btn of invoicePrintBtns) {
             const text = await page.evaluate(el => el.textContent, btn);
             if (text.trim() === '印刷') {
@@ -209,7 +209,7 @@ async function main() {
         await wait(500);
         await page.evaluate(() => { window.print = () => {}; });
 
-        const receiptPrintBtns = await page.$$('#doc-list .btn-secondary');
+        const receiptPrintBtns = await page.$$('#doc-list button[title="印刷"]');
         for (const btn of receiptPrintBtns) {
             const text = await page.evaluate(el => el.textContent, btn);
             if (text.trim() === '印刷') {
@@ -235,7 +235,7 @@ async function main() {
         // 06: 取引先登録フォーム
         await page.setViewport({ width: 1280, height: 900 });
         // 既存の取引先の「編集」ボタンをクリック
-        const partnerEditBtns = await page.$$('#partner-list .btn-secondary');
+        const partnerEditBtns = await page.$$('#partner-list .btn-outline-primary');
         let partnerEditClicked = false;
         for (const btn of partnerEditBtns) {
             const text = await page.evaluate(el => el.textContent, btn);
@@ -308,6 +308,52 @@ async function main() {
         });
         await wait(300);
         await screenshot(page, '11_settings_data.png');
+
+        // 14: 取引先詳細表示オーバーレイ
+        await page.setViewport({ width: 1280, height: 800 });
+        await page.click('button[data-tab="partners"]');
+        await wait(500);
+        // 「詳細」ボタンをクリック
+        const partnerDetailBtns = await page.$$('#partner-list .btn-secondary');
+        let partnerDetailClicked = false;
+        for (const btn of partnerDetailBtns) {
+            const text = await page.evaluate(el => el.textContent, btn);
+            if (text.trim() === '詳細') {
+                await btn.click();
+                partnerDetailClicked = true;
+                break;
+            }
+        }
+        if (partnerDetailClicked) {
+            await page.waitForSelector('#partner-detail-overlay', { visible: true, timeout: 5000 });
+            await wait(500);
+            await screenshot(page, '14_partner_detail.png');
+            // 詳細オーバーレイを閉じる
+            await page.click('#btn-close-partner-detail');
+            await wait(300);
+        }
+
+        // 15: 品目詳細表示オーバーレイ
+        await page.click('button[data-tab="items"]');
+        await wait(500);
+        const itemDetailBtns = await page.$$('#item-table-body .btn-secondary');
+        let itemDetailClicked = false;
+        for (const btn of itemDetailBtns) {
+            const text = await page.evaluate(el => el.textContent, btn);
+            if (text.trim() === '詳細') {
+                await btn.click();
+                itemDetailClicked = true;
+                break;
+            }
+        }
+        if (itemDetailClicked) {
+            await page.waitForSelector('#item-detail-overlay', { visible: true, timeout: 5000 });
+            await wait(500);
+            await screenshot(page, '15_item_detail.png');
+            // 詳細オーバーレイを閉じる
+            await page.click('#btn-close-item-detail');
+            await wait(300);
+        }
 
         // ========== モバイル版スクリーンショット ==========
         console.log('\n--- Mobile screenshots ---');
