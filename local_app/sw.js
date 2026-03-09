@@ -42,7 +42,6 @@ self.addEventListener('install', (event) => {
             for (const url of SPLASH_IMAGES) {
                 try { await cache.add(url); } catch (e) { console.warn('splash cache skip:', url); }
             }
-            return self.skipWaiting();
         })
     );
 });

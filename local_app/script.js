@@ -2196,24 +2196,24 @@ const UPDATE_CHECK_THROTTLE_MS = 30000;
 async function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
-    const hadController = !!navigator.serviceWorker.controller;
-
     try {
         swRegistration = await navigator.serviceWorker.register('/sw.js');
 
+        // 起動時チェック: 前回の訪問でwaitingのまま残ったSWがないか確認
+        if (swRegistration.waiting && navigator.serviceWorker.controller) {
+            showUpdateBanner();
+        }
+
         swRegistration.addEventListener('updatefound', () => {
             const newWorker = swRegistration.installing;
-            if (newWorker) {
-                newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'activated' && hadController) {
-                        showUpdateBanner();
-                    }
-                });
-            }
-        });
-
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (hadController) {
+            if (!newWorker) return;
+            newWorker.onstatechange = () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    showUpdateBanner();
+                }
+            };
+            // フォールバック: ハンドラ設定前にinstalledに遷移していた場合
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                 showUpdateBanner();
             }
         });
@@ -2247,19 +2247,47 @@ async function checkForUpdate() {
     if (statusEl) statusEl.textContent = '確認中...';
 
     try {
-        await swRegistration.update();
-        const waiting = swRegistration.waiting;
-        const installing = swRegistration.installing;
-
-        if (waiting || installing) {
+        // 既にwaitingのSWがある場合
+        if (swRegistration.waiting) {
             if (statusEl) statusEl.textContent = '新しいバージョンを検出しました';
             showUpdateBanner();
-        } else {
-            if (statusEl) statusEl.textContent = '最新バージョンです';
-            setTimeout(() => {
-                if (statusEl) statusEl.textContent = '';
-            }, 3000);
+            return;
         }
+
+        await swRegistration.update();
+
+        // update()後に即座にwaitingになった場合
+        if (swRegistration.waiting) {
+            if (statusEl) statusEl.textContent = '新しいバージョンを検出しました';
+            showUpdateBanner();
+            return;
+        }
+
+        // installing中の場合、完了を待つ
+        if (swRegistration.installing) {
+            const installingWorker = swRegistration.installing;
+            await new Promise((resolve) => {
+                installingWorker.onstatechange = function() {
+                    if (this.state === 'installed' || this.state === 'redundant') {
+                        resolve();
+                    }
+                };
+                // フォールバック: ハンドラ設定前に状態遷移が完了していた場合
+                if (installingWorker.state === 'installed' || installingWorker.state === 'redundant') {
+                    resolve();
+                }
+            });
+            if (swRegistration.waiting) {
+                if (statusEl) statusEl.textContent = '新しいバージョンを検出しました';
+                showUpdateBanner();
+                return;
+            }
+        }
+
+        if (statusEl) statusEl.textContent = '最新バージョンです';
+        setTimeout(() => {
+            if (statusEl) statusEl.textContent = '';
+        }, 3000);
     } catch (e) {
         if (statusEl) statusEl.textContent = '確認に失敗しました';
     }
@@ -2275,12 +2303,24 @@ function hideUpdateBanner() {
     if (banner) banner.style.display = 'none';
 }
 
+function applyUpdate() {
+    if (!('serviceWorker' in navigator)) { location.reload(); return; }
+    navigator.serviceWorker.getRegistration().then(reg => {
+        if (reg && reg.waiting) {
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload();
+            });
+            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        } else {
+            window.location.reload();
+        }
+    });
+}
+
 function initUpdateBanner() {
     const updateBtn = document.getElementById('update-banner-btn');
     if (updateBtn) {
-        updateBtn.addEventListener('click', () => {
-            location.reload();
-        });
+        updateBtn.addEventListener('click', applyUpdate);
     }
     const closeBtn = document.getElementById('update-banner-close');
     if (closeBtn) {
