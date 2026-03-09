@@ -250,12 +250,12 @@ function switchTab(tabName) {
     if (tabName === 'settings') loadSettings();
 }
 
-function switchDocSubTab(docType) {
+function switchDocSubTab(docType, displaySettings) {
     currentDocType = docType;
     document.querySelectorAll('#doc-sub-tab-nav .sub-tab-btn').forEach(b => b.classList.remove('active'));
     const btn = document.querySelector(`#doc-sub-tab-nav .sub-tab-btn[data-doc-type="${docType}"]`);
     if (btn) btn.classList.add('active');
-    loadDocList();
+    loadDocList(displaySettings);
 }
 
 // ============================================================
@@ -892,7 +892,7 @@ function initItemEvents() {
 // ============================================================
 // 帳票一覧
 // ============================================================
-async function loadDocList() {
+async function loadDocList(displaySettings) {
     const allDocs = await getByIndex('documents', 'docType', currentDocType);
     const search = document.getElementById('doc-search').value.toLowerCase();
     const statusFilter = document.getElementById('doc-status-filter').value;
@@ -921,7 +921,7 @@ async function loadDocList() {
     }
     empty.style.display = 'none';
 
-    const displaySettings = await loadDisplaySettings();
+    if (!displaySettings) displaySettings = await loadDisplaySettings();
 
     list.innerHTML = filtered.map(d => {
         const statusClass = 'status-' + (d.status || 'draft');
@@ -2324,7 +2324,10 @@ function initVersionInfo() {
 // ============================================================
 // 初期化
 // ============================================================
-document.addEventListener('DOMContentLoaded', async () => {
+async function initApp() {
+    performance.mark('app-init-start');
+
+    // Phase 0: DB初期化（全処理の前提）
     try {
         db = await openDB();
     } catch (err) {
@@ -2332,6 +2335,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    // 同期的UI初期化（DB不要）
     initToast();
     initTabs();
     initSettingsEvents();
@@ -2346,21 +2350,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     initScrollTop();
     initVersionInfo();
     initUpdateBanner();
-    registerServiceWorker();
-    checkNotification();
 
-    // デフォルトタブ読込
-    const ds = await loadDisplaySettings();
-    applyDocTabVisibility(ds.hiddenDocTypes);
-    currentDocType = ds.defaultDocType || 'estimate';
-    switchDocSubTab(currentDocType);
-    loadDocList();
+    // Phase 1: 並列DB読み出し
+    const [displaySettings, allDocs, allPartners] = await Promise.all([
+        loadDisplaySettings(),
+        getAllFromStore('documents'),
+        getAllFromStore('partners')
+    ]);
 
-    // 初回判定: documentsストアとpartnersストアが空ならサンプルデータを自動ロード
-    const docs = await getAllFromStore('documents');
-    const partners = await getAllFromStore('partners');
-    if (docs.length === 0 && partners.length === 0) {
+    // Phase 2: データを使ってUI描画
+    applyDocTabVisibility(displaySettings.hiddenDocTypes);
+    currentDocType = displaySettings.defaultDocType || 'estimate';
+    switchDocSubTab(currentDocType, displaySettings);
+
+    // 初回判定（事前取得データを使用、追加DBアクセスなし）
+    if (allDocs.length === 0 && allPartners.length === 0) {
         await autoLoadSampleData();
         showToast('サンプルデータを読み込みました。ご自身のデータで始める場合は、設定タブの「全データ削除」からリセットできます。', 'info');
     }
-});
+
+    // Phase 3: Fire-and-forget（非クリティカル）
+    registerServiceWorker();
+    checkNotification();
+
+    // アプリ準備完了
+    document.body.dataset.appReady = 'true';
+
+    performance.mark('app-init-end');
+    performance.measure('app-init', 'app-init-start', 'app-init-end');
+    console.log('[Pado] init:', performance.getEntriesByName('app-init')[0].duration.toFixed(0), 'ms');
+}
+
+document.addEventListener('DOMContentLoaded', initApp);

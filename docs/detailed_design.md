@@ -282,7 +282,7 @@
 
 | 項目 | 仕様 |
 |------|------|
-| チェックタイミング | `DOMContentLoaded` 時に `checkNotification()` を実行 |
+| チェックタイミング | `initApp()` Phase 3（Fire-and-forget）で `checkNotification()` を実行 |
 | 更新検知 | `/notify.html` をフェッチし SHA-256 ハッシュを IndexedDB 保存値と比較 |
 | 通知表示 | ハッシュ不一致時にクリック可能なトースト（`toast info clickable`）を表示 |
 | クリック動作 | `notify.html` を別タブで開き、ハッシュを保存して既読化 |
@@ -378,10 +378,56 @@
 | サンプルデータ | サンプルデータを読み込む | sample_data.json をインポート |
 | 自動更新確認 | — | 30秒間隔の自動チェック + ページ可視性変更時チェック |
 
+#### アプリ起動シーケンス（3フェーズ設計）
+
+`DOMContentLoaded` 時に `initApp()` を実行する。起動速度を最適化するため、以下の3フェーズ設計を採用する。
+
+**Phase 0: DB初期化**
+- `openDB()` でIndexedDBを開く（全処理の前提）
+
+**同期的UI初期化（DB不要）**
+- `initToast()`, `initTabs()`, `initSettingsEvents()` 等のイベントリスナー登録
+- DOM操作のみでDB読み出しを行わない
+
+**Phase 1: 並列DB読み出し**
+- `Promise.all()` で以下を並列実行:
+  - `loadDisplaySettings()` — 表示設定
+  - `getAllFromStore('documents')` — 帳票データ（初回判定用）
+  - `getAllFromStore('partners')` — 取引先データ（初回判定用）
+
+**Phase 2: データを使ってUI描画**
+- `applyDocTabVisibility()` — タブ表示/非表示を適用
+- `switchDocSubTab()` — デフォルト帳票タブを表示（displaySettingsを渡すことで再取得を回避）
+- 初回アクセス判定（後述）
+
+**Phase 3: Fire-and-forget（非クリティカル）**
+- `registerServiceWorker()`, `checkNotification()` — 描画後に実行
+- `document.body.dataset.appReady = 'true'` — ローディングスピナー非表示化
+- `performance.measure()` — 起動時間をコンソールに出力（`[Pado] init: XXXms`）
+
+#### ローディングスピナー
+
+- **配置**: `<div id="doc-list">` 内に `<div class="loading-spinner">` を配置
+- **表示**: アプリ初期化中にスピナーアニメーションを表示（白画面を回避）
+- **消失条件1**: `loadDocList()` が `list.innerHTML = ...` で上書きすることで自動的に消える
+- **消失条件2**: `body[data-app-ready="true"] .loading-spinner { display: none }` で確実に非表示化
+
+#### インラインクリティカルCSS
+
+- `<head>` 内の `<link rel="stylesheet">` より前に `<style>` タグでクリティカルCSSをインライン展開
+- 対象: CSS変数、body reset、`.app-header`、`.tab-nav`、`.tab-btn`、`.tab-content`、`.sub-tab-nav`、`.sub-tab-btn`、`.loading-spinner`
+- 外部 `style.css` はそのまま残し、フルスタイルの読み込み用として使用
+
+#### スクリプトの遅延読み込み
+
+- 全スクリプトタグ（`version.js`, `pado.calc.js`, `script.js`）に `defer` 属性を付与
+- `defer` スクリプト間の実行順序は HTML 仕様で保証される
+- HTMLパーサーをブロックせずに並列ダウンロードが行われる
+
 #### 初回アクセス時のサンプルデータ自動ロード
 
 - **判定条件**: `documents` ストアと `partners` ストアが両方とも空の場合に初回アクセスと判定
-- **タイミング**: `DOMContentLoaded` 内の `loadDocList()` 実行後に判定
+- **タイミング**: Phase 2 の並列DB読み出し結果を使用（追加DBアクセスなし）
 - **動作**: `sample_data.json` を自動取得し、確認ダイアログなしでサイレントにインポート
 - **重複チェック**: 手動インポートと同様、同一IDのデータはスキップ
 - **案内表示**: インポート完了後、消えない `info` タイプのトーストで以下のメッセージを表示:

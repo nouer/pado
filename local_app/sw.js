@@ -3,7 +3,7 @@
  * アセットキャッシュによる完全オフライン対応
  */
 
-const CACHE_NAME = 'pado-v1.0.0-1772612529';
+const CACHE_NAME = 'pado-v1.0.0-1773056269';
 
 const PRECACHE_ASSETS = [
     '/',
@@ -21,11 +21,29 @@ const PRECACHE_ASSETS = [
     '/icons/favicon-16.png'
 ];
 
+const SPLASH_IMAGES = [
+    '/icons/splash/splash-640x1136.png',
+    '/icons/splash/splash-750x1334.png',
+    '/icons/splash/splash-1125x2436.png',
+    '/icons/splash/splash-828x1792.png',
+    '/icons/splash/splash-1170x2532.png',
+    '/icons/splash/splash-1179x2556.png',
+    '/icons/splash/splash-1290x2796.png',
+    '/icons/splash/splash-1320x2868.png',
+    '/icons/splash/splash-1536x2048.png',
+    '/icons/splash/splash-1668x2388.png',
+    '/icons/splash/splash-2048x2732.png'
+];
+
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => cache.addAll(PRECACHE_ASSETS))
-            .then(() => self.skipWaiting())
+        caches.open(CACHE_NAME).then(async (cache) => {
+            await cache.addAll(PRECACHE_ASSETS);
+            for (const url of SPLASH_IMAGES) {
+                try { await cache.add(url); } catch (e) { console.warn('splash cache skip:', url); }
+            }
+            return self.skipWaiting();
+        })
     );
 });
 
