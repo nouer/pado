@@ -13,7 +13,6 @@
 const puppeteer = require('puppeteer');
 const path = require('path');
 const fs = require('fs');
-const childProcess = require('child_process');
 
 const OUTPUT_DIR = path.join(__dirname, '..', 'docs', 'images');
 const SAMPLE_DATA_PATH = path.join(__dirname, '..', 'local_app', 'sample_data.json');
@@ -21,16 +20,7 @@ const SAMPLE_DATA_PATH = path.join(__dirname, '..', 'local_app', 'sample_data.js
 // --- ヘルパー ---
 
 function resolveBaseUrl() {
-    const fixedIp = String(process.env.E2E_APP_IP || '').trim();
-    if (fixedIp && /^\d+\.\d+\.\d+\.\d+$/.test(fixedIp)) {
-        return `http://${fixedIp}:80`;
-    }
-    const host = 'pado-app';
-    try {
-        const out = childProcess.execSync(`getent hosts ${host}`, { encoding: 'utf-8', timeout: 8000 }).trim();
-        const ip = out.split(/\s+/)[0];
-        if (ip && /^\d+\.\d+\.\d+\.\d+$/.test(ip)) return `http://${ip}:80`;
-    } catch (e) { /* ignore */ }
+    const host = process.env.E2E_APP_HOST || 'pado-app';
     return `http://${host}:80`;
 }
 

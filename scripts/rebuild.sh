@@ -14,23 +14,6 @@ PY
   fi
 fi
 
-# Worktreeごとのネットワーク衝突を避けるため、サブネットと固定IPをプロジェクト単位で自動生成する。
-if [ -z "${PADO_SUBNET:-}" ] || [ -z "${PADO_APP_IP:-}" ]; then
-  if command -v python3 >/dev/null 2>&1; then
-    eval "$(python3 - <<'PY'
-import hashlib, os
-proj = os.environ.get("COMPOSE_PROJECT_NAME") or hashlib.sha1(os.getcwd().encode("utf-8")).hexdigest()[:10]
-h = hashlib.sha1(proj.encode("utf-8")).hexdigest()
-oct3 = (int(h[:4], 16) % 200) + 20  # 20..219
-subnet = f"172.32.{oct3}.0/24"
-ip = f"172.32.{oct3}.10"
-print(f'export PADO_SUBNET="{subnet}"')
-print(f'export PADO_APP_IP="{ip}"')
-PY
-)"
-  fi
-fi
-
 echo "Stopping and removing containers..."
 docker compose down --remove-orphans
 
