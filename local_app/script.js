@@ -370,7 +370,8 @@ function updateNumberPreview(type) {
 
 function initSettingsEvents() {
     // 自社情報保存
-    document.getElementById('btn-save-company').addEventListener('click', async () => {
+    const btnSaveCompany = document.getElementById('btn-save-company');
+    if (btnSaveCompany) btnSaveCompany.addEventListener('click', async () => {
         const regNum = document.getElementById('setting-invoice-reg-number').value.trim();
         if (regNum) {
             const v = validateInvoiceRegNumber(regNum);
@@ -395,7 +396,8 @@ function initSettingsEvents() {
     });
 
     // 税設定保存
-    document.getElementById('btn-save-tax').addEventListener('click', async () => {
+    const btnSaveTax = document.getElementById('btn-save-tax');
+    if (btnSaveTax) btnSaveTax.addEventListener('click', async () => {
         await saveSetting('tax_settings', {
             standardRate: parseInt(document.getElementById('setting-standard-rate').value) / 100,
             reducedRate: parseInt(document.getElementById('setting-reduced-rate').value) / 100,
@@ -406,7 +408,8 @@ function initSettingsEvents() {
     });
 
     // 帳票番号設定保存
-    document.getElementById('btn-save-number-format').addEventListener('click', async () => {
+    const btnSaveNumberFormat = document.getElementById('btn-save-number-format');
+    if (btnSaveNumberFormat) btnSaveNumberFormat.addEventListener('click', async () => {
         const container = document.getElementById('number-format-settings');
         const nf = {};
         Object.keys(DOC_TYPE_LABELS).forEach(type => {
@@ -422,7 +425,8 @@ function initSettingsEvents() {
     });
 
     // 表示設定保存
-    document.getElementById('btn-save-display').addEventListener('click', async () => {
+    const btnSaveDisplay = document.getElementById('btn-save-display');
+    if (btnSaveDisplay) btnSaveDisplay.addEventListener('click', async () => {
         const hiddenDocTypes = CONFIGURABLE_DOC_TYPES.filter(type =>
             !document.getElementById('setting-show-' + type).checked
         );
@@ -439,17 +443,23 @@ function initSettingsEvents() {
     });
 
     // データ管理
-    document.getElementById('btn-export').addEventListener('click', exportData);
-    document.getElementById('import-file').addEventListener('change', importData);
-    document.getElementById('btn-delete-all').addEventListener('click', deleteAllData);
-    document.getElementById('import-sample-btn').addEventListener('click', importSampleData);
+    const btnExport = document.getElementById('btn-export');
+    if (btnExport) btnExport.addEventListener('click', exportData);
+    const importFile = document.getElementById('import-file');
+    if (importFile) importFile.addEventListener('change', importData);
+    const btnDeleteAll = document.getElementById('btn-delete-all');
+    if (btnDeleteAll) btnDeleteAll.addEventListener('click', deleteAllData);
+    const importSampleBtn = document.getElementById('import-sample-btn');
+    if (importSampleBtn) importSampleBtn.addEventListener('click', importSampleData);
     window.addEventListener('online', updateSampleImportAvailability);
     window.addEventListener('offline', updateSampleImportAvailability);
     updateSampleImportAvailability();
 
     // お知らせ
-    document.getElementById('btn-open-notification').addEventListener('click', openNotificationPage);
-    document.getElementById('setting-notify-enabled').addEventListener('change', (e) => {
+    const btnOpenNotification = document.getElementById('btn-open-notification');
+    if (btnOpenNotification) btnOpenNotification.addEventListener('click', openNotificationPage);
+    const settingNotifyEnabled = document.getElementById('setting-notify-enabled');
+    if (settingNotifyEnabled) settingNotifyEnabled.addEventListener('change', (e) => {
         saveSetting('notification_enabled', e.target.checked);
     });
 }
@@ -669,13 +679,16 @@ async function showPartnerDetail(id) {
 }
 
 function initPartnerDetailEvents() {
-    document.getElementById('btn-close-partner-detail').addEventListener('click', () => {
+    const btnClose = document.getElementById('btn-close-partner-detail');
+    if (btnClose) btnClose.addEventListener('click', () => {
         document.getElementById('partner-detail-overlay').style.display = 'none';
     });
-    document.getElementById('btn-partner-detail-close').addEventListener('click', () => {
+    const btnDetailClose = document.getElementById('btn-partner-detail-close');
+    if (btnDetailClose) btnDetailClose.addEventListener('click', () => {
         document.getElementById('partner-detail-overlay').style.display = 'none';
     });
-    document.getElementById('btn-partner-detail-edit').addEventListener('click', async () => {
+    const btnEdit = document.getElementById('btn-partner-detail-edit');
+    if (btnEdit) btnEdit.addEventListener('click', async () => {
         document.getElementById('partner-detail-overlay').style.display = 'none';
         if (detailPartnerId) {
             await editPartner(detailPartnerId);
@@ -684,16 +697,22 @@ function initPartnerDetailEvents() {
 }
 
 function initPartnerEvents() {
-    document.getElementById('btn-new-partner').addEventListener('click', () => openPartnerForm(null));
-    document.getElementById('btn-save-partner').addEventListener('click', savePartner);
-    document.getElementById('btn-cancel-partner').addEventListener('click', () => {
+    const btnNew = document.getElementById('btn-new-partner');
+    if (btnNew) btnNew.addEventListener('click', () => openPartnerForm(null));
+    const btnSave = document.getElementById('btn-save-partner');
+    if (btnSave) btnSave.addEventListener('click', savePartner);
+    const btnCancel = document.getElementById('btn-cancel-partner');
+    if (btnCancel) btnCancel.addEventListener('click', () => {
         document.getElementById('partner-form-overlay').style.display = 'none';
     });
-    document.getElementById('btn-close-partner-form').addEventListener('click', () => {
+    const btnCloseForm = document.getElementById('btn-close-partner-form');
+    if (btnCloseForm) btnCloseForm.addEventListener('click', () => {
         document.getElementById('partner-form-overlay').style.display = 'none';
     });
-    document.getElementById('partner-search').addEventListener('input', loadPartnerList);
-    document.getElementById('partner-type-filter').addEventListener('change', loadPartnerList);
+    const searchInput = document.getElementById('partner-search');
+    if (searchInput) searchInput.addEventListener('input', loadPartnerList);
+    const typeFilter = document.getElementById('partner-type-filter');
+    if (typeFilter) typeFilter.addEventListener('change', loadPartnerList);
 }
 
 // ============================================================
@@ -863,13 +882,16 @@ async function showItemDetail(id) {
 }
 
 function initItemDetailEvents() {
-    document.getElementById('btn-close-item-detail').addEventListener('click', () => {
+    const btnClose = document.getElementById('btn-close-item-detail');
+    if (btnClose) btnClose.addEventListener('click', () => {
         document.getElementById('item-detail-overlay').style.display = 'none';
     });
-    document.getElementById('btn-item-detail-close').addEventListener('click', () => {
+    const btnDetailClose = document.getElementById('btn-item-detail-close');
+    if (btnDetailClose) btnDetailClose.addEventListener('click', () => {
         document.getElementById('item-detail-overlay').style.display = 'none';
     });
-    document.getElementById('btn-item-detail-edit').addEventListener('click', async () => {
+    const btnEdit = document.getElementById('btn-item-detail-edit');
+    if (btnEdit) btnEdit.addEventListener('click', async () => {
         document.getElementById('item-detail-overlay').style.display = 'none';
         if (detailItemId) {
             await editItem(detailItemId);
@@ -878,15 +900,20 @@ function initItemDetailEvents() {
 }
 
 function initItemEvents() {
-    document.getElementById('btn-new-item').addEventListener('click', () => openItemForm(null));
-    document.getElementById('btn-save-item').addEventListener('click', saveItem);
-    document.getElementById('btn-cancel-item').addEventListener('click', () => {
+    const btnNew = document.getElementById('btn-new-item');
+    if (btnNew) btnNew.addEventListener('click', () => openItemForm(null));
+    const btnSave = document.getElementById('btn-save-item');
+    if (btnSave) btnSave.addEventListener('click', saveItem);
+    const btnCancel = document.getElementById('btn-cancel-item');
+    if (btnCancel) btnCancel.addEventListener('click', () => {
         document.getElementById('item-form-overlay').style.display = 'none';
     });
-    document.getElementById('btn-close-item-form').addEventListener('click', () => {
+    const btnCloseForm = document.getElementById('btn-close-item-form');
+    if (btnCloseForm) btnCloseForm.addEventListener('click', () => {
         document.getElementById('item-form-overlay').style.display = 'none';
     });
-    document.getElementById('item-search').addEventListener('input', loadItemList);
+    const searchInput = document.getElementById('item-search');
+    if (searchInput) searchInput.addEventListener('input', loadItemList);
 }
 
 // ============================================================
@@ -960,9 +987,12 @@ async function loadDocList(displaySettings) {
 }
 
 function initDocListEvents() {
-    document.getElementById('btn-new-doc').addEventListener('click', () => openDocEditor(null));
-    document.getElementById('doc-search').addEventListener('input', loadDocList);
-    document.getElementById('doc-status-filter').addEventListener('change', loadDocList);
+    const btnNew = document.getElementById('btn-new-doc');
+    if (btnNew) btnNew.addEventListener('click', () => openDocEditor(null));
+    const searchInput = document.getElementById('doc-search');
+    if (searchInput) searchInput.addEventListener('input', loadDocList);
+    const statusFilter = document.getElementById('doc-status-filter');
+    if (statusFilter) statusFilter.addEventListener('change', loadDocList);
 }
 
 // ============================================================
@@ -1477,14 +1507,18 @@ async function convertDocument(sourceDoc, targetDocType) {
 }
 
 function initDocEditorEvents() {
-    document.getElementById('btn-save-doc').addEventListener('click', saveDocument);
-    document.getElementById('btn-cancel-doc').addEventListener('click', () => {
+    const btnSave = document.getElementById('btn-save-doc');
+    if (btnSave) btnSave.addEventListener('click', saveDocument);
+    const btnCancel = document.getElementById('btn-cancel-doc');
+    if (btnCancel) btnCancel.addEventListener('click', () => {
         document.getElementById('doc-editor-overlay').style.display = 'none';
     });
-    document.getElementById('btn-close-doc-editor').addEventListener('click', () => {
+    const btnClose = document.getElementById('btn-close-doc-editor');
+    if (btnClose) btnClose.addEventListener('click', () => {
         document.getElementById('doc-editor-overlay').style.display = 'none';
     });
-    document.getElementById('btn-add-line').addEventListener('click', () => addLineItem());
+    const btnAddLine = document.getElementById('btn-add-line');
+    if (btnAddLine) btnAddLine.addEventListener('click', () => addLineItem());
 }
 
 // ============================================================
@@ -1813,19 +1847,23 @@ async function showDocDetail(id) {
 }
 
 function initDocDetailEvents() {
-    document.getElementById('btn-close-doc-detail').addEventListener('click', () => {
+    const btnClose = document.getElementById('btn-close-doc-detail');
+    if (btnClose) btnClose.addEventListener('click', () => {
         document.getElementById('doc-detail-overlay').style.display = 'none';
     });
-    document.getElementById('btn-detail-close').addEventListener('click', () => {
+    const btnDetailClose = document.getElementById('btn-detail-close');
+    if (btnDetailClose) btnDetailClose.addEventListener('click', () => {
         document.getElementById('doc-detail-overlay').style.display = 'none';
     });
-    document.getElementById('btn-detail-print').addEventListener('click', async () => {
+    const btnPrint = document.getElementById('btn-detail-print');
+    if (btnPrint) btnPrint.addEventListener('click', async () => {
         if (detailDocId) {
             document.getElementById('doc-detail-overlay').style.display = 'none';
             await printDocument(detailDocId);
         }
     });
-    document.getElementById('btn-detail-edit').addEventListener('click', async () => {
+    const btnEdit = document.getElementById('btn-detail-edit');
+    if (btnEdit) btnEdit.addEventListener('click', async () => {
         document.getElementById('doc-detail-overlay').style.display = 'none';
         if (detailDocId) {
             await editDocument(detailDocId);
@@ -1867,7 +1905,10 @@ function applyDocTabVisibility(hiddenDocTypes) {
 let _toastTimer = null;
 function showToast(text, type) {
     const el = document.getElementById('toast');
-    document.getElementById('toast-text').textContent = text;
+    if (!el) return;
+    const textEl = document.getElementById('toast-text');
+    if (!textEl) return;
+    textEl.textContent = text;
     el.className = `toast ${type}`;
     el.style.display = 'block';
     clearTimeout(_toastTimer);
@@ -1876,7 +1917,8 @@ function showToast(text, type) {
     }
 }
 function initToast() {
-    document.getElementById('toast-close').addEventListener('click', () => {
+    const el = document.getElementById('toast-close');
+    if (el) el.addEventListener('click', () => {
         document.getElementById('toast').style.display = 'none';
     });
 }
@@ -1909,7 +1951,10 @@ async function checkNotification() {
 
 function showNotificationToast(text) {
     const el = document.getElementById('toast');
-    document.getElementById('toast-text').textContent = text;
+    if (!el) return;
+    const textEl = document.getElementById('toast-text');
+    if (!textEl) return;
+    textEl.textContent = text;
     el.className = 'toast info clickable';
     el.style.display = 'block';
     clearTimeout(_toastTimer);
@@ -2169,18 +2214,23 @@ async function deleteAllData() {
 let confirmCallback = null;
 
 function showConfirm(message, onOk) {
-    document.getElementById('confirm-message').textContent = message;
+    const msgEl = document.getElementById('confirm-message');
+    const dialogEl = document.getElementById('confirm-dialog');
+    if (!msgEl || !dialogEl) return;
+    msgEl.textContent = message;
     confirmCallback = onOk;
-    document.getElementById('confirm-dialog').style.display = 'flex';
+    dialogEl.style.display = 'flex';
 }
 
 function initConfirmDialog() {
-    document.getElementById('btn-confirm-ok').addEventListener('click', () => {
+    const btnOk = document.getElementById('btn-confirm-ok');
+    if (btnOk) btnOk.addEventListener('click', () => {
         document.getElementById('confirm-dialog').style.display = 'none';
         if (confirmCallback) confirmCallback();
         confirmCallback = null;
     });
-    document.getElementById('btn-confirm-cancel').addEventListener('click', () => {
+    const btnCancel = document.getElementById('btn-confirm-cancel');
+    if (btnCancel) btnCancel.addEventListener('click', () => {
         document.getElementById('confirm-dialog').style.display = 'none';
         confirmCallback = null;
     });
@@ -2339,7 +2389,7 @@ function initUpdateBanner() {
 // ============================================================
 function initScrollTop() {
     const btn = document.getElementById('scroll-top-btn');
-    btn.addEventListener('click', () => {
+    if (btn) btn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
@@ -2375,21 +2425,16 @@ async function initApp() {
         return;
     }
 
-    // 同期的UI初期化（DB不要）
-    initToast();
-    initTabs();
-    initSettingsEvents();
-    initPartnerEvents();
-    initPartnerDetailEvents();
-    initItemEvents();
-    initItemDetailEvents();
-    initDocListEvents();
-    initDocEditorEvents();
-    initDocDetailEvents();
-    initConfirmDialog();
-    initScrollTop();
-    initVersionInfo();
-    initUpdateBanner();
+    // 同期的UI初期化（DB不要）— 個別init失敗がアプリ全体を停止させないようtry-catchでラップ
+    const initFns = [
+        initToast, initTabs, initSettingsEvents, initPartnerEvents,
+        initPartnerDetailEvents, initItemEvents, initItemDetailEvents,
+        initDocListEvents, initDocEditorEvents, initDocDetailEvents,
+        initConfirmDialog, initScrollTop, initVersionInfo, initUpdateBanner
+    ];
+    for (const fn of initFns) {
+        try { fn(); } catch (e) { console.warn('[Pado] init skip:', fn.name, e); }
+    }
 
     // Phase 1: 並列DB読み出し
     const [displaySettings, allDocs, allPartners] = await Promise.all([
@@ -2399,14 +2444,18 @@ async function initApp() {
     ]);
 
     // Phase 2: データを使ってUI描画
-    applyDocTabVisibility(displaySettings.hiddenDocTypes);
-    currentDocType = displaySettings.defaultDocType || 'estimate';
-    switchDocSubTab(currentDocType, displaySettings);
+    try {
+        applyDocTabVisibility(displaySettings.hiddenDocTypes);
+        currentDocType = displaySettings.defaultDocType || 'estimate';
+        switchDocSubTab(currentDocType, displaySettings);
 
-    // 初回判定（事前取得データを使用、追加DBアクセスなし）
-    if (allDocs.length === 0 && allPartners.length === 0) {
-        await autoLoadSampleData();
-        showToast('サンプルデータを読み込みました。ご自身のデータで始める場合は、設定タブの「全データ削除」からリセットできます。', 'info');
+        // 初回判定（事前取得データを使用、追加DBアクセスなし）
+        if (allDocs.length === 0 && allPartners.length === 0) {
+            await autoLoadSampleData();
+            showToast('サンプルデータを読み込みました。ご自身のデータで始める場合は、設定タブの「全データ削除」からリセットできます。', 'info');
+        }
+    } catch (e) {
+        console.warn('[Pado] UI init skip:', e);
     }
 
     // Phase 3: Fire-and-forget（非クリティカル）
